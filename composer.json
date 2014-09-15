@@ -9,7 +9,9 @@
 	"require-dev": {
 		"way/generators": "~2.6.0",
 		"codeception/codeception": "~2.0.0",
-		"laracasts/validation": "~1.2.0"
+		"phpspec/phpspec": "~2.0.0",
+		"laracasts/validation": "~1.2.0",
+		"mustache/mustache": "v2.7.0"
 	},
 	"autoload": {
 		"classmap": [
