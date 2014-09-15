@@ -122,9 +122,25 @@ class RuleBuilder
     /*
      * Shorten the rule stack by one
      */
-    protected function shortenRuleStackByOne()
+
+    /**
+     * @param $condition
+     *
+     * @throws Exception
+     */
+    public  function checkConditionExists($unsanitisedCondition)
     {
-        $this->individualRules = array_shift($this->individualRules);
+	    $colonLess = explode(':', $unsanitisedCondition);
+	    $bracketLess = explode('(', $colonLess[0]);
+        // I'm not interested in the stuff in brackets or after colons so separate them all out
+
+	    $condition = $bracketLess[0];
+
+        if (in_array($condition, $this->allowableConditions)) {
+            return true;
+        }
+
+        throw new Exception("\"{$condition}\" is not a valid laravel condition");
     }
 
     /**
@@ -136,21 +152,56 @@ class RuleBuilder
         $this->rulesArray["{$inputName}"] = $inputConditions;
     }
 
-    /**
-     * @param $condition
-     *
-     * @throws Exception
-     */
-    protected function checkConditionExists($condition)
+    protected function shortenRuleStackByOne()
     {
-
-        // I'm not interested in the stuff in brackets or after colons so separate them all out
-        $condition = str_replace("(\[1-9\]", '', $condition);
-
-        if (in_array($condition, $this->allowableConditions)) {
-            return true;
-        }
-
-        throw new Exception("\"{$condition}\" is not a valid laravel condition");
+        $this->individualRules = array_shift($this->individualRules);
     }
+
+	/**
+	 * @return array
+	 */
+	public function getIndividualRules()
+	{
+		return $this->individualRules;
+	}
+
+	/**
+	 * @param array $individualRules
+	 */
+	public function setIndividualRules($individualRules)
+	{
+		$this->individualRules = $individualRules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCompletedRules()
+	{
+		return $this->completedRules;
+	}
+
+	/**
+	 * @param mixed $completedRules
+	 */
+	public function setCompletedRules($completedRules)
+	{
+		$this->completedRules = $completedRules;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getRulesArray()
+	{
+		return $this->rulesArray;
+	}
+
+	/**
+	 * @param mixed $rulesArray
+	 */
+	public function setRulesArray($rulesArray)
+	{
+		$this->rulesArray = $rulesArray;
+	}
 }
