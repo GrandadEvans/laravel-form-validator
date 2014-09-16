@@ -83,11 +83,14 @@ class RuleBuilder
     public function __construct($rules)
     {
         $this->rules = $rules;
-
         $this->individualRules = $this->separateIndividualRules();
+        $this->processIndividualRules();
     }
 
-
+    public  function getReformattedRules()
+    {
+        return $this->rulesArray;
+    }
 
     /**
      * @return array
@@ -97,19 +100,22 @@ class RuleBuilder
         return preg_split("/ ?\| ?/", $this->rules);
     }
 
+    public function processIndividualRules()
+    {
+        foreach($this->individualRules as $rule) {
+            $this->separateNextRuleIntoComponentRules($rule);
+        }
+    }
+
     /**
      * @throws Exception
      */
-    public function separateNextRuleIntoComponentRules()
+    public function separateNextRuleIntoComponentRules($rule)
     {
-        $laravelConditions = preg_split("/ ?: ?/", $this->individualRules[0]); // ['required', 'min']
-
+        $laravelConditions = preg_split("/ ?: ?/", $rule); // ['required', 'min']
         $inputName = $laravelConditions[0];
-
         $validInputConditions = $this->extractLaravelConditionsFromRule($laravelConditions);
-
         $this->AddRuleToMainRulesArray($validInputConditions, $inputName);
-
         $this->shortenRuleStackByOne();
     }
 
@@ -139,7 +145,10 @@ class RuleBuilder
      */
     protected function AddRuleToMainRulesArray($inputConditions, $inputName)
     {
-        $this->rulesArray["{$inputName}"] = $inputConditions;
+        $this->rulesArray[] = [
+            'name' => "{$inputName}",
+            'conditions' => $inputConditions
+        ];
     }
 
     /**
@@ -147,10 +156,10 @@ class RuleBuilder
      */
     protected function shortenRuleStackByOne()
     {
-        $this->individualRules = array_shift($this->individualRules);
+        array_shift($this->individualRules);
     }
 
-	/**
+    /**
 	 * @return array
 	 */
 	public function getIndividualRules()
@@ -158,7 +167,7 @@ class RuleBuilder
 		return $this->individualRules;
 	}
 
-	/**
+    /**
 	 * @param array $individualRules
 	 */
 	public function setIndividualRules($individualRules)
@@ -166,7 +175,7 @@ class RuleBuilder
 		$this->individualRules = $individualRules;
 	}
 
-	/**
+    /**
 	 * @return array
 	 */
 	public function getCompletedRules()
@@ -174,7 +183,7 @@ class RuleBuilder
 		return $this->completedRules;
 	}
 
-	/**
+    /**
 	 * @param mixed $completedRules
 	 */
 	public function setCompletedRules($completedRules)
@@ -182,7 +191,7 @@ class RuleBuilder
 		$this->completedRules = $completedRules;
 	}
 
-	/**
+    /**
 	 * @return array
 	 */
 	public function getRulesArray()
@@ -190,7 +199,7 @@ class RuleBuilder
 		return $this->rulesArray;
 	}
 
-	/**
+    /**
 	 * @param array $rulesArray
 	 */
 	public function setRulesArray($rulesArray)

@@ -1,0 +1,15 @@
+<?php {{# namespace }}namespace {{ . }}; {{/ namespace }}
+
+use laracasts/validation;
+
+class {{# className }}{{ . }}{{/ className }}
+ {
+
+    protected $rules=[
+    {{# rules }}
+        '{{ name }}' => [{{# conditions }}
+            '{{ . }}', {{/ conditions }}
+        ],
+    {{/ rules }}
+    ];
+ }
