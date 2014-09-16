@@ -34,4 +34,5 @@ class RuleBuilderSpec extends ObjectBehavior
 	{
 		$this->shouldThrow("\Exception")->during('checkConditionExists', ['nonexistentCondition']);
 	}
+
 }

@@ -75,6 +75,8 @@ class RuleBuilder
         'url'
     ];
 
+
+
     /**
      * @param $rules
      */
@@ -84,6 +86,8 @@ class RuleBuilder
 
         $this->individualRules = $this->separateIndividualRules();
     }
+
+
 
     /**
      * @return array
@@ -101,30 +105,16 @@ class RuleBuilder
         $laravelConditions = preg_split("/ ?: ?/", $this->individualRules[0]); // ['required', 'min']
 
         $inputName = $laravelConditions[0];
-        $validInputConditions = [];
 
-        $i=1;
-
-        while(isset($laravelConditions[$i])) {
-            $this->checkConditionExists($laravelConditions[$i]);
-
-            $validInputConditions[] = $laravelConditions[$i];
-
-            $i++;
-        }
+        $validInputConditions = $this->extractLaravelConditionsFromRule($laravelConditions);
 
         $this->AddRuleToMainRulesArray($validInputConditions, $inputName);
 
         $this->shortenRuleStackByOne();
     }
 
-
-    /*
-     * Shorten the rule stack by one
-     */
-
     /**
-     * @param $condition
+     * @param $unsanitisedCondition
      *
      * @throws Exception
      */
@@ -152,6 +142,9 @@ class RuleBuilder
         $this->rulesArray["{$inputName}"] = $inputConditions;
     }
 
+    /**
+     *Shorten the rule stack by one
+     */
     protected function shortenRuleStackByOne()
     {
         $this->individualRules = array_shift($this->individualRules);
@@ -174,7 +167,7 @@ class RuleBuilder
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getCompletedRules()
 	{
@@ -190,7 +183,7 @@ class RuleBuilder
 	}
 
 	/**
-	 * @return mixed
+	 * @return array
 	 */
 	public function getRulesArray()
 	{
@@ -198,10 +191,31 @@ class RuleBuilder
 	}
 
 	/**
-	 * @param mixed $rulesArray
+	 * @param array $rulesArray
 	 */
 	public function setRulesArray($rulesArray)
 	{
 		$this->rulesArray = $rulesArray;
 	}
+
+    /**
+     * @param $laravelConditions
+     *
+     * @return array
+     */
+    protected function extractLaravelConditionsFromRule($laravelConditions)
+    {
+        $validInputConditions = [];
+
+        $i = 1;
+        while (isset($laravelConditions[$i])) {
+            $this->checkConditionExists($laravelConditions[$i]);
+
+            $validInputConditions[] = $laravelConditions[$i];
+
+            $i++;
+        }
+
+        return $validInputConditions;
+    }
 }
