@@ -1,13 +1,13 @@
-<?php namespace Bar;
+<?php namespace grandadevans;
 
 use laracasts\validation;
 
 /**
  *
- * Class Foo
+ * Class FooBar
  *
  */
-class Foo
+class FooBar
 {
 
     /**
@@ -16,12 +16,15 @@ class Foo
      * @var array
      */
     protected $rules=[
-        'baz' => [
+        'bar' => [
+            'unique',
             'required',
+            'min(5)',
         ],
     
         'qux' => [
-            'between(3,6)',
+            'required',
+            'email',
         ],
     ];
 

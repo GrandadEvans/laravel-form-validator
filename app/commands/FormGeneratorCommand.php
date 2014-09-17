@@ -64,7 +64,9 @@ class FormGeneratorCommand extends Command {
 
         $this->buildRules();
 
-        $this->buildOutput();
+        $buildResult = $this->buildOutput();
+
+		$this->provideFeedback($buildResult);
 	}
 
     protected function buildRules()
@@ -75,20 +77,33 @@ class FormGeneratorCommand extends Command {
 
     protected function buildOutput()
     {
-        $buildResult = new grandadevans\OutputBuilder(
+        return new grandadevans\OutputBuilder(
             $this->processedRules,
             $this->getClassName(),
-            $this->getNamespace()
+            $this->getNamespace(),
+            $this->getFormPath()
         );
 
-        dd($buildResult);
     }
+
+
+	protected function provideFeedback($result)
+	{
+		if ($result) {
+			$this->info("Form Generated!");
+			$this->info("The Form has been written to \"" . $this->getFormPath() . "\"");
+			return;
+		}
+
+		$this->error("The Form could not be written to \"" . $this->getFormPath() . "\"");
+			return;
+
+	}
 
     protected function setRulesString()
     {
         $this->rulesString = $this->option('rules');
     }
-
     protected function getRulesString()
     {
         return $this->rulesString;

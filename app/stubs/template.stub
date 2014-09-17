@@ -1,15 +1,40 @@
-<?php {{# namespace }}namespace {{ . }}; {{/ namespace }}
+<?php {{# namespace }}namespace {{ . }};{{/ namespace }}
 
-use laracasts/validation;
+use laracasts\validation;
 
+/**
+ *
+ * Class {{# className }}{{ . }}{{/ className }}
+ *
+ */
 class {{# className }}{{ . }}{{/ className }}
- {
+{
 
-    protected $rules=[
-    {{# rules }}
+    /**
+     * The array of rules to be processed
+     *
+     * @var array
+     */
+    protected $rules=[{{# rules }}
         '{{ name }}' => [{{# conditions }}
-            '{{ . }}', {{/ conditions }}
+            '{{ . }}',{{/ conditions }}
         ],
-    {{/ rules }}
-    ];
- }
+    {{/ rules }}];
+
+
+    /**
+     * The array of input fields to validate
+     *
+     * @var array
+     */
+    protected $input = [];
+
+
+    /**
+     * An array of custom messages for the validation failures
+     *
+     * @var array
+     */
+    protected $customMessages = [];
+
+}

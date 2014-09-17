@@ -102,8 +102,11 @@ class RuleBuilder
 
     public function processIndividualRules()
     {
-        foreach($this->individualRules as $rule) {
-            $this->separateNextRuleIntoComponentRules($rule);
+	    $count = $this->individualRules;
+	    if (count($count) > 0) {
+	        foreach($this->individualRules as $rule) {
+		        $this->separateNextRuleIntoComponentRules($rule);
+	        }
         }
     }
 
@@ -196,6 +199,7 @@ class RuleBuilder
 	 */
 	public function getRulesArray()
 	{
+
 		return $this->rulesArray;
 	}
 

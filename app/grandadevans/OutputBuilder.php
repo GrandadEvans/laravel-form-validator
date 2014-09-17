@@ -37,23 +37,25 @@ class OutputBuilder
      */
     private $rules;
 
-    /**
-     * @param array $rules
-     * @param string $className
-     * @param null  $namespace
-     *
-     * @internal param string $class
-     */
-    public function __construct(Array $rules, $className = '', $namespace = null)
+	/**
+	 * @param array  $rules
+	 * @param string $className
+	 * @param null   $namespace
+	 * @param string $formPath
+	 *
+	 * @internal param string $class
+	 */
+    public function __construct($rules, $className = '', $namespace = null, $formPath)
     {
-//        print_r($rules[0][1]);exit;
         $this->rules = $rules;
         $this->instantiateMustache();
         $this->namespace = $namespace;
         $this->className = ($className) ?: $this->className;
+	    $this->formPath = $formPath;
+	    $this->className = $className;
 
-        $this->renderTemplate();
-        $this->writeTemplate();
+        $renderedOutput = $this->renderTemplate();
+        $this->writeTemplate($renderedOutput);
     }
 
     /**
@@ -77,13 +79,13 @@ class OutputBuilder
             'className' => $this->className
         ];
 
-        $this->mustache->render($contents, $args);
+        $renderedOutput = $this->mustache->render($contents, $args);
+
+	    return $renderedOutput;
     }
 
-    protected function writeTemplate()
+    protected function writeTemplate($renderedOutput)
     {
-        $templateContents = file_get_contents('app/stubs/template.stub');
-
-        file_put_contents($this-getDestination(), $templateContents);
+        file_put_contents($this->formPath, $renderedOutput);
     }
 }

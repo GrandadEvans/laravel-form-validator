@@ -30,16 +30,13 @@ class OutputBuilderSpec extends ObjectBehavior
             ]
        ],
        'FooBar',
-       'grandadevans');
+       'grandadevans',
+	       'tests/Forms/FooBarForm.php');
    }
-//
-//    function it_instantiates_a_new_instance_of_mustache()
-//    {
-//        $this->getMustache()->shouldHaveType('Mustache_Engine');
-//    }
 
-    function it_should_output_a_form()
+    function it_instantiates_a_new_instance_of_mustache()
     {
-        $this->renderTemplate()->shouldEqual('');
+        $this->getMustache()->shouldHaveType('Mustache_Engine');
     }
+
 }
