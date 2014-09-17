@@ -1,9 +1,12 @@
 <?php namespace Grandadevans\GenerateForm\Command;
 
+use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
+use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
+use Grandadevans\GenerateForm\HelperClasses\Helpers;
+
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Grandadevans\GenerateForm\HelperClasses\Helpers;
 
 /**
  * Class FormGeneratorCommand
@@ -94,7 +97,7 @@ class FormGeneratorCommand extends Command {
 	 */
 	protected function buildRules()
     {
-        $ruleBuilder = new Grandadevans\GenerateForm\BuilderClasses\RuleBuilder($this->getRulesString());
+        $ruleBuilder = new RuleBuilder($this->getRulesString());
         $this->processedRules = $ruleBuilder->getReformattedRules();
     }
 
@@ -119,7 +122,7 @@ class FormGeneratorCommand extends Command {
 	 */
 	protected function buildOutput()
     {
-        return new grandadevans\OutputBuilder(
+        return new OutputBuilder(
             $this->processedRules,
             $this->getClassName(),
             $this->getNamespace(),
