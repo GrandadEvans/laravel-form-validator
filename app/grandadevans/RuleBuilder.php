@@ -148,10 +148,12 @@ class RuleBuilder
      */
     protected function AddRuleToMainRulesArray($inputConditions, $inputName)
     {
-        $this->rulesArray[] = [
-            'name' => "{$inputName}",
-            'conditions' => $inputConditions
-        ];
+        if (!empty($inputConditions)) {
+            $this->rulesArray[] = [
+                'name' => "{$inputName}",
+                'conditions' => $inputConditions
+            ];
+        }
     }
 
     /**
@@ -218,16 +220,18 @@ class RuleBuilder
      */
     protected function extractLaravelConditionsFromRule($laravelConditions)
     {
-        $validInputConditions = [];
+        $validInputConditions = "";
 
         $i = 1;
         while (isset($laravelConditions[$i])) {
             $this->checkConditionExists($laravelConditions[$i]);
 
-            $validInputConditions[] = $laravelConditions[$i];
+            $validInputConditions .= $laravelConditions[$i] . '|';
 
             $i++;
         }
+
+        $validInputConditions = trim($validInputConditions, '|');
 
         return $validInputConditions;
     }

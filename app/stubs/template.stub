@@ -7,34 +7,16 @@ use laracasts\validation;
  * Class {{# className }}{{ . }}{{/ className }}
  *
  */
-class {{# className }}{{ . }}{{/ className }}
-{
+class {{# className }}{{ className }}{{/ className }} extends FormValidator {
 
     /**
      * The array of rules to be processed
      *
      * @var array
      */
-    protected $rules=[{{# rules }}
-        '{{ name }}' => [{{# conditions }}
-            '{{ . }}',{{/ conditions }}
-        ],
-    {{/ rules }}];
-
-
-    /**
-     * The array of input fields to validate
-     *
-     * @var array
-     */
-    protected $input = [];
-
-
-    /**
-     * An array of custom messages for the validation failures
-     *
-     * @var array
-     */
-    protected $customMessages = [];
-
+    protected $rules=[
+        {{# rules }}
+        '{{ name }}' => '{{# conditions }}{{ . }}{{/ conditions }}',
+        {{/ rules }}
+    ];
 }

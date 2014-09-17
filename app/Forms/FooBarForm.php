@@ -1,4 +1,4 @@
-<?php namespace grandadevans\Forms; 
+<?php 
 
 use laracasts\validation;
 
@@ -8,41 +8,16 @@ use laracasts\validation;
  *
  */
 class FooBar
-{
-
-   /**
-    * The array of rules to be processed
-    *
-    * @var array
-    */
-   protected $rules=[
-       'bar' => [
-           'required', 
-           'between(4,6)', 
-           'digits', 
-       ],
-   
-       'qux' => [
-           'required', 
-           'email', 
-           'confirmed', 
-       ],
-   ];
-
-
-   /**
-    * The array of input fields to validate
-    *
-    * @var array
-    */
-   protected $input = [];
+ extends FormValidator {
 
 
     /**
-     * An array of custom messages for the validation failures
+     * The array of rules to be processed
+     *
      * @var array
      */
-    protected $customMessages = [];
+    protected $rules=[
 
-
+        '' => '',
+    ];
 }

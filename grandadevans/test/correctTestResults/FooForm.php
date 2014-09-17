@@ -1,4 +1,4 @@
-<?php namespace Bar;
+<?php 
 
 use laracasts\validation;
 
@@ -15,7 +15,5 @@ class Foo extends FormValidator {
      * @var array
      */
     protected $rules=[
-        'baz' => 'required|email',
-        'qux' => 'between(3,6)',
     ];
 }
