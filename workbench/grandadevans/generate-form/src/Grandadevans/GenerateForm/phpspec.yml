@@ -1,0 +1,3 @@
+suites:
+    grandadevans_suite:
+        src_path: ../../tests

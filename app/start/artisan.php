@@ -10,5 +10,5 @@
 | the console gets access to each of the command object instances.
 |
 */
-Artisan::resolve('FormGeneratorCommand');
+//Artisan::resolve('Grandadevans\GenerateForm\Command\FormGeneratorCommand');
 
