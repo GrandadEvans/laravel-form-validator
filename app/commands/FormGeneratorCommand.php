@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use grandadevans\Helpers;
 
+/**
+ * Class FormGeneratorCommand
+ */
 class FormGeneratorCommand extends Command {
 
 	/**
@@ -22,17 +24,35 @@ class FormGeneratorCommand extends Command {
 	 */
 	protected $description = 'Generate a new validation form';
 
-    protected $formPath;
+	/**
+	 * @var
+	 */
+	protected $formPath;
 
-    protected $formContents;
+	/**
+	 * @var
+	 */
+	protected $formContents;
 
-    protected $namespace;
+	/**
+	 * @var
+	 */
+	protected $namespace;
 
-    protected $className;
+	/**
+	 * @var
+	 */
+	protected $className;
 
-    protected $rulesString;
+	/**
+	 * @var
+	 */
+	protected $rulesString;
 
-    protected $processedRules;
+	/**
+	 * @var
+	 */
+	protected $processedRules;
 
 
 	/**
@@ -69,13 +89,35 @@ class FormGeneratorCommand extends Command {
 		$this->provideFeedback($buildResult);
 	}
 
-    protected function buildRules()
+	/**
+	 *
+	 */
+	protected function buildRules()
     {
         $ruleBuilder = new grandadevans\RuleBuilder($this->getRulesString());
         $this->processedRules = $ruleBuilder->getReformattedRules();
     }
 
-    protected function buildOutput()
+	/**
+	 * @return mixed
+	 */
+	protected function getRulesString()
+    {
+        return $this->rulesString;
+    }
+
+	/**
+	 *
+	 */
+	protected function setRulesString()
+    {
+        $this->rulesString = $this->option('rules');
+    }
+
+	/**
+	 * @return \grandadevans\OutputBuilder
+	 */
+	protected function buildOutput()
     {
         return new grandadevans\OutputBuilder(
             $this->processedRules,
@@ -86,7 +128,71 @@ class FormGeneratorCommand extends Command {
 
     }
 
+	/**
+	 * @return mixed
+	 */
+	protected function getClassName()
+    {
+        return $this->className;
+    }
 
+	/**
+	 *
+	 */
+	protected function setClassName()
+    {
+        $this->className = $this->argument('name');
+    }
+
+	/**
+	 * @return mixed
+	 */
+	protected function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+	/**
+	 *
+	 */
+	protected function setNamespace()
+    {
+        $namespace = "";
+        $option = $this->option('namespace');
+
+        if (isset($option)) {
+            $namespace = $this->option('namespace');
+        }
+       $this->namespace = $namespace;
+    }
+
+	/**
+	 * @return mixed
+	 */
+	protected function getFormPath()
+    {
+        return $this->formPath;
+    }
+
+	/**
+	 *
+	 */
+	protected function setFormPath()
+    {
+        $option = $this->option('dir');
+        $name = $this->argument('name');
+
+        $path = base_path() . DS . $option . DS . $name . "Form.php";
+
+        $convertNamespaceToPath = Helpers::convertNamespaceToPath($path);
+        $sanitizePath   = Helpers::sanitizePath($convertNamespaceToPath);
+
+        $this->formPath = $sanitizePath;
+    }
+
+	/**
+	 * @param $result
+	 */
 	protected function provideFeedback($result)
 	{
 		if ($result) {
@@ -100,66 +206,19 @@ class FormGeneratorCommand extends Command {
 
 	}
 
-    protected function setRulesString()
-    {
-        $this->rulesString = $this->option('rules');
-    }
-    protected function getRulesString()
-    {
-        return $this->rulesString;
-    }
-
-
-    protected function setNamespace()
-    {
-        $namespace = "";
-        $option = $this->option('namespace');
-
-        if (isset($option)) {
-            $namespace = $this->option('namespace');
-        }
-       $this->namespace = $namespace;
-    }
-    protected function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-
-    protected function setFormPath()
-    {
-        $option = $this->option('dir');
-        $name = $this->argument('name');
-
-        $path = base_path() . DS . $option . DS . $name . "Form.php";
-
-        $convertNamespaceToPath = Helpers::convertNamespaceToPath($path);
-        $sanitizePath   = Helpers::sanitizePath($convertNamespaceToPath);
-
-        $this->formPath = $sanitizePath;
-    }
-    protected function getFormPath()
-    {
-        return $this->formPath;
-    }
-
-
-    protected function setClassName()
-    {
-        $this->className = $this->argument('name');
-    }
-    protected function getClassName()
-    {
-        return $this->className;
-    }
-
-
+	/**
+	 * @return array
+	 */
 	protected function getArguments()
 	{
 		return array(
 			array('name', InputArgument::REQUIRED, 'Name of the form to generate.'),
 		);
 	}
+
+	/**
+	 * @return array
+	 */
 	protected function getOptions()
 	{
 		return array(
