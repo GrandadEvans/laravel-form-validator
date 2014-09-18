@@ -1,0 +1,4 @@
+suites:
+    grandadevans_suite:
+        src_path: src/Grandadevans/GenerateForm
+        spec_path: tests

@@ -1,6 +1,8 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
+use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Mustache_Engine;
+use \ClassPreloader\Command;
 
 /**
  * Class OutputBuilder
@@ -8,8 +10,9 @@ use Mustache_Engine;
  * @package grandadevans
  */
 class OutputBuilder {
+	public $returnStatus = 'pass';
 
-    /**
+	/**
      * The instance of Mustache
      *
      * @var object
@@ -36,9 +39,12 @@ class OutputBuilder {
      * @var mixed
      */
     private $rules;
+	/**
+	 * @var FormGeneratorCommand
+	 */
 
 
-    /**
+	/**
      * Accept the params and kick out the output
      *
      * Accept the rules, className, namespaceName and path of the form and write the requested file
@@ -48,7 +54,7 @@ class OutputBuilder {
      * @param null   $namespace
      * @param string $formPath
      */
-    public function __construct($rules, $className = '', $namespace = null, $formPath)
+    public function __construct($rules, $className = '', $namespace = null, $formPath = null)
     {
         $this->rules = $rules;
         $this->setMustache();
@@ -58,7 +64,9 @@ class OutputBuilder {
         $this->className = $className;
 
         $renderedOutput = $this->renderTemplate();
-        $this->writeTemplate($renderedOutput);
+        if ( ! $this->writeTemplate($renderedOutput)) {
+	        $this->returnStatus = 'fail';
+        }
     }
 
     /**
@@ -93,8 +101,10 @@ class OutputBuilder {
         }
 
         catch(\Exception $e) {
-            $this->error("The Form could not be written to \"" . $this->getFormPath() . "\"");
+            return false;
         }
+
+	    return true;
     }
 
     /**
