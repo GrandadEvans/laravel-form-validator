@@ -1,4 +1,8 @@
 suites:
-    grandadevans_suite:
-        src_path: src/Grandadevans/GenerateForm
-        spec_path: tests
+  Grandadevans:
+    spec_path: tests
+    src_path:  src/Grandadevans/GenerateForm
+formatter.name: pretty
+
+extensions:
+    - PhpSpec\Extension\CodeCoverageExtension

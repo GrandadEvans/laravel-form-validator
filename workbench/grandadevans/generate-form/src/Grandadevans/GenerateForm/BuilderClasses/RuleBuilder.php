@@ -25,11 +25,6 @@ class RuleBuilder
     public $individualRules;
 
     /**
-     * @var
-     */
-    public $completedRules;
-
-    /**
      * @var array
      */
     protected $allowableConditions = [
@@ -80,22 +75,25 @@ class RuleBuilder
      */
     public function __construct($rules)
     {
-        $this->rules = $rules;
-        $this->individualRules = $this->separateIndividualRules();
+        $this->individualRules = $this->separateIndividualRules($rules);
         $this->processIndividualRules();
     }
 
-    public  function getReformattedRules()
+    public function getReformattedRules()
     {
         return $this->rulesArray;
     }
 
     /**
+     * @var string  $rules
+     *
      * @return array
      */
-    public function separateIndividualRules()
+    public function separateIndividualRules($rules = null)
     {
-        return preg_split("/ ?\| ?/", $this->rules);
+        if ( ! is_null($rules)) {
+            return preg_split("/ ?\| ?/", $rules);
+        }
     }
 
     public function processIndividualRules()
@@ -157,7 +155,7 @@ class RuleBuilder
     /**
      *Shorten the rule stack by one
      */
-    protected function shortenRuleStackByOne()
+    public function shortenRuleStackByOne()
     {
         array_shift($this->individualRules);
     }
@@ -170,31 +168,8 @@ class RuleBuilder
 		return $this->individualRules;
 	}
 
-    /**
-	 * @param array $individualRules
-	 */
-	public function setIndividualRules($individualRules)
-	{
-		$this->individualRules = $individualRules;
-	}
 
-    /**
-	 * @return array
-	 */
-	public function getCompletedRules()
-	{
-		return $this->completedRules;
-	}
-
-    /**
-	 * @param mixed $completedRules
-	 */
-	public function setCompletedRules($completedRules)
-	{
-		$this->completedRules = $completedRules;
-	}
-
-    /**
+     /**
 	 * @return array
 	 */
 	public function getRulesArray()
@@ -203,13 +178,6 @@ class RuleBuilder
 		return $this->rulesArray;
 	}
 
-    /**
-	 * @param array $rulesArray
-	 */
-	public function setRulesArray($rulesArray)
-	{
-		$this->rulesArray = $rulesArray;
-	}
 
     /**
      * @param $laravelConditions

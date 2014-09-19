@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\grandadevans;
+namespace spec\Grandadevans\GenerateForm\BuilderClasses;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -38,5 +38,4 @@ class OutputBuilderSpec extends ObjectBehavior
     {
         $this->getMustache()->shouldHaveType('Mustache_Engine');
     }
-
 }

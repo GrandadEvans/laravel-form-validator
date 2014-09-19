@@ -10,7 +10,11 @@ use \ClassPreloader\Command;
  * @package grandadevans
  */
 class OutputBuilder {
-	public $returnStatus = 'pass';
+
+    /**
+     * @var string
+     */
+    public $returnStatus = 'pass';
 
 	/**
      * The instance of Mustache
@@ -18,30 +22,6 @@ class OutputBuilder {
      * @var object
      */
     private  $mustache;
-
-    /**
-     * The name of the namespace
-     *
-     * @var mixed
-     */
-    private $namespace;
-
-    /**
-     * The class name
-     *
-     * @var string
-     */
-    private $className = "Foo";
-
-    /**
-     * Holder of the rules if there are any
-     *
-     * @var mixed
-     */
-    private $rules;
-	/**
-	 * @var FormGeneratorCommand
-	 */
 
 
 	/**
@@ -54,50 +34,50 @@ class OutputBuilder {
      * @param null   $namespace
      * @param string $formPath
      */
-    public function __construct($rules, $className = '', $namespace = null, $formPath = null)
+    public function __construct($rules, $className, $namespace = null, $formPath)
     {
-        $this->rules = $rules;
         $this->setMustache();
-        $this->namespace = $namespace;
-        $this->className = ($className) ?: $this->className;
-        $this->formPath  = $formPath;
-        $this->className = $className;
 
-        $renderedOutput = $this->renderTemplate();
-        if ( ! $this->writeTemplate($renderedOutput)) {
+        $renderedOutput = $this->renderTemplate([
+            'rules'     => $rules,
+            'namespace' => $namespace,
+            'className' => $className
+        ]);
+
+        if ( ! $this->writeTemplate($renderedOutput, $formPath)) {
 	        $this->returnStatus = 'fail';
         }
     }
 
+
     /**
      * Render the Template using the instance of Mustache and return the results
      *
-     * @return string
+     * @var     array   $args
+     *
+     * @return  string
      */
-    private function renderTemplate()
+    private function renderTemplate($args)
     {
-        $contents = file_get_contents(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
-
-        $args = [
-            'rules'     => $this->rules,
-            'namespace' => $this->namespace,
-            'className' => $this->className
-        ];
+        $contents = $this->getTemplateContents();
 
         $renderedOutput = $this->mustache->render($contents, $args);
 
         return $renderedOutput;
     }
 
+
     /**
-     * Try to write the rendered output and thrown an error to the terminal if it fails
+     * Try to write the rendered output and thrown an error to the terminal if it fails (covered by acceptance test)
      *
      * @param $renderedOutput string
+     *
+     * @return bool
      */
-    private function writeTemplate($renderedOutput)
+    private function writeTemplate($renderedOutput, $formPath)
     {
         try {
-            file_put_contents($this->formPath, $renderedOutput);
+            file_put_contents($formPath, $renderedOutput);
         }
 
         catch(\Exception $e) {
@@ -112,7 +92,7 @@ class OutputBuilder {
      *
      * @return object
      */
-    private function getMustache()
+    public function getMustache()
     {
         return $this->mustache;
     }
@@ -123,5 +103,13 @@ class OutputBuilder {
     private function setMustache()
     {
         $this->mustache = new Mustache_Engine;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplateContents()
+    {
+        return file_get_contents(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
     }
 }

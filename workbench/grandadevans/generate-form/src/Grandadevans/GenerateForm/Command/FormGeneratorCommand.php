@@ -3,7 +3,6 @@
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\HelperClasses\Helpers;
-
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -35,13 +34,6 @@ class FormGeneratorCommand extends Command {
 	protected $fullFormPath;
 
 	/**
-	 * The full string contents of the finished form
-	 *
-	 * @var string
-	 */
-	protected $formContents;
-
-	/**
 	 * The namespace as specified by the user
 	 *
 	 * @var string
@@ -63,13 +55,6 @@ class FormGeneratorCommand extends Command {
 	protected $rulesString;
 
 	/**
-	 * The processed rules after they have been validated as actually being correct Laravel conditions
-	 *
-	 * @var mixed
-	 */
-	protected $processedRules;
-
-	/**
 	 * The directory of the finished form
 	 *
 	 * @var string
@@ -79,11 +64,13 @@ class FormGeneratorCommand extends Command {
 
 	/**
 	 * Create a new command instance.
+	 *
+	 * @todo test?
 	 */
 	public function __construct()
 	{
 		// Define the directory separator for the OS used
-		define('DS', DIRECTORY_SEPARATOR);
+        define('DS', DIRECTORY_SEPARATOR);
 
 		parent::__construct();
 	}
@@ -91,6 +78,8 @@ class FormGeneratorCommand extends Command {
 
 	/**
 	 * Execute the console command.
+	 *
+	 * @todo test?
 	 *
 	 * @return mixed
 	 */
@@ -103,42 +92,70 @@ class FormGeneratorCommand extends Command {
 		$this->provideFeedback($buildResult);
 	}
 
-	/**
-	 * Get the formatted rules
-	 */
-	protected function buildRules()
+
+    /**
+     * Set all of the form attributes to disk or persist in another way
+     *
+     * @todo test?
+     */
+    private function setFormAttributes()
+    {
+        $this->className   = $this->argument('name');
+
+        $this->formDir     = $this->option('dir');
+
+        $this->rulesString = $this->option('rules');
+
+        $this->namespace   = $this->option('namespace') ?: "";
+
+        $this->setFullFormPath();
+    }
+
+
+    /**
+     * Attempt to build the form
+     *
+     * @todo test?
+     *
+     * @return string
+     */
+    private function attemptToBuildForm()
+    {
+        $processedRules = $this->buildRules($this->rulesString);
+
+        $buildResult = $this->buildOutput($processedRules);
+
+        return $buildResult;
+    }
+
+
+    /**
+     * Process the rules (Method Tested by PHPSpec)
+     *
+     * @param $rulesString
+     *
+     * @return mixed
+     */
+    public function buildRules($rulesString)
 	{
-		$ruleBuilder          = new RuleBuilder($this->getRulesString());
-		$this->processedRules = $ruleBuilder->getReformattedRules();
+		$ruleBuilder          = new RuleBuilder($rulesString);
+		return $ruleBuilder->getReformattedRules();
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function getRulesString()
-	{
-		return $this->rulesString;
-	}
 
-	/**
-	 * Set the rules string to a property
-	 */
-	protected function setRulesString()
-	{
-		$this->rulesString = $this->option('rules');
-	}
-
-	/**
-	 * Build the form output and persist (write to disk etc)
-	 *
-	 * @return string
-	 */
-	protected function buildOutput()
+    /**
+     * Build the output
+     *
+     * @param $processedRules
+     *
+     * @return string
+     */
+    protected function buildOutput($processedRules)
 	{
 		$ob = new OutputBuilder(
-			$this->processedRules,
-			$this->getClassName(),
-			$this->getNamespace(),
+			$processedRules,
+            $this->className,
+			$this->namespace,
 			$this->getFullFormPath()
 		);
 
@@ -146,41 +163,6 @@ class FormGeneratorCommand extends Command {
 
 	}
 
-	/**
-	 * Get the classname from the property
-	 *
-	 * @return string
-	 */
-	protected function getClassName()
-	{
-		return $this->className;
-	}
-
-	/**
-	 * Set the classname
-	 */
-	protected function setClassName()
-	{
-		$this->className = $this->argument('name');
-	}
-
-	/**
-	 * Get the namespace string
-	 *
-	 * @return string
-	 */
-	protected function getNamespace()
-	{
-		return $this->namespace;
-	}
-
-	/**
-	 * Set the namespace in a property
-	 */
-	protected function setNamespace()
-	{
-		$this->namespace = $this->option('namespace') ?: "";
-	}
 
 	/**
 	 * Get the full form path
@@ -192,47 +174,30 @@ class FormGeneratorCommand extends Command {
 		return $this->fullFormPath;
 	}
 
+
 	/**
 	 * Set the forms full path to a property
 	 */
 	protected function setFullFormPath()
 	{
-		// Get the details
-		$dir = $this->option('dir');
-		$name   = $this->argument('name');
-
 		// Set the paths
-		$formDir = base_path() . DS . $dir;
-		$fullPath    = $formDir . DS . $name . "Form.php";
+        $fullPath = "";
+
+        // Check if the base path has been included in the sir option
+        if ( ! stristr($this->formDir, base_path()) && ! strstr($this->formDir, '../')) {
+            $fullPath = base_path() . DS;
+        }
+
+        $fullPath .= $this->formDir . DS . $this->className . "Form.php";
 
 		// Convert and sanitize
 		$convertNamespaceToPath = Helpers::convertNamespaceToPath($fullPath);
 		$sanitizePath           = Helpers::sanitizePath($convertNamespaceToPath);
 
 		// Set the object properties
-		$this->formDir  = $formDir;
 		$this->fullFormPath = $sanitizePath;
 	}
 
-	/**
-	 * Get the directory of the form
-	 *
-	 * @return string
-	 */
-	public function getFormDir()
-	{
-		return $this->formDir;
-	}
-
-	/**
-	 * Set the directory of the form to a property
-	 *
-	 * @param string $formDir
-	 */
-	public function setFormDir($formDir)
-	{
-		$this->formDir = $formDir;
-	}
 
 	/**
 	 * Provide feedback to the user either way using the Laravel command->info method
@@ -247,62 +212,37 @@ class FormGeneratorCommand extends Command {
 		} else {
 			$this->error("The Form could not be written to \"" .
 			             $this->getFullFormPath() . "\"\n\n" .
-			             "Please make sure the \n\n" . $this->getFormDir() . "\n\ndirectory actually exists!\n\n");
+			             "Please make sure the \n\n" . $this->formDir . "\n\ndirectory actually exists!\n\n");
 		}
 	}
 
-	/**
-	 * Get a full list of the user provided arguments
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
-			array('name', InputArgument::REQUIRED, 'Name of the form to generate.'),
-		);
-	}
 
-	/**
-	 * Get a full list of the user provided options
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return array(
-			array('dir', null, InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'),
-			array('namespace', null, InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null),
-			array('rules', null, InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null),
-		);
-	}
+    /**
+     * Get a full list of the user provided arguments
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['name', InputArgument::REQUIRED, 'Name of the form to generate.'],
+        ];
+    }
 
-	/**
-	 * Set all of the form attributes to disk or persist in another way
-	 */
-	private function setFormAttributes()
-	{
-		$this->setClassName();
 
-		$this->setNamespace();
+    /**
+     * Get a full list of the user provided options
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['dir', null, InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
+            ['namespace', null, InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
+            ['rules', null, InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null],
+        ];
+    }
 
-		$this->setFullFormPath();
-
-		$this->setRulesString();
-	}
-
-	/**
-	 * Attempt to build the form
-	 *
-	 * @return string
-	 */
-	private function attemptToBuildForm()
-	{
-		$this->buildRules();
-
-		$buildResult = $this->buildOutput();
-
-		return $buildResult;
-	}
 
 }

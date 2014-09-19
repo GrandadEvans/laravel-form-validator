@@ -1,5 +1,7 @@
 <?php namespace Grandadevans\GenerateForm\HelperClasses;
 
+use Illuminate\Support\Facades\Config;
+
 class Helpers
 {
 
@@ -42,16 +44,22 @@ class Helpers
     /**
      * Sanitize any public path that gets sent to us
      *
+     * Only sanitize the path if debug is set to false.
+     * That way when developers are running tests the ../../../ strings they use to go back up the path won't
+     * return an error
+     *
      * @param $path string
      *
      * @return      string
      */
     public static function sanitizePath($path)
     {
-        $one = self::stripDoubleDirectorySeparators($path);
-        $two = self::stripExtraParentDirectorySelectors($one);
+        if (false === Config::get('app.debug')) {
+            $path = self::stripDoubleDirectorySeparators($path);
+            $path = self::stripExtraParentDirectorySelectors($path);
+        }
 
-        return $two;
+        return $path;
     }
 
     public static function convertNamespaceToPath($path)
