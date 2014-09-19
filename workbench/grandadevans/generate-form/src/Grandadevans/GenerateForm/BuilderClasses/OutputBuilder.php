@@ -1,6 +1,5 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
-use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Mustache_Engine;
 use \ClassPreloader\Command;
 
@@ -34,7 +33,7 @@ class OutputBuilder {
      * @param null   $namespace
      * @param string $formPath
      */
-    public function __construct($rules, $className, $namespace = null, $formPath)
+    public function __construct(Filesystem $file, $rules, $className, $namespace = null, $formPath)
     {
         $this->setMustache();
 
