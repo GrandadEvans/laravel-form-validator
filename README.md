@@ -2,10 +2,46 @@
 
 [![Build Status](https://travis-ci.org/GrandadEvans/generate-forms.svg?branch=master)](https://travis-ci.org/GrandadEvans/generate-forms)
 
+## Contents
+ * [Introduction](https://github.com/GrandadEvans/generate-forms/tree/master#introduction)
+ * [Installation](https://github.com/GrandadEvans/generate-forms/tree/master#installation)
+ * [Usage](https://github.com/GrandadEvans/generate-forms/tree/master#usage)
+ * [Example](https://github.com/GrandadEvans/generate-forms/tree/master#example)
+ 
+## Introduction
+After using [Jeffrey Way](https://github.com/JeffreyWay)'s [Generator](https://github.com/JeffreyWay/Laravel-Generators) and his [Validator](https://github.com/laracasts/Validation) package for a while now I got fed up of copying and pasting the contents of the form validation files so thought I'd create my own version.
+
+### What will this do?
+This package will create a form containing a list or rules for the validation package to validate.
+
+### Why not just folk the generators package?
+Well I still only have 3 or 4 clients as a Freelance Web Developer and this gives me the perfect ground to show my coding skills off. That way when people ask me if I have any work I can show them it doesn't seem like I'm making excuses when I mention "white labelling" and "confidentiality agreements".
+
+## Installation
+Install this package through [Composer](https://getcomposer.org).
+
+```js
+"require-dev": {
+    "grandadevans:laravel-form-validator": "~0.1.0"
+}
+```
+Then include the service provider in your app/config/app.php by adding it to your "providers" array:
+
+```php
+/*
+ * app/config/app.php
+ */
+'providers' => array(
+    #########
+    'Grandadevans\GenerateForm\GenerateFormServiceProvider'
+);
+```
+
+
 ## Usage
 From the command line you can call the package with
 
-```php
+```bash
 php artisan generate:form
 ```
 
@@ -30,29 +66,14 @@ The rules string should be made up of the following
 **Example**: If I wanted to validate a typical login form containing a username and password field I would set the rules option as follows
 
 ```bash
-php artisan generate:form Foo --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
 ```
 
-Each condition that is entered (required, confirmed etc) will be validated against the [available conditions in Laravel docs](http://laravel.com/docs/validation#available-validation-rules).
+Each condition that is entered (*required*, *confirmed* etc) will be validated against the [available conditions in Laravel docs](http://laravel.com/docs/validation#available-validation-rules).
 
 Once the command is executed a Form is generated and placed in the specified directory (or the default app/Forms).
-This package relies on the [Laracasts\Validation](https://github.com/laracasts/Validation) package. To use it:
-1. Run the command as above
-2. Include the service provider in your app/config/app.php by adding it to your "providers" array:
 
-
-```php
-//app/config/app.php
-
-'providers' => array(
-
-    #########
-
-    'Grandadevans\GenerateForm\GenerateFormServiceProvider'
-);
-```
-
-3. Inject and Type hint the generated form into your controller (or where you wish to do your validation)
+Inject and Type hint the generated form into your controller (or where you wish to do your validation)
 
 ```php
 protected $loginForm;
@@ -63,18 +84,45 @@ public function __construct(LoginForm $loginForm)
 }
 ```
 
-4. Try to validate the input with
+#### Try to validate the input with
 
 ```php
-$this->loginForm->validate(Input::only(['username','password']);
+$this->loginForm->validate(Input::only(['username','password']));
 ```
 
-## Installation
+## Example
+Let's say I want to create the above mentioned login form
 
-Install this package through [Composer](https://getcomposer.org).
+### Step 1: Create the form
+```bash
+php artisan generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
+```
 
-```js
-"require-dev": {
-    "grandadevans:laravel-form-validator": "~0.1.0"
+I can then view the form at `app/Forms/FooForm.php`.
+
+```php
+
+<?php
+
+use laracasts\validation;
+
+/**
+ *
+ * Class Foo
+ *
+ */
+class Foo extends FormValidator {
+
+    /**
+     * The array of rules to be processed
+     *
+     * @var array
+     */
+    protected $rules=[
+        'username' => 'required|between(6,50)|alpha',
+        'password' => 'required||min(8)',
+    ];
 }
 ```
+
+### Step 2: Inject the form into your controller/model
