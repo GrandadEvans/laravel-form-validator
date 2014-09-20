@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * Class FormGeneratorCommand
  */
-class FormGeneratorCommand extends Command {
+class FormGeneratorCommand extends \Command {
 
 	/**
 	 * The console command name.
