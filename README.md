@@ -3,10 +3,10 @@
 [![Build Status](https://travis-ci.org/GrandadEvans/generate-forms.svg?branch=master)](https://travis-ci.org/GrandadEvans/generate-forms)
 
 ## Contents
- * [Introduction](https://github.com/GrandadEvans/generate-forms/tree/master#introduction)
- * [Installation](https://github.com/GrandadEvans/generate-forms/tree/master#installation)
- * [Usage](https://github.com/GrandadEvans/generate-forms/tree/master#usage)
- * [Example](https://github.com/GrandadEvans/generate-forms/tree/master#example)
+ * [Introduction](#introduction)
+ * [Installation](#installation)
+ * [Usage](#usage)
+ * [Example](#example)
  
 ## Introduction
 After using [Jeffrey Way](https://github.com/JeffreyWay)'s [Generator](https://github.com/JeffreyWay/Laravel-Generators) and his [Validator](https://github.com/laracasts/Validation) package for a while now I got fed up of copying and pasting the contents of the form validation files so thought I'd create my own version.
@@ -36,7 +36,23 @@ Then include the service provider in your app/config/app.php by adding it to you
     'Grandadevans\GenerateForm\GenerateFormServiceProvider'
 );
 ```
-
+Don't forget that composer.json will need to know where to autoload the form from. So if the forms are kept in the default `app/Forms` directory you could just add it to the classMap
+```php
+/*
+ * composer.json
+ */
+"autoload": {
+	"classmap": [
+		"app/commands",
+		"app/controllers",
+		"app/models",
+		"app/database/migrations",
+		"app/database/seeds",
+        
+        "app/Forms"
+    ]
+}
+```
 
 ## Usage
 From the command line you can call the package with
@@ -95,7 +111,7 @@ Let's say I want to create the above mentioned login form
 
 ### Step 1: Create the form
 ```bash
-php artisan generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan generate:form Login --rules="username:required:between(6,50):alpha | password:required:min(8)"
 ```
 
 I can then view the form at `app/Forms/FooForm.php`.
@@ -108,10 +124,10 @@ use laracasts\validation;
 
 /**
  *
- * Class Foo
+ * Class Login
  *
  */
-class Foo extends FormValidator {
+class Login extends FormValidator {
 
     /**
      * The array of rules to be processed
@@ -126,3 +142,51 @@ class Foo extends FormValidator {
 ```
 
 ### Step 2: Inject the form into your controller/model
+
+```php
+/*
+ * app/controllers/LoginController.php
+ */
+public function LoginController extends BaseController
+{
+
+    /**
+     * @var LoginForm
+     */
+    protected $loginForm;
+    
+    /**
+     * @param LoginForm $loginForm
+     */
+    public function __construct(LoginForm $loginForm)
+    {
+        $this->loginForm = $loginForm;
+    }
+```
+
+### Step 3: Validate the input
+```php
+    
+    /**
+     * Validate the login details
+     */
+    public function validateForm()
+    {
+        $input = Input([
+            'username',
+            'password'
+        ]);
+        
+        try {
+            $this->loginForm->validate($input);
+        }
+        
+        catch(\Laracasts\Validation\FormValidationException $e) {
+			return Redirect::back()->withInput()->withErrors($e->getErrors());
+	}
+
+        
+    // Do something with the data
+    
+}
+```
