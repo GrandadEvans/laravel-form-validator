@@ -1,5 +1,8 @@
 suites:
-  Grandadevans
-  namespace: Grandadevans
-  spec_path: /home/john/www/projects/generate-form/workbench/grandadevans/generate-form/tests/spec
-  src_path:  /home/john/www/projects/generate-form/workbench/grandadevans/generate-form/src
+  Grandadevans:
+    spec_path: tests
+    src_path:  src/Grandadevans/GenerateForm
+formatter.name: pretty
+
+extensions:
+    - PhpSpec\Extension\CodeCoverageExtension
