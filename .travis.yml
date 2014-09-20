@@ -10,4 +10,4 @@ install:
 
 script:
   - ./vendor/bin/phpspec run
-  - ./vendor/bin/behat --format=pretty
+#  - ./vendor/bin/behat --format=pretty
