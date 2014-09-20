@@ -1,6 +1,6 @@
 {
     "name": "grandadevans/generate-form",
-    "description": "",
+    "description": "A package that will generate validation forms for Laravel 4.",
     "authors": [
         {
             "name": "John Evans",
