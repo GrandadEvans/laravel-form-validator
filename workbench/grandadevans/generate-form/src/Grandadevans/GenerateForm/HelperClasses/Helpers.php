@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Config;
 
+/**
+ * Class Helpers
+ *
+ * @package Grandadevans\GenerateForm\HelperClasses
+ */
 class Helpers
 {
-
     /**
      * Strip any extra directory separators from any paths such as home//john
      * 
@@ -14,6 +18,7 @@ class Helpers
      */
     public static function stripDoubleDirectorySeparators($in)
     {
+
 
         while(strstr($in, DS.DS)) {
             $in = str_replace(DS.DS, DS, $in);
@@ -62,7 +67,14 @@ class Helpers
         return $path;
     }
 
-    public static function convertNamespaceToPath($path)
+	/**
+	 * Convert Namespaces to paths
+	 *
+	 * @param string    $path
+	 *
+	 * @return string
+	 */
+	public static function convertNamespaceToPath($path)
     {
         return str_replace('\\', DS, $path);
     }
