@@ -41,13 +41,15 @@ class HelpersSpec extends ObjectBehavior
 	{
 		$this->convertNamespaceToPath('\\Grandadevans\\GenerateForm\\HelperClasses\\')->shouldBeEqualTo('/Grandadevans/GenerateForm/HelperClasses/');
 	}
-
-
-	/**
-	 * Test sanitizePath
-	 */
-	public function it_doesnt_sanitize_when_in_debug_config_mode()
-	{
+//
+//
+//	/**
+//	 * Test sanitizePath
+//	 */
+//	public function it_doesnt_sanitize_when_in_debug_config_mode(Config $config)
+//	{
+//		$config->get('app.debug')->willReturn(false);
+//
 //		$this->sanitizePath('\\GrandadEvans/../Grandadevans\\GenerateForm')->shouldBeEquaalTo('/Grandadevans/..//GenerateForm');
-	}
+//	}
 }

@@ -9,12 +9,17 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "illuminate/support": "4.2.*",
+	    "codeception/codeception": "~2.0.0",
+	    "phpspec/phpspec": "~2.0.0",
+	    "laracasts/validation": "~1.2.0",
+	    "mustache/mustache": "v2.7.0",
+	    "henrikbjorn/phpspec-code-coverage": "~0.2"
     },
     "autoload": {
         "psr-0": {
             "Grandadevans\\GenerateForm": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }
