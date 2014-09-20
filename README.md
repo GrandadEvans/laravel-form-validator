@@ -7,15 +7,16 @@
  * [Installation](#installation)
  * [Usage](#usage)
  * [Example](#example)
+ * [Tests](#tests)
  
 ## Introduction
 After using [Jeffrey Way](https://github.com/JeffreyWay)'s [Generator](https://github.com/JeffreyWay/Laravel-Generators) and his [Validator](https://github.com/laracasts/Validation) package for a while now I got fed up of copying and pasting the contents of the form validation files so thought I'd create my own version.
 
 ### What will this do?
-This package will create a form containing a list or rules for the validation package to validate.
+This package will create a form validation file containing a list or rules for the validation package to validate.
 
 ### Why not just folk the generators package?
-Well I still only have 3 or 4 clients as a Freelance Web Developer and this gives me the perfect ground to show my coding skills off. That way when people ask me if I have any work I can show them it doesn't seem like I'm making excuses when I mention "white labelling" and "confidentiality agreements".
+Well I still only have 3 or 4 clients as a Freelance Web Developer and this gives me the perfect opportunity to show my coding skills off. That way when people ask me if I have any work I can show them it doesn't seem like I'm making excuses when I mention "white label" and "non disclosure agreements".
 
 ## Installation
 Install this package through [Composer](https://getcomposer.org).
@@ -67,7 +68,7 @@ From the root directory of your Laravel installation.
 There is only one required argument and that is the **name** of the form
 
 ### Options
- * **--dir**       This is the directory in which the form will be saved to *(defaults to app/Forms)*. Please make sure that the directory already exists.
+ * **--dir**       This is the directory in which the form will be saved to *(defaults to app/Forms)*. Please make sure that the directory exists before executing the command.
  * **--rules**     This is a string representation of the rules to be used *(see below).*
  * **--namespace** This is the namespace that will be given to the Form.
 
@@ -82,7 +83,7 @@ The rules string should be made up of the following
 **Example**: If I wanted to validate a typical login form containing a username and password field I would set the rules option as follows
 
 ```bash
-php artisan generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan Login generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
 ```
 
 Each condition that is entered (*required*, *confirmed* etc) will be validated against the [available conditions in Laravel docs](http://laravel.com/docs/validation#available-validation-rules).
@@ -190,3 +191,12 @@ public function LoginController extends BaseController
     
 }
 ```
+
+## Tests
+
+During the construction of this package I have carried out testing with
+
+ * PHPSpec
+ * Codeception
+ 
+I also have travis monitoring the condition of the build for failures and you can check on it's progress by [visiting it's Travis CI page](https://travis-ci.org/GrandadEvans/laravel-form-validator)
