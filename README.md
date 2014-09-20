@@ -1,6 +1,6 @@
 # Laravel Form Validator
 
-[![Build Status](https://travis-ci.org/GrandadEvans/generate-forms.svg?branch=master)](https://travis-ci.org/GrandadEvans/generate-forms)
+[![Build Status](https://travis-ci.org/GrandadEvans/laravel-form-validator.svg?branch=master)](https://travis-ci.org/GrandadEvans/laravel-form-validator)
 
 ## Contents
  * [Introduction](#introduction)
