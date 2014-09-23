@@ -15,11 +15,6 @@ use Mockery as m;
 class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
 {
 
-	public function __construct()
-	{
-
-	}
-
 	public function tearDown()
 	{
 		m::close();
@@ -34,19 +29,8 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
         $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
 	    $formGenerator->shouldReceive('generate')->andReturn(true);
 
-	    $attributeHandler = m::mock('Grandadevans\GenerateForm\Handlers\AttributeHandler');
-
-	    $pathHandler = m::mock('Grandadevans\GenerateForm\Handlers\PathHandler');
-
-	    $ruleBuilder = m::mock('Grandadevans\GenerateForm\BuilderClasses\RuleBuilder');
-
 	    // Act
-	    $tester = new CommandTester(new FormGeneratorCommand(
-		                                $attributeHandler,
-		                                $pathHandler,
-		                                $ruleBuilder,
-		                                $formGenerator
-	                                ));
+	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator));
         $tester->execute(['name' => 'Foo']);
 
         // Assert
@@ -58,26 +42,15 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
      */
     public function testTheConsoleCommandReturnswithError()
     {
-	    // Arrange
-	    $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
-	    $formGenerator->shouldReceive('generate')->andReturn(false);
+        // Arrange
+        $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
+        $formGenerator->shouldReceive('generate')->andReturn(true);
 
-	    $attributeHandler = m::mock('Grandadevans\GenerateForm\Handlers\AttributeHandler');
+        // Act
+        $tester = new CommandTester(new FormGeneratorCommand($formGenerator));
+        $tester->execute(['name' => 'Foo']);
 
-	    $pathHandler = m::mock('Grandadevans\GenerateForm\Handlers\PathHandler');
-
-	    $ruleBuilder = m::mock('Grandadevans\GenerateForm\BuilderClasses\RuleBuilder');
-
-	    // Act
-	    $tester = new CommandTester(new FormGeneratorCommand(
-		                                $attributeHandler,
-		                                $pathHandler,
-		                                $ruleBuilder,
-		                                $formGenerator
-	                                ));
-	    $tester->execute(['name' => 'Foo']);
-
-	    // Assert
-        $this->assertEquals(trim($tester->getDisplay()), 'The form could not be generated');
+        // Assert
+        $this->assertEquals(trim($tester->getDisplay()), 'Success!');
     }
 }
