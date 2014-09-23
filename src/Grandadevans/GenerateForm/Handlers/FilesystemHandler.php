@@ -1,17 +1,13 @@
 <?php namespace Grandadevans\GenerateForm\Handlers;
 
 
-class PathHandler
+use Grandadevans\GenerateForm\Interfaces\PathInterface;
+
+class FilesystemHandler implements PathInterface
 {
 
-	private $command;
+    public $fullPath;
 
-	public function __construct()
-	{
-		if (!defined('DS')) {
-			define('DS', DIRECTORY_SEPARATOR);
-		}
-	}
 
 	/**
 	 * Strip any extra directory separators from any paths such as home//john
@@ -87,9 +83,19 @@ class PathHandler
 	/**
 	 * Set the forms full path to a property
 	 */
-	public function getFullFormPath()
+	public function setFullPath(array $pathDetails)
 	{
 		return $this->command->formDir . DS . $this->command->className . "Form.php";
+
+//		$this->fullFormPath = $this->sanitizePath($fullPath);
+	}
+
+	/**
+	 * Set the forms full path to a property
+	 */
+	public function getFullPath()
+	{
+		return $this->fullPath;
 
 //		$this->fullFormPath = $this->sanitizePath($fullPath);
 	}

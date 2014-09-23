@@ -2,6 +2,7 @@
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 
@@ -16,25 +17,31 @@ class GenerateFormServiceProvider extends ServiceProvider {
 
     public function register()
     {
+        $this->app->bind(
+            'Grandadevans\GenerateForm\Interfaces\PathInterface',
+            'Grandadevans\GenerateForm\Handlers\FilesystemHandler');
+
+        $this->app->make('Grandadevans\GenerateForm\Interfaces\PathInterface');
 
     }
 
     public function boot()
     {
+        // Define the Directory separator as a constant
+        if (!defined('DS')) {
+            define('DS', DIRECTORY_SEPARATOR);
+        }
 
+
+
+
+        // Bind the command
         $this->app->bind('generate:form', function($app) {
-
-	        $attributeHandler = new \Grandadevans\GenerateForm\Handlers\AttributeHandler;
-	        $pathHandler =      new \Grandadevans\GenerateForm\Handlers\PathHandler;
-	        $ruleBuilder =      new \Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
-	        $formGenerator =    new \Grandadevans\GenerateForm\FormGenerator\FormGenerator;
-	        return new FormGeneratorCommand(
-		        $attributeHandler,
-		        $pathHandler,
-		        $ruleBuilder,
-		        $formGenerator
-	        );
+            // Tell Laravel which implementation of PathInterface we want to use
+	        $formGenerator = new FormGenerator;
+	        return new FormGeneratorCommand($formGenerator);
         });
+
         $this->commands('generate:form');
     }
 
