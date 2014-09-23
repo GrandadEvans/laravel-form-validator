@@ -4,6 +4,14 @@ clear;
 
 echo "
 
+PHPUnit
+
+";
+
+phpunit;
+
+echo "
+
 PHPSec
 
 ";
