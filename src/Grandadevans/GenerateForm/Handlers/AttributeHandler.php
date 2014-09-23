@@ -22,4 +22,9 @@ class AttributeHandler
         dd($this);
 	}
 
+    public function get($name)
+    {
+        return $this->{$name};
+    }
+
 } 

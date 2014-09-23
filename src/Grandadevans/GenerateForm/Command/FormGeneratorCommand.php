@@ -1,9 +1,9 @@
 <?php namespace Grandadevans\GenerateForm\Command;
 
+use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
-use Grandadevans\GenerateForm\Handlers\AttributeHandler;
-use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Interfaces\PathInterface;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,33 +31,16 @@ class FormGeneratorCommand extends Command {
      * @var FormGenerator
      */
     private $formGenerator;
-	/**
-	 * @var AttributeHandler
-	 */
-	private $attributeHandler;
 
 
 	/**
 	 * Create a new command instance.
 	 *
-	 * @todo test?
-	 *
-	 * @param AttributeHandler $attributeHandler
-	 * @param PathHandler      $pathHandler
-	 * @param RuleBuilder      $ruleBuilder
 	 * @param FormGenerator    $formGenerator
 	 */
-	public function __construct(
-		AttributeHandler $attributeHandler,
-		PathHandler $pathHandler,
-		RuleBuilder $ruleBuilder,
-		FormGenerator $formGenerator) {
+	public function __construct(FormGenerator $formGenerator) {
         parent::__construct();
         $this->formGenerator = $formGenerator;
-		$this->attributeHandler = $attributeHandler;
-		$this->pathHandler = $pathHandler;
-		$this->ruleBuilder = $ruleBuilder;
-		$this->formGenerator = $formGenerator;
 	}
 
 
@@ -71,10 +54,10 @@ class FormGeneratorCommand extends Command {
 		$details = $this->getCommandDetails();
 
 		$results = $this->formGenerator->generate(
-	        $this->attributeHandler,
-	        $this->pathHandler,
-	        $this->ruleBuilder,
-	        $details
+            new RuleBuilder,
+            new PathInterface,
+            new OutputBuilder,
+            $details
         );
 
 		$this->provideFeedback($results);
@@ -102,9 +85,9 @@ class FormGeneratorCommand extends Command {
     protected function getCommandDetails()
     {
         return [
-            'name'      => $this->argument('name'),
+            'className'      => $this->argument('name'),
             'dir'       => $this->option('dir'),
-            'rules'     => $this->option('rules'),
+            'rulesString'     => $this->option('rules'),
             'namespace' => $this->option('namespace')
         ];
     }

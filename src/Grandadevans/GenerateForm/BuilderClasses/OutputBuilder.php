@@ -33,7 +33,7 @@ class OutputBuilder {
      * @param null   $namespace
      * @param string $formPath
      */
-    public function __construct($rules, $className, $namespace = null, $formPath)
+    public function build($rules, $className, $namespace = null, $formPath)
     {
         $this->setMustache();
 
@@ -46,6 +46,13 @@ class OutputBuilder {
         if ( ! $this->writeTemplate($renderedOutput, $formPath)) {
 	        $this->returnStatus = 'fail';
         }
+    }
+
+    public function getReturnStatus()
+    {
+        return [
+            200
+        ];
     }
 
 

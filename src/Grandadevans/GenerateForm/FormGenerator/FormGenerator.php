@@ -2,9 +2,7 @@
 
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
-use Grandadevans\GenerateForm\Handlers\AttributeHandler;
-use Grandadevans\GenerateForm\Handlers\PathHandler;
-use Grandadevans\GenerateForm\HelperClasses\Helpers;
+use Grandadevans\GenerateForm\Handlers\PathInterface;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,20 +11,6 @@ use Symfony\Component\Console\Input\InputOption;
  * Class FormGenerator
  */
 class FormGenerator {
-
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'generate:form';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generate a new validation form';
 
     /**
      * The full path of the finished form
@@ -61,19 +45,20 @@ class FormGenerator {
      *
      * @var string
      */
-    protected $formDir;
+    protected $dir;
     /**
-     * @var PathHandler
+     * @var PathInterface
      */
     private $pathHandler;
     /**
      * @var RuleBuilder
      */
     private $ruleBuilder;
+
     /**
-     * @var AttributeHandler
+     * @var OutputBuilder
      */
-    private $attributeHandler;
+    private $outputBuilder;
 
 	/**
 	 * Form Details
@@ -81,70 +66,42 @@ class FormGenerator {
 	private $details;
 
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @param AttributeHandler $attributeHandler
-	 * @param PathHandler      $pathHandler
-	 * @param RuleBuilder      $ruleBuilder
-	 * @param array            $details
-	 *
-	 * @return bool
-	 */
-    public function generate(
-	    AttributeHandler $attributeHandler,
-	    PathHandler $pathHandler,
-	    RuleBuilder $ruleBuilder,
-	    array $details
-    )
+    /**
+     * Create a new command instance.
+     *
+     * @param RuleBuilder   $ruleBuilder
+     * @param PathInterface   $pathHandler
+     * @param OutputBuilder $outputBuilder
+     * @param array         $details
+     *
+     * @return array
+     */
+    public function generate(RuleBuilder $ruleBuilder, PathInterface $pathHandler, OutputBuilder $outputBuilder, array $details)
     {
-	    $this->attributeHandler = $attributeHandler;
 	    $this->pathHandler = $pathHandler;
 	    $this->ruleBuilder = $ruleBuilder;
+        $this->outputBuilder = $outputBuilder;
 	    $this->details = $details;
 
-	    return $details;
-    }
+        $this->setFormAttributes($details);
 
-    public function setDependancies(PathHandler $pathHandler, RuleBuilder $ruleBuilder, AttributeHandler $attributeHandler)
-    {
-
-        $this->pathHandler = $pathHandler;
-        $this->ruleBuilder = $ruleBuilder;
-        $this->attributeHandler = $attributeHandler;
-
-        parent::__construct();
-    }
-
-
-	/**
-	 *
-	 */
-	public function fire()
-    {
-	    $this->setDependancies();
-        $this->setFormAttributes();
         $buildResult = $this->attemptToBuildForm();
 
-        $this->provideFeedback($buildResult);
+        return $buildResult;
     }
 
 
-	/**
-	 * Set all of the form attributes to disk or persist in another way
-	 *
-	 * @todo test?
-	 *
-	 * @param $details
-	 */
+    /**
+     * Set all of the form attributes to disk or persist in another way
+     *
+     * @param $details
+     */
     private function setFormAttributes($details)
     {
-        new $this->attributeHandler([
-                                        'className' => $details->argument('name'),
-                                        'dir' => $details->option('dir'),
-                                        'rules' => $details->option('rules'),
-                                        'namespace' => $details->option('namespace')
-                                    ]);
+        $this->dir         = $details['dir'];
+        $this->className   = $details['className'];
+        $this->namespace   = $details['namespace'];
+        $this->rulesString = $details['rulesString'];
     }
 
 
@@ -157,9 +114,9 @@ class FormGenerator {
      */
     private function attemptToBuildForm()
     {
-        $ruleBuilder = $this->instantiateRuleBuilder($this->rulesString);
+        $rulesArray = $this->getRulesArrayFromRulesString($this->rulesString);
 
-        return $this->buildOutput($ruleBuilder->getReformattedRules());
+        return $this->buildOutput($rulesArray);
     }
 
 
@@ -170,11 +127,9 @@ class FormGenerator {
      *
      * @return mixed
      */
-    public function instantiateRuleBuilder($rulesString)
+    public function getRulesArrayFromRulesString($rulesString)
     {
-        $rb = new $this->ruleBuilder;
-        var_dump($rb);
-        $rb->buildRules($rulesString);
+        return $this->ruleBuilder->buildRules($rulesString);
     }
 
 
@@ -187,24 +142,15 @@ class FormGenerator {
      */
     protected function buildOutput($processedRules)
     {
-        $ob = new OutputBuilder(
+        $this->outputBuilder->build(
             $processedRules,
             $this->className,
             $this->namespace,
             $this->getFullFormPath()
         );
 
-        return $ob->returnStatus;
+        return $this->OutputBuilder->getReturnStatus;
 
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function pathHandler()
-    {
-        return new $this->pathHandler($this);
     }
 
 
@@ -224,34 +170,5 @@ class FormGenerator {
                          "Please make sure the \n\n" . $this->formDir . "\n\ndirectory actually exists!\n\n");
         }
     }
-
-
-    /**
-     * Get a full list of the user provided arguments
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['name', InputArgument::REQUIRED, 'Name of the form to generate.'],
-        ];
-    }
-
-
-    /**
-     * Get a full list of the user provided options
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['dir', null, InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
-            ['namespace', null, InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
-            ['rules', null, InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null],
-        ];
-    }
-
 
 }
