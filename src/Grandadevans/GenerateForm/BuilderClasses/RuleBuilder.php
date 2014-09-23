@@ -71,17 +71,15 @@ class RuleBuilder
 
 
 
-    /**
-     * @param $rules
-     */
-    public function __construct($rules)
-    {
-	    // Break the incoming rules string into seperate rules
-        $this->individualRules = $this->separateIndividualRules($rules);
+	public function buildRules($rules)
+	{
+		// Break the incoming rules string into separate rules
+		$this->individualRules = $this->separateIndividualRules($rules);
 
-	    // Now process the individual rules
-        $this->processIndividualRules();
-    }
+		// Now process the individual rules
+		$this->processIndividualRules();
+
+	}
 
 
 	/**

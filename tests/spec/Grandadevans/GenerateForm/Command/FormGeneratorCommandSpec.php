@@ -2,8 +2,10 @@
 
 namespace Spec\Grandadevans\GenerateForm\Command;
 
+use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class FormGeneratorCommandSpec extends ObjectBehavior
 {

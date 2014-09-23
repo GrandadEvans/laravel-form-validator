@@ -12,10 +12,13 @@
 	    "laracasts/validation": "~1.2.0",
 	    "illuminate/support": "4.2.*",
 	    "illuminate/console": "4.2.*",
+	    "illuminate/config": "4.2.*",
 	    "mustache/mustache": "v2.7.0"
     },
 	"require-dev": {
 		"phpspec/phpspec": "~2.0.0",
+		"phpunit/phpunit": "4.2.6",
+		"mockery/mockery": "~0.9.0",
 		"codeception/codeception": "~2.0.0",
 		"henrikbjorn/phpspec-code-coverage": "~0.2"
 	},

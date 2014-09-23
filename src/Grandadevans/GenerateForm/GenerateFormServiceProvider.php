@@ -1,6 +1,7 @@
 <?php namespace Grandadevans\GenerateForm;
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
+use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 
@@ -13,21 +14,26 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-//        \Artisan::resolve('\Grandadevans\GenerateForm\Command\FormGeneratorCommand');
+    public function register()
+    {
 
     }
 
     public function boot()
     {
+
         $this->app->bind('generate:form', function($app) {
-            return new FormGeneratorCommand();
+
+	        $attributeHandler = new \Grandadevans\GenerateForm\Handlers\AttributeHandler;
+	        $pathHandler =      new \Grandadevans\GenerateForm\Handlers\PathHandler;
+	        $ruleBuilder =      new \Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
+	        $formGenerator =    new \Grandadevans\GenerateForm\FormGenerator\FormGenerator;
+	        return new FormGeneratorCommand(
+		        $attributeHandler,
+		        $pathHandler,
+		        $ruleBuilder,
+		        $formGenerator
+	        );
         });
         $this->commands('generate:form');
     }

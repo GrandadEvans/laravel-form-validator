@@ -1,8 +1,9 @@
 <?php namespace Grandadevans\GenerateForm\Command;
 
-use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
-use Grandadevans\GenerateForm\HelperClasses\Helpers;
+use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
+use Grandadevans\GenerateForm\Handlers\AttributeHandler;
+use Grandadevans\GenerateForm\Handlers\PathHandler;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,195 +27,87 @@ class FormGeneratorCommand extends Command {
 	 */
 	protected $description = 'Generate a new validation form';
 
+    /**
+     * @var FormGenerator
+     */
+    private $formGenerator;
 	/**
-	 * The full path of the finished form
-	 *
-	 * @var string
+	 * @var AttributeHandler
 	 */
-	protected $fullFormPath;
-
-	/**
-	 * The namespace as specified by the user
-	 *
-	 * @var string
-	 */
-	protected $namespace;
-
-	/**
-	 * The classname as specified by the user (or defaults to Form)
-	 *
-	 * @var string
-	 */
-	protected $className;
-
-	/**
-	 * The full rules string as specified by the user
-	 *
-	 * @var string
-	 */
-	protected $rulesString;
-
-	/**
-	 * The directory of the finished form
-	 *
-	 * @var string
-	 */
-	protected $formDir;
+	private $attributeHandler;
 
 
 	/**
 	 * Create a new command instance.
 	 *
 	 * @todo test?
+	 *
+	 * @param AttributeHandler $attributeHandler
+	 * @param PathHandler      $pathHandler
+	 * @param RuleBuilder      $ruleBuilder
+	 * @param FormGenerator    $formGenerator
 	 */
-	public function __construct()
-	{
-		// Define the directory separator for the OS used
-        define('DS', DIRECTORY_SEPARATOR);
-
-		parent::__construct();
+	public function __construct(
+		AttributeHandler $attributeHandler,
+		PathHandler $pathHandler,
+		RuleBuilder $ruleBuilder,
+		FormGenerator $formGenerator) {
+        parent::__construct();
+        $this->formGenerator = $formGenerator;
+		$this->attributeHandler = $attributeHandler;
+		$this->pathHandler = $pathHandler;
+		$this->ruleBuilder = $ruleBuilder;
+		$this->formGenerator = $formGenerator;
 	}
 
 
 	/**
 	 * Execute the console command.
 	 *
-	 * @todo test?
-	 *
-	 * @return mixed
-	 */
-	public function fire()
-	{
-		$this->setFormAttributes();
-
-		$buildResult = $this->attemptToBuildForm();
-
-		$this->provideFeedback($buildResult);
-	}
-
-
-    /**
-     * Set all of the form attributes to disk or persist in another way
-     *
-     * @todo test?
-     */
-    private function setFormAttributes()
-    {
-        $this->className   = $this->argument('name');
-
-        $this->formDir     = $this->option('dir');
-
-        $this->rulesString = $this->option('rules');
-
-        $this->namespace   = $this->option('namespace') ?: "";
-
-        $this->setFullFormPath();
-    }
-
-
-    /**
-     * Attempt to build the form
-     *
-     * @todo test?
-     *
-     * @return string
-     */
-    private function attemptToBuildForm()
-    {
-        $processedRules = $this->buildRules($this->rulesString);
-
-        $buildResult = $this->buildOutput($processedRules);
-
-        return $buildResult;
-    }
-
-
-    /**
-     * Process the rules (Method Tested by PHPSpec)
-     *
-     * @param $rulesString
-     *
      * @return mixed
      */
-    public function buildRules($rulesString)
+	public function fire()
 	{
-		$ruleBuilder          = new RuleBuilder($rulesString);
-		return $ruleBuilder->getReformattedRules();
-	}
+		$details = $this->getCommandDetails();
 
+		$results = $this->formGenerator->generate(
+	        $this->attributeHandler,
+	        $this->pathHandler,
+	        $this->ruleBuilder,
+	        $details
+        );
 
-    /**
-     * Build the output
-     *
-     * @param $processedRules
-     *
-     * @return string
-     */
-    protected function buildOutput($processedRules)
-	{
-		$ob = new OutputBuilder(
-			$processedRules,
-            $this->className,
-			$this->namespace,
-			$this->getFullFormPath()
-		);
-
-		return $ob->returnStatus;
-
+		$this->provideFeedback($results);
 	}
 
 
 	/**
-	 * Get the full form path
+	 * Let the user know the result of the form generation
 	 *
-	 * @return string
-	 */
-	public function getFullFormPath()
-	{
-		return $this->fullFormPath;
-	}
-
-
-	/**
-	 * Set the forms full path to a property
-	 */
-	protected function setFullFormPath()
-	{
-		// Set the paths
-        $fullPath = "";
-
-        // Check if the base path has been included in the sir option
-        if ( ! stristr($this->formDir, base_path()) && ! strstr($this->formDir, '../')) {
-            $fullPath = base_path() . DS;
-        }
-
-        $fullPath .= $this->formDir . DS . $this->className . "Form.php";
-
-		// Convert and sanitize
-		$convertNamespaceToPath = Helpers::convertNamespaceToPath($fullPath);
-		$sanitizePath           = Helpers::sanitizePath($convertNamespaceToPath);
-
-		// Set the object properties
-		$this->fullFormPath = $sanitizePath;
-	}
-
-
-	/**
-	 * Provide feedback to the user either way using the Laravel command->info method
-	 *
-	 * @param string    $result
+	 * @param $result
 	 */
 	protected function provideFeedback($result)
 	{
-		if ($result === 'pass') {
-			$this->info("Form Generated!");
-			$this->info("The Form has been written to \"" . $this->getFullFormPath() . "\"");
+		if (false !== $result) {
+			$this->info('Success!');
 		} else {
-			$this->error("The Form could not be written to \"" .
-			             $this->getFullFormPath() . "\"\n\n" .
-			             "Please make sure the \n\n" . $this->formDir . "\n\ndirectory actually exists!\n\n");
+			$this->error('The form could not be generated');
 		}
 	}
+
+
+    /**
+     * @return array
+     */
+    protected function getCommandDetails()
+    {
+        return [
+            'name'      => $this->argument('name'),
+            'dir'       => $this->option('dir'),
+            'rules'     => $this->option('rules'),
+            'namespace' => $this->option('namespace')
+        ];
+    }
 
 
     /**
