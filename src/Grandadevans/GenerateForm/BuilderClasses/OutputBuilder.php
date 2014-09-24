@@ -72,9 +72,7 @@ class OutputBuilder {
     {
         $contents = $this->getTemplateContents();
 
-        $renderedOutput = $this->mustache->render($contents, $args);
-
-        return $renderedOutput;
+        return $this->mustache->render($contents, $args);
     }
 
 
