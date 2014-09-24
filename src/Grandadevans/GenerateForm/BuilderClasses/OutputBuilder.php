@@ -13,7 +13,7 @@ class OutputBuilder {
     /**
      * @var string
      */
-    public $returnStatus = 'pass';
+    public $returnResult = 'pass';
 
 	/**
      * The instance of Mustache
@@ -21,6 +21,8 @@ class OutputBuilder {
      * @var object
      */
     public $mustache;
+
+    public $formPath;
 
 
 	/**
@@ -35,6 +37,8 @@ class OutputBuilder {
      */
     public function build($rules, $className, $namespace = null, $formPath)
     {
+        $this->formPath = $formPath;
+
         $this->setMustache();
 
 	    $renderedOutput = $this->renderTemplate([
@@ -44,13 +48,16 @@ class OutputBuilder {
         ]);
 
         if ( ! $this->writeTemplate($renderedOutput, $formPath)) {
-	        $this->returnStatus = 'fail';
+	        $this->returnResult = 'fail';
         }
     }
 
-    public function getReturnStatus()
+    public function getReturnDetails()
     {
-        return $this->returnStatus;
+        return [
+            'result' => $this->returnResult,
+            'fullFormPath' => $this->formPath
+            ];
     }
 
 

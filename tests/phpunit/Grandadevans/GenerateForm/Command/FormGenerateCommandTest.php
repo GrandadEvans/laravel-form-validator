@@ -35,7 +35,7 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
         $tester->execute(['name' => 'Foo']);
 
         // Assert
-        $this->assertEquals(trim($tester->getDisplay()), 'Form Generated!');
+        $this->assertContains('Form has been saved to', trim($tester->getDisplay()));
     }
 
     /**
@@ -52,6 +52,6 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
         $tester->execute(['name' => 'Foo']);
 
         // Assert
-        $this->assertEquals(trim($tester->getDisplay()), 'Form Generated!');
+        $this->assertContains('Form has been saved to', trim($tester->getDisplay()));
     }
 }

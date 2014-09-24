@@ -69,10 +69,12 @@ class FormGeneratorCommand extends Command {
 	 *
 	 * @param $result
 	 */
-	protected function provideFeedback($result)
+	protected function provideFeedback($resultDetails)
 	{
-		if ('fail' !== $result) {
-			$this->info('Form Generated!');
+		if ('fail' !== $resultDetails['result']) {
+			$this->info('Form has been saved to
+			' . $resultDetails['fullFormPath'] . '
+			');
 		} else {
 			$this->error('The form could not be generated');
 		}

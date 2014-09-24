@@ -153,7 +153,7 @@ class FormGenerator {
             $this->pathHandler->getFullPath($this->details)
         );
 
-        return $this->outputBuilder->getReturnStatus();
+        return $this->outputBuilder->getReturnDetails();
 
     }
 

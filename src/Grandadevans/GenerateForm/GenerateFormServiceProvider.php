@@ -18,9 +18,7 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	/**
 	 * Register the Service provider and the PathInterface binding
 	 */
-	public function register()
-    {
-    }
+	public function register(){}
 
     public function boot()
     {
@@ -32,9 +30,8 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	    // Bind the command
         $this->app->bind('generate:form', function($app) {
 
-            // Tell Laravel which implementation of PathInterface we want to use
-	        $formGenerator = new FormGenerator;
-	        return new FormGeneratorCommand($formGenerator);
+            $formGenerator = new FormGenerator;
+            return new FormGeneratorCommand($formGenerator);
         });
 
         $this->commands('generate:form');
