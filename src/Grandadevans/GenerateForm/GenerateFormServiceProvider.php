@@ -15,14 +15,11 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	 */
 	protected $defer = false;
 
-    public function register()
+	/**
+	 * Register the Service provider and the PathInterface binding
+	 */
+	public function register()
     {
-        $this->app->bind(
-            'Grandadevans\GenerateForm\Interfaces\PathInterface',
-            'Grandadevans\GenerateForm\Handlers\FilesystemHandler');
-
-        $this->app->make('Grandadevans\GenerateForm\Interfaces\PathInterface');
-
     }
 
     public function boot()
@@ -32,11 +29,9 @@ class GenerateFormServiceProvider extends ServiceProvider {
             define('DS', DIRECTORY_SEPARATOR);
         }
 
-
-
-
-        // Bind the command
+	    // Bind the command
         $this->app->bind('generate:form', function($app) {
+
             // Tell Laravel which implementation of PathInterface we want to use
 	        $formGenerator = new FormGenerator;
 	        return new FormGeneratorCommand($formGenerator);

@@ -3,6 +3,7 @@
 namespace Grandadevans\GenerateForm\Command;
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
+use Grandadevans\GenerateForm\Handlers\PathHandler;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Mockery as m;

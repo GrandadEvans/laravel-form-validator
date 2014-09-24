@@ -1,9 +1,6 @@
 <?php namespace Grandadevans\GenerateForm\Handlers;
 
-
-use Grandadevans\GenerateForm\Interfaces\PathInterface;
-
-class FilesystemHandler implements PathInterface
+class PathHandler
 {
 
     public $fullPath;

@@ -3,7 +3,7 @@
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
-use Grandadevans\GenerateForm\Interfaces\PathInterface;
+use Grandadevans\GenerateForm\Handlers\PathHandler;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,7 +55,7 @@ class FormGeneratorCommand extends Command {
 
 		$results = $this->formGenerator->generate(
             new RuleBuilder,
-            new PathInterface,
+            new PathHandler,
             new OutputBuilder,
             $details
         );
