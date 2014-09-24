@@ -73,10 +73,10 @@ class FormGeneratorCommand extends Command {
 	{
 		if ('fail' !== $resultDetails['result']) {
 			$this->info('Form has been saved to
-			' . $resultDetails['fullFormPath'] . '
-			');
+' . $resultDetails['fullFormPath']);
 		} else {
-			$this->error('The form could not be generated');
+			$this->error('The form could not be saved to:
+' . $resultDetails['fullFormPath']);
 		}
 	}
 
