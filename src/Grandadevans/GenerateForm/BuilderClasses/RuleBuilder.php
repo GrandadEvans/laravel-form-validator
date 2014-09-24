@@ -79,6 +79,8 @@ class RuleBuilder
 		// Now process the individual rules
 		$this->processIndividualRules();
 
+        return  $this->getCompletedRules();
+
 	}
 
 

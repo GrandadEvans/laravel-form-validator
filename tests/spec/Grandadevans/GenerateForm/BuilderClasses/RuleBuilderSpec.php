@@ -23,7 +23,7 @@ class RuleBuilderSpec extends ObjectBehavior
 	 */
     public function let()
     {
-        $this->beConstructedWith($this->rulesToPass);
+        $this->buildRules($this->rulesToPass);
     }
 
 

@@ -20,7 +20,7 @@ class OutputBuilder {
      *
      * @var object
      */
-    private  $mustache;
+    public $mustache;
 
 
 	/**
@@ -37,7 +37,7 @@ class OutputBuilder {
     {
         $this->setMustache();
 
-        $renderedOutput = $this->renderTemplate([
+	    $renderedOutput = $this->renderTemplate([
             'rules'     => $rules,
             'namespace' => $namespace,
             'className' => $className
@@ -50,9 +50,7 @@ class OutputBuilder {
 
     public function getReturnStatus()
     {
-        return [
-            200
-        ];
+        return $this->returnStatus;
     }
 
 
@@ -87,6 +85,7 @@ class OutputBuilder {
         }
 
         catch(\Exception $e) {
+//            var_dump($e);
             return false;
         }
 

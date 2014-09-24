@@ -77,8 +77,11 @@ class FormGenerator {
      *
      * @return array
      */
-    public function generate(RuleBuilder $ruleBuilder, PathHandler $pathHandler, OutputBuilder $outputBuilder,
-                             array $details)
+    public function generate(
+        RuleBuilder $ruleBuilder,
+        PathHandler $pathHandler,
+        OutputBuilder $outputBuilder,
+        array $details)
     {
 	    $this->pathHandler = $pathHandler;
 	    $this->ruleBuilder = $ruleBuilder;
@@ -117,7 +120,6 @@ class FormGenerator {
     private function attemptToBuildForm()
     {
         $rulesArray = $this->getRulesArrayFromRulesString($this->rulesString);
-
         return $this->buildOutput($rulesArray);
     }
 
@@ -148,10 +150,10 @@ class FormGenerator {
             $processedRules,
             $this->className,
             $this->namespace,
-            $this->getFullFormPath()
+            $this->pathHandler->getFullPath($this->details)
         );
 
-        return $this->OutputBuilder->getReturnStatus;
+        return $this->outputBuilder->getReturnStatus();
 
     }
 
@@ -171,6 +173,11 @@ class FormGenerator {
                          $this->getFullFormPath() . "\"\n\n" .
                          "Please make sure the \n\n" . $this->formDir . "\n\ndirectory actually exists!\n\n");
         }
+    }
+
+    public function getFormPath($details)
+    {
+        return $this->pathHandler->getFullPath($details);
     }
 
 }

@@ -11,27 +11,27 @@ class OutputBuilderSpec extends ObjectBehavior
 {
    function let()
    {
-       $this->beConstructedWith([
-
+       $this->build(
            [
-               'name' => 'bar',
-               'conditions' => [
-                    'unique',
-                    'required',
-                    'min(5)',
-                ]
+               [
+                   'name' => 'bar',
+                   'conditions' => [
+                       'unique',
+                       'required',
+                       'min(5)',
+                   ]
+               ],
+               [
+                   'name' => 'qux',
+                   'conditions' => [
+                       'required',
+                       'email',
+                   ]
+               ]
            ],
-            [
-                'name' => 'qux',
-                'conditions' => [
-                    'required',
-                    'email',
-                ]
-            ]
-       ],
-       'FooBar',
-       'grandadevans',
-	       'tests/Forms/FooBarForm.php');
+           'FooBar',
+           'grandadevans',
+           'tests/Forms/FooBarForm.php');
    }
 
     function it_instantiates_a_new_instance_of_mustache()
