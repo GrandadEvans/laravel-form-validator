@@ -48,26 +48,37 @@ class PathHandler
 	 */
 	public function getFullPath($details)
 	{
-        $this->name = $details['className'] . "Form.php";
+		$name = $this->getFileName($details);
 
-        if ( ! empty($details['dir'])) {
-            $dir = $details['dir'];
-        } elseif ( ! empty($details['namespace'])) {
-            $dir = $this->convertNamespaceToPath($details['namespace']);
-        } else {
-            $dir = app_path() . '/Forms';
-        }
+		$dir = $this->getDirectory($details);
 
-        $this->dir = $dir;
-
-        $this->details = $details;
-
-        $fullPath = $this->stripDoubleDirectorySeparators($this->dir . DS . $this->name);
-
+        $fullPath = $this->stripDoubleDirectorySeparators($dir . DS . $name);
 
 		$this->fullFormPath = $fullPath;
 
-        return $this->fullFormPath;
+        return $fullPath;
+	}
+
+	/**
+	 * @param $details
+	 */
+	private function getFileName($details)
+	{
+		return $details['className'] . "Form.php";
+	}
+
+	private function getDirectory($details)
+	{
+
+		if ( ! empty($details['dir'])) {
+			$dir = $details['dir'];
+		} elseif ( ! empty($details['namespace'])) {
+			$dir = $this->convertNamespaceToPath($details['namespace']);
+		} else {
+			$dir = app_path() . '/Forms';
+		}
+
+		return $dir;
 	}
 
 
