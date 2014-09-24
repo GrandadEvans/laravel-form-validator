@@ -4,6 +4,7 @@ use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -62,6 +63,11 @@ class FormGenerator {
     private $outputBuilder;
 
 	/**
+	 * @var Filesystem
+	 */
+	private $filesystem;
+
+	/**
 	 * Form Details
 	 */
 	private $details;
@@ -73,6 +79,7 @@ class FormGenerator {
      * @param RuleBuilder   $ruleBuilder
      * @param PathHandler   $pathHandler
      * @param OutputBuilder $outputBuilder
+     * @param Filesystem    $filesystem
      * @param array         $details
      *
      * @return array
@@ -81,12 +88,26 @@ class FormGenerator {
         RuleBuilder $ruleBuilder,
         PathHandler $pathHandler,
         OutputBuilder $outputBuilder,
+        Filesystem    $filesystem,
         array $details)
     {
 	    $this->pathHandler = $pathHandler;
 	    $this->ruleBuilder = $ruleBuilder;
         $this->outputBuilder = $outputBuilder;
+	    $this->file          = $filesystem;
 	    $this->details = $details;
+
+	    // Get the path
+	    $this->fullFormPath = $this->pathHandler->getFullPath($filesystem, $details);
+
+	    if (false === $details['force']) {
+		    if (false !== $this->pathHandler->doesPathExist($this->fullFormPath)) {
+			    return [
+				    'fullFormPath' => $this->fullFormPath,
+				    'result'       => 'fileExists'
+			    ];
+		    }
+	    }
 
         $this->setFormAttributes($details);
 
@@ -150,7 +171,7 @@ class FormGenerator {
             $processedRules,
             $this->className,
             $this->namespace,
-            $this->pathHandler->getFullPath($this->details)
+            $this->pathHandler->getFullPath($this->file, $this->details)
         );
 
         return $this->outputBuilder->getReturnDetails();
