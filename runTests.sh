@@ -20,4 +20,4 @@ PHPSec
 echo "
 
 Codeception";
-../../../vendor/bin/codecept run acceptance -q
+../../../vendor/bin/codecept run acceptance --silent
