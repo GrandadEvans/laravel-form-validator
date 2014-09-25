@@ -3,29 +3,35 @@
 
 use \Exception;
 
+
 /**
+ * The Console Command for Grandadevans\laravel-form-validator
+ *
  * Class RuleBuilder
  *
- * @package grandadevans
+ * @author  john Evans<john@grandadevans.com>
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ * @package Grandadevans\laravel-form-validator
  */
 class RuleBuilder
 {
     /**
-     * @var string
-     */
-    public $rules;
-
-    /**
+     * An array of completed rules
+     *
      * @var array
      */
     public $completedRules;
 
     /**
+     * An array of individual rules
+     *
      * @var array
      */
     public $individualRules;
 
     /**
+     * An array of conditions allowed by the Laravel framework
+     *
      * @var array
      */
     protected $allowableConditions = [
@@ -70,26 +76,31 @@ class RuleBuilder
     ];
 
 
-
-	public function buildRules($rules)
+    /**
+     * Main method in charge of building up the rules
+     *
+     * @param   string  $rules
+     *
+     * @return  array
+     */
+    public function buildRules($rules)
 	{
-		// Break the incoming rules string into separate rules
 		$this->individualRules = $this->separateIndividualRules($rules);
 
-		// Now process the individual rules
 		$this->processIndividualRules();
 
-        return  $this->getCompletedRules();
+        $arrayOfCompletedRules =  $this->getCompletedRules();
 
+        return $arrayOfCompletedRules;
 	}
 
 
 	/**
-	 * Separate the incoming rules string into individual rules string strings and return an array
+	 * Separate the incoming rules string into individual rules strings and return an array
 	 *
-	 * @var string  $rules
+	 * @param   string  $rules
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function separateIndividualRules($rules = null)
 	{
@@ -119,7 +130,9 @@ class RuleBuilder
 	public function processIndividualRules()
     {
 	    $count = $this->individualRules;
+
 	    if (count($count) > 0) {
+
 	        foreach($this->individualRules as $rule) {
 		        $this->separateNextRuleIntoComponentRules($rule);
 	        }
@@ -138,7 +151,6 @@ class RuleBuilder
 	    // Separate the conditions
         $laravelConditions = preg_split("/ ?: ?/", $rule); // ['required', 'min']
 
-	    // The first one is the name oof the input field
         $inputName = $laravelConditions[0];
 
 	    // Make sure the condition is valid
@@ -151,17 +163,17 @@ class RuleBuilder
         array_shift($this->individualRules);
     }
 
+
     /**
-     * @param $unsanitisedCondition
+     * Accept an unclean condition and make sure it is the array of Laravel allowed conditions
      *
-     * @throws Exception
+     * @param   string  $unsanitizedCondition
+     *
+     * @throws  Exception
      */
-    public  function checkConditionExists($unsanitisedCondition)
+    public function checkConditionExists($unsanitizedCondition)
     {
-	    // I'm not interested in the stuff in brackets or after colons so separate them all out
-	    $colonLess = explode(':', $unsanitisedCondition);
-	    $bracketLess = explode('(', $colonLess[0]);
-	    $condition = $bracketLess[0];
+        $condition = $this->extractparameterLessCondition($unsanitizedCondition);
 
         if (in_array($condition, $this->allowableConditions)) {
             return true;
@@ -170,13 +182,17 @@ class RuleBuilder
         throw new Exception("\"{$condition}\" is not a valid laravel condition");
     }
 
+
     /**
-     * @param $inputConditions
-     * @param $inputName
+     * Add the new condition to the list of rules to be added to the file
+     *
+     * @param   string  $inputConditions
+     * @param   string  $inputName
      */
     protected function AddRuleToMainCompletedRules($inputConditions, $inputName)
     {
         if (!empty($inputConditions)) {
+
             $this->completedRules[] = [
                 'name' => "{$inputName}",
                 'conditions' => $inputConditions
@@ -199,9 +215,9 @@ class RuleBuilder
     /**
      * Here we make the valid conditions back into a string for the validation class
      *
-     * @param $laravelConditions
+     * @param   array   $laravelConditions
      *
-     * @return array
+     * @return  array
      */
     public function extractLaravelConditionsFromRule($laravelConditions)
     {
@@ -209,6 +225,7 @@ class RuleBuilder
 
         $i = 1;
         while (isset($laravelConditions[$i])) {
+
             $this->checkConditionExists($laravelConditions[$i]);
 
 	        // Separate each valid condition with a pipe
@@ -221,5 +238,23 @@ class RuleBuilder
         $validInputConditions = trim($validInputConditions, '|');
 
         return $validInputConditions;
+    }
+
+
+    /**
+     * Accept a string with parameter and strip it down to the raw condition eg between(3,6) --> between
+     *
+     * @param   string  $unsanitizedCondition
+     *
+     * @return  string
+     */
+    public function extractparameterLessCondition($unsanitizedCondition)
+    {
+        // I'm not interested in the stuff in brackets or after colons so separate them all out
+        $colonLess   = explode(':', $unsanitizedCondition);
+        $bracketLess = explode('(', $colonLess[0]);
+        $condition   = $bracketLess[0];
+
+        return $condition;
     }
 }
