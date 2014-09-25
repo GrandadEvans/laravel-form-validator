@@ -1,5 +1,5 @@
 {
-    "name": "grandadevans/generate-form",
+    "name": "grandadevans/laravel-form-validator",
     "description": "A package that will generate validation forms for Laravel 4.",
     "authors": [
         {
