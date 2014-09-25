@@ -21,7 +21,6 @@ server.php
 app/lang
 app/routes.php
 app/filters.php
-phpunit.xml
 app/models
 readme.md
 public
