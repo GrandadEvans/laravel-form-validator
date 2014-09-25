@@ -6,6 +6,16 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 
+/**
+ * Service Provider for Grandadevans\laravel-form-validator
+ *
+ * Class GenerateFormServiceProvider
+ *
+ * @author  john Evans<john@grandadevans.com>
+ * @licence
+ * @version 0.0.0
+ * @package Grandadevans\laravel-form-validator
+ */
 class GenerateFormServiceProvider extends ServiceProvider {
 
 	/**
@@ -20,6 +30,9 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	 */
 	public function register(){}
 
+    /**
+     *
+     */
     public function boot()
     {
         // Define the Directory separator as a constant
