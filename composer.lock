@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "974e40d3bd5e78eb0f6f9a7ac8c52179",
+    "hash": "13ca849a556af9a6017c742de2617d24",
     "packages": [
         {
             "name": "illuminate/config",
@@ -551,12 +551,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "138f869863783e57e9b3574ea09e7692f0d1aeb9"
+                "reference": "514ee50a5aaa46f8006bc5dc1c9a39d55202983d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/138f869863783e57e9b3574ea09e7692f0d1aeb9",
-                "reference": "138f869863783e57e9b3574ea09e7692f0d1aeb9",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/514ee50a5aaa46f8006bc5dc1c9a39d55202983d",
+                "reference": "514ee50a5aaa46f8006bc5dc1c9a39d55202983d",
                 "shasum": ""
             },
             "require": {
@@ -608,7 +608,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-09-18 17:34:22"
+            "time": "2014-09-25 04:48:09"
         },
         {
             "name": "guzzlehttp/streams",
