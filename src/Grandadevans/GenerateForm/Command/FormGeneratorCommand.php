@@ -59,7 +59,7 @@ class FormGeneratorCommand extends Command {
 		}
 		$results = $this->formGenerator->generate(
 			new RuleBuilder,
-			new PathHandler,    
+			new PathHandler,
 			new OutputBuilder,
 			new Filesystem,
 			$details
@@ -128,9 +128,9 @@ class FormGeneratorCommand extends Command {
 	protected function getOptions()
 	{
 		return [
-			['dir', null, InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
-			['namespace', null, InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
-			['rules', null, InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null],
+			['dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
+			['namespace', 's', InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
+			['rules', 'r', InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null],
 		];
 	}
 
