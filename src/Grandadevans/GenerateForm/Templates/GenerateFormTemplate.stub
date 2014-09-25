@@ -4,10 +4,10 @@ use laracasts\validation;
 
 /**
  *
- * Class {{# className }}{{ . }}{{/ className }}
+ * Class {{# className }}{{ . }}{{/ className }}Form
  *
  */
-class {{# className }}{{ className }}{{/ className }} extends FormValidator {
+class {{# className }}{{ className }}{{/ className }}Form extends FormValidator {
 
     /**
      * The array of rules to be processed
