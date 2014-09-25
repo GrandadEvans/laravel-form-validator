@@ -7,6 +7,7 @@ composer.phar
 Thumbs.db
 
 tests/_output/*
+tests/codeception/actualTestResults
 app/config
 CONTRIBUTING.md
 bootstrap
