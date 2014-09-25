@@ -83,7 +83,7 @@ The rules string should be made up of the following
 **Example**: If I wanted to validate a typical login form containing a username and password field I would set the rules option as follows
 
 ```bash
-php artisan Login generate:form --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan generate:form Login --rules="username:required:between(6,50):alpha | password:required:min(8)"
 ```
 
 Each condition that is entered (*required*, *confirmed* etc) will be validated against the [available conditions in Laravel docs](http://laravel.com/docs/validation#available-validation-rules).
@@ -125,10 +125,10 @@ use laracasts\validation;
 
 /**
  *
- * Class Login
+ * Class LoginForm
  *
  */
-class Login extends FormValidator {
+class LoginForm extends FormValidator {
 
     /**
      * The array of rules to be processed
@@ -196,7 +196,12 @@ public function LoginController extends BaseController
 
 During the construction of this package I have carried out testing with
 
- * PHPSpec
- * Codeception
+ * PHPSpec     - General unit tests
+ * Codeception - End to end test used to test from the command
+ * PHPUnit     - Unit test used to unit test the command itself using Symfony's CommandTester
  
 I also have travis monitoring the condition of the build for failures and you can check on it's progress by [visiting it's Travis CI page](https://travis-ci.org/GrandadEvans/laravel-form-validator)
+
+## GitHub and Packagist
+
+You can find this package through [Github](https://github.com/GrandadEvans/laravel-form-validator) and [Packagist](https://packagist.org/packages/grandadevans/laravel-form-validator)
