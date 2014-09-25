@@ -8,8 +8,15 @@ use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+
 /**
+ * The Console Command for Grandadevans\laravel-form-validator
+ *
  * Class FormGenerator
+ *
+ * @author  john Evans<john@grandadevans.com>
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ * @package Grandadevans\laravel-form-validator
  */
 class FormGenerator {
 
@@ -47,6 +54,13 @@ class FormGenerator {
      * @var string
      */
     protected $dir;
+
+    /**
+     * Form Details
+     */
+    private $details;
+
+
     /**
      * @var PathHandler
      */
@@ -67,14 +81,11 @@ class FormGenerator {
 	 */
 	private $filesystem;
 
-	/**
-	 * Form Details
-	 */
-	private $details;
-
 
     /**
      * Create a new command instance.
+     *
+     * @todo I still think this method needs a bit of work as I think it's "ugly"
      *
      * @param RuleBuilder   $ruleBuilder
      * @param PathHandler   $pathHandler
@@ -84,30 +95,20 @@ class FormGenerator {
      *
      * @return array
      */
-    public function generate(
-        RuleBuilder $ruleBuilder,
-        PathHandler $pathHandler,
-        OutputBuilder $outputBuilder,
-        Filesystem    $filesystem,
-        array $details)
+    public function generate(RuleBuilder $ruleBuilder, PathHandler $pathHandler, OutputBuilder $outputBuilder, Filesystem $filesystem, array $details)
     {
-	    $this->pathHandler = $pathHandler;
-	    $this->ruleBuilder = $ruleBuilder;
-        $this->outputBuilder = $outputBuilder;
-	    $this->file          = $filesystem;
-	    $this->details = $details;
+        $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details);
 
-	    // Get the path
+	    // Get the full form path
 	    $this->fullFormPath = $this->pathHandler->getFullPath($filesystem, $details);
 
-	    if (false === $details['force']) {
-		    if (false !== $this->pathHandler->doesPathExist($this->fullFormPath)) {
-			    return [
-				    'fullFormPath' => $this->fullFormPath,
-				    'result'       => 'fileExists'
-			    ];
-		    }
-	    }
+        // If Force is false and the path exists then return with the error
+        if (false === $details['force'] && false !== $this->pathHandler->doesPathExist($this->fullFormPath)) {
+            return [
+                'fullFormPath' => $this->fullFormPath,
+                'result'       => 'fileExists'
+            ];
+        }
 
         $this->setFormAttributes($details);
 
@@ -134,19 +135,18 @@ class FormGenerator {
     /**
      * Attempt to build the form
      *
-     * @todo test?
-     *
      * @return string
      */
     private function attemptToBuildForm()
     {
         $rulesArray = $this->getRulesArrayFromRulesString($this->rulesString);
+
         return $this->buildOutput($rulesArray);
     }
 
 
     /**
-     * Process the rules (Method Tested by PHPSpec)
+     * Process the rules
      *
      * @param $rulesString
      *
@@ -180,25 +180,21 @@ class FormGenerator {
 
 
     /**
-     * Provide feedback to the user either way using the Laravel command->info method
+     * Set the dependencies
      *
-     * @param string    $result
+     * @param RuleBuilder   $ruleBuilder
+     * @param PathHandler   $pathHandler
+     * @param OutputBuilder $outputBuilder
+     * @param Filesystem    $filesystem
+     * @param array         $details
      */
-    protected function provideFeedback($result)
+    protected function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details)
     {
-        if ($result === 'pass') {
-            $this->info("Form Generated!");
-            $this->info("The Form has been written to \"" . $this->getFullFormPath() . "\"");
-        } else {
-            $this->error("The Form could not be written to \"" .
-                         $this->getFullFormPath() . "\"\n\n" .
-                         "Please make sure the \n\n" . $this->formDir . "\n\ndirectory actually exists!\n\n");
-        }
-    }
-
-    public function getFormPath($details)
-    {
-        return $this->pathHandler->getFullPath($details);
+        $this->pathHandler   = $pathHandler;
+        $this->ruleBuilder   = $ruleBuilder;
+        $this->outputBuilder = $outputBuilder;
+        $this->file          = $filesystem;
+        $this->details       = $details;
     }
 
 }
