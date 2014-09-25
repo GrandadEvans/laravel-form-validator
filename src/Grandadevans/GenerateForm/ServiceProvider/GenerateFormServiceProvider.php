@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\Artisan;
  * Class GenerateFormServiceProvider
  *
  * @author  john Evans<john@grandadevans.com>
- * @licence
- * @version 0.0.0
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
  * @package Grandadevans\laravel-form-validator
  */
 class GenerateFormServiceProvider extends ServiceProvider {
@@ -23,7 +22,7 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	 *
 	 * @var bool
 	 */
-	protected $defer = false;
+	protected $defer = true;
 
 	/**
 	 * Register the Service provider and the PathInterface binding
@@ -43,6 +42,7 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	    // Bind the command
         $this->app->bind('generate:form', function($app) {
 
+            // Inject the form generator into the command
             $formGenerator = new FormGenerator;
             return new FormGeneratorCommand($formGenerator);
         });
