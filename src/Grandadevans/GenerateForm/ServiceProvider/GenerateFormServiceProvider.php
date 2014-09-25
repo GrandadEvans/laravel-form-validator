@@ -57,7 +57,9 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array();
+		return [
+			'Laracasts\Validation\ValidationServiceProvider'
+		];
 	}
 
 }
