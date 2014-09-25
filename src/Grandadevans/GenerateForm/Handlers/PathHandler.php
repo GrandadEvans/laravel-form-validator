@@ -112,7 +112,10 @@ class PathHandler {
 	 */
 	private function getFileName($details)
 	{
-		return $details['className'] . "Form.php";
+        // Strip "Form" and/or ".php" from the name provided
+        $className = preg_replace("/(Form)?(\.php)?/", '', $details['className']);
+        
+		return $className . "Form.php";
 	}
 
 
