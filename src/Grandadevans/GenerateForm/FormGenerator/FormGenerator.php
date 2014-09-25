@@ -5,6 +5,7 @@ use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Mustache_Engine;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -168,6 +169,7 @@ class FormGenerator {
     private function buildOutput($processedRules)
     {
         $this->outputBuilder->build(
+	        new Mustache_Engine,
             $processedRules,
             $this->className,
             $this->namespace,

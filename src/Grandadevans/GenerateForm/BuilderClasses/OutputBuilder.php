@@ -10,7 +10,6 @@ use \ClassPreloader\Command;
  * Class OutputBuilder
  *
  * @todo    Implement the Filesystem class instead of file_get and file_put_contents
- * @todo    Inject the instance of Mustache
  *
  * @author  john Evans<john@grandadevans.com>
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
@@ -41,20 +40,21 @@ class OutputBuilder {
 
 
 	/**
-     * Accept the params and kick out the output
-     *
-     * Accept the rules, className, namespaceName and path of the form and write the requested file
-     *
-     * @param array  $rules
-     * @param string $className
-     * @param null   $namespace
-     * @param string $formPath
-     */
-    public function build($rules, $className, $namespace = null, $formPath)
+	 * Accept the params and kick out the output
+	 *
+	 * Accept the rules, className, namespaceName and path of the form and write the requested file
+	 *
+	 * @param Mustache_Engine   $mustache
+	 * @param array             $rules
+	 * @param string            $className
+	 * @param null              $namespace
+	 * @param string            $formPath
+	 */
+    public function build(Mustache_Engine $mustache, $rules, $className, $namespace = null, $formPath)
     {
-        $this->formPath = $formPath;
+	    $this->mustache = $mustache;
 
-        $this->setMustache();
+        $this->formPath = $formPath;
 
 	    $renderedOutput = $this->renderTemplate([
             'rules'     => $rules,
@@ -129,15 +129,6 @@ class OutputBuilder {
     public function getMustache()
     {
         return $this->mustache;
-    }
-
-
-    /**
-     * Initialise the instance of Mustache that we shall be using
-     */
-    private function setMustache()
-    {
-        $this->mustache = new Mustache_Engine;
     }
 
 
