@@ -21,24 +21,24 @@ class PathHandler {
      *
      * @var string
      */
-    public $fullFormPath;
+    private $fullFormPath;
 
     /**
      * Array of details holding the directory and name etc
      *
      * @var array
      */
-    public $details;
+    private $details;
 
     /**
      * @var string
      */
-    public $dir;
+    private $dir;
 
     /**
      * @var string
      */
-    public $name;
+    private $name;
 
 
     /**
@@ -54,7 +54,7 @@ class PathHandler {
      *
      * @return      string
      */
-    public function stripDoubleDirectorySeparators($in)
+    private function stripDoubleDirectorySeparators($in)
     {
         while(strstr($in, DS.DS)) {
             $in = str_replace(DS.DS, DS, $in);
@@ -71,7 +71,7 @@ class PathHandler {
 	 *
 	 * @return string
 	 */
-	public function convertNamespaceToPath($path)
+	private function convertNamespaceToPath($path)
 	{
 		return str_replace('\\', DS, $path);
 	}

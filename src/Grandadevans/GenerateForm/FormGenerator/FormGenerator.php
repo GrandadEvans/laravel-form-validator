@@ -25,35 +25,35 @@ class FormGenerator {
      *
      * @var string
      */
-    protected $fullFormPath;
+    private $fullFormPath;
 
     /**
      * The namespace as specified by the user
      *
      * @var string
      */
-    protected $namespace;
+    private $namespace;
 
     /**
      * The classname as specified by the user (or defaults to Form)
      *
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * The full rules string as specified by the user
      *
      * @var string
      */
-    protected $rulesString;
+    private $rulesString;
 
     /**
      * The directory of the finished form
      *
      * @var string
      */
-    protected $dir;
+    private $dir;
 
     /**
      * Form Details
@@ -152,7 +152,7 @@ class FormGenerator {
      *
      * @return mixed
      */
-    public function getRulesArrayFromRulesString($rulesString)
+    private function getRulesArrayFromRulesString($rulesString)
     {
         return $this->ruleBuilder->buildRules($rulesString);
     }
@@ -165,7 +165,7 @@ class FormGenerator {
      *
      * @return string
      */
-    protected function buildOutput($processedRules)
+    private function buildOutput($processedRules)
     {
         $this->outputBuilder->build(
             $processedRules,
@@ -188,7 +188,7 @@ class FormGenerator {
      * @param Filesystem    $filesystem
      * @param array         $details
      */
-    protected function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details)
+    private function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details)
     {
         $this->pathHandler   = $pathHandler;
         $this->ruleBuilder   = $ruleBuilder;

@@ -84,7 +84,7 @@ class FormGeneratorCommand extends Command {
      *
      * @return array
      */
-    protected function getCommandDetails()
+    private function getCommandDetails()
     {
         return [
             'className'   => $this->argument('name'),
@@ -104,7 +104,7 @@ class FormGeneratorCommand extends Command {
      *
      * @return array
      */
-    protected function createFormThroughDedicatedClass($details)
+    private function createFormThroughDedicatedClass($details)
     {
         $results = $this->formGenerator->generate(
             new RuleBuilder,
@@ -123,7 +123,7 @@ class FormGeneratorCommand extends Command {
      *
      * @param array $resultDetails  The feedback array contains the status as well as the full form path
      */
-    protected function provideFeedback($resultDetails)
+    private function provideFeedback($resultDetails)
     {
         if ('fileExists' === $resultDetails['result']) {
 
@@ -146,7 +146,7 @@ class FormGeneratorCommand extends Command {
     /**
      * Ask the user if wish to overwrite their path of choice which already exists
      */
-    protected function askTheUserIfTheyWishToOverwriteTheExistingFile()
+    private function askTheUserIfTheyWishToOverwriteTheExistingFile()
     {
         if (false !== $this->confirm("This file already exists: Do you want to overwrite it? (y|N)", false)) {
 

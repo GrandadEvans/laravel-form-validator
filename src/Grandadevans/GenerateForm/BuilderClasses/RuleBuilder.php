@@ -20,21 +20,21 @@ class RuleBuilder
      *
      * @var array
      */
-    public $completedRules;
+    private $completedRules;
 
     /**
      * An array of individual rules
      *
      * @var array
      */
-    public $individualRules;
+    private $individualRules;
 
     /**
      * An array of conditions allowed by the Laravel framework
      *
      * @var array
      */
-    protected $allowableConditions = [
+    private $allowableConditions = [
         'accepted',
         'active_url',
         'after',
@@ -102,7 +102,7 @@ class RuleBuilder
 	 *
 	 * @return  array
 	 */
-	public function separateIndividualRules($rules = null)
+	private function separateIndividualRules($rules = null)
 	{
 		if ( ! is_null($rules)) {
 			return preg_split("/ ?\| ?/", $rules);
@@ -127,7 +127,7 @@ class RuleBuilder
 	 * Process the individual rules eg "foo:required:email" into an array of
 	 * individual components ie. "[required,email]"
 	 */
-	public function processIndividualRules()
+	private function processIndividualRules()
     {
 	    $count = $this->individualRules;
 
@@ -146,7 +146,7 @@ class RuleBuilder
      *
      * @throws Exception
      */
-    public function separateNextRuleIntoComponentRules($rule)
+    private function separateNextRuleIntoComponentRules($rule)
     {
 	    // Separate the conditions
         $laravelConditions = preg_split("/ ?: ?/", $rule); // ['required', 'min']
@@ -171,7 +171,7 @@ class RuleBuilder
      *
      * @throws  Exception
      */
-    public function checkConditionExists($unsanitizedCondition)
+    private function checkConditionExists($unsanitizedCondition)
     {
         $condition = $this->extractparameterLessCondition($unsanitizedCondition);
 
@@ -189,7 +189,7 @@ class RuleBuilder
      * @param   string  $inputConditions
      * @param   string  $inputName
      */
-    protected function AddRuleToMainCompletedRules($inputConditions, $inputName)
+    private function AddRuleToMainCompletedRules($inputConditions, $inputName)
     {
         if (!empty($inputConditions)) {
 
@@ -219,7 +219,7 @@ class RuleBuilder
      *
      * @return  array
      */
-    public function extractLaravelConditionsFromRule($laravelConditions)
+    private function extractLaravelConditionsFromRule($laravelConditions)
     {
         $validInputConditions = "";
 
@@ -248,7 +248,7 @@ class RuleBuilder
      *
      * @return  string
      */
-    public function extractparameterLessCondition($unsanitizedCondition)
+    private function extractparameterLessCondition($unsanitizedCondition)
     {
         // I'm not interested in the stuff in brackets or after colons so separate them all out
         $colonLess   = explode(':', $unsanitizedCondition);

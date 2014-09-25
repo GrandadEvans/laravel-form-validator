@@ -23,21 +23,21 @@ class OutputBuilder {
      *
      * @var string
      */
-    public $returnResult = 'pass';
+    private $returnResult = 'pass';
 
 	/**
      * The instance of Mustache
      *
      * @var Mustache
      */
-    public $mustache;
+    private $mustache;
 
     /**
      * The Final path of the form
      *
      * @var string
      */
-    public $formPath;
+    private $formPath;
 
 
 	/**
@@ -146,7 +146,7 @@ class OutputBuilder {
      *
      * @return string
      */
-    public function getTemplateContents()
+    private function getTemplateContents()
     {
         return file_get_contents(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
     }
