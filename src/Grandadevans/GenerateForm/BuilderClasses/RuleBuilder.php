@@ -5,7 +5,7 @@ use \Exception;
 
 
 /**
- * The Console Command for Grandadevans\laravel-form-validator
+ * The Rule Builder for Grandadevans\laravel-form-validator
  *
  * Class RuleBuilder
  *

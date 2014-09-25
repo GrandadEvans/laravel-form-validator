@@ -3,14 +3,24 @@
 use Mustache_Engine;
 use \ClassPreloader\Command;
 
+
 /**
+ * The Output Builder for Grandadevans\laravel-form-validator
+ *
  * Class OutputBuilder
  *
- * @package grandadevans
+ * @todo    Implement the Filesystem class instead of file_get and file_put_contents
+ * @todo    Inject the instance of Mustache
+ *
+ * @author  john Evans<john@grandadevans.com>
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ * @package Grandadevans\laravel-form-validator
  */
 class OutputBuilder {
 
     /**
+     * The result string to return
+     *
      * @var string
      */
     public $returnResult = 'pass';
@@ -18,10 +28,15 @@ class OutputBuilder {
 	/**
      * The instance of Mustache
      *
-     * @var object
+     * @var Mustache
      */
     public $mustache;
 
+    /**
+     * The Final path of the form
+     *
+     * @var string
+     */
     public $formPath;
 
 
@@ -47,11 +62,18 @@ class OutputBuilder {
             'className' => $className
         ]);
 
+        // Try and write the file
         if ( ! $this->writeTemplate($renderedOutput, $formPath)) {
 	        $this->returnResult = 'fail';
         }
     }
 
+
+    /**
+     * Called externally this gets the results after the write had been attempted
+     *
+     * @return array
+     */
     public function getReturnDetails()
     {
         return [
@@ -90,12 +112,14 @@ class OutputBuilder {
         }
 
         catch(\Exception $e) {
-//            var_dump($e);
+
+            // return false instead of throwing a custom exception as I want to return a custom console error to user
             return false;
         }
 
 	    return true;
     }
+
 
     /**
      * Get and return the instance of Mustache
@@ -107,6 +131,7 @@ class OutputBuilder {
         return $this->mustache;
     }
 
+
     /**
      * Initialise the instance of Mustache that we shall be using
      */
@@ -115,7 +140,10 @@ class OutputBuilder {
         $this->mustache = new Mustache_Engine;
     }
 
+
     /**
+     * Get the contents of the file template
+     *
      * @return string
      */
     public function getTemplateContents()
