@@ -12,3 +12,6 @@ install:
 script:
   - ./vendor/bin/phpspec run
 #  - ./vendor/bin/behat --format=pretty
+
+# Run phpunit
+  - ./vendor/bin/phpunit
