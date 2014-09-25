@@ -1,6 +1,6 @@
 <?php namespace Bar;
 
-use laracasts\validation;
+use Laracasts\Validation;
 
 /**
  *
