@@ -1,4 +1,4 @@
-<?php namespace Grandadevans\GenerateForm;
+<?php namespace Grandadevans\GenerateForm\ServiceProvider;
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
