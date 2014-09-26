@@ -146,7 +146,7 @@ class RuleBuilder
      *
      * @throws Exception
      */
-    private function separateNextRuleIntoComponentRules($rule)
+    public function separateNextRuleIntoComponentRules($rule)
     {
 	    // Separate the conditions
         $laravelConditions = preg_split("/ ?: ?/", $rule); // ['required', 'min']
@@ -171,7 +171,7 @@ class RuleBuilder
      *
      * @throws  Exception
      */
-    private function checkConditionExists($unsanitizedCondition)
+    public function checkConditionExists($unsanitizedCondition)
     {
         $condition = $this->extractparameterLessCondition($unsanitizedCondition);
 
@@ -219,7 +219,7 @@ class RuleBuilder
      *
      * @return  array
      */
-    private function extractLaravelConditionsFromRule($laravelConditions)
+    public function extractLaravelConditionsFromRule($laravelConditions)
     {
         $validInputConditions = "";
 
