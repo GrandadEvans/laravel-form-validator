@@ -45,21 +45,19 @@ class OutputBuilder {
 	 * Accept the rules, className, namespaceName and path of the form and write the requested file
 	 *
 	 * @param Mustache_Engine   $mustache
-	 * @param array             $rules
-	 * @param string            $className
-	 * @param null              $namespace
+	 * @param array             $details
 	 * @param string            $formPath
 	 */
-    public function build(Mustache_Engine $mustache, $rules, $className, $namespace = null, $formPath)
+    public function build(Mustache_Engine $mustache, $details, $formPath)
     {
 	    $this->mustache = $mustache;
 
         $this->formPath = $formPath;
 
 	    $renderedOutput = $this->renderTemplate([
-            'rules'     => $rules,
-            'namespace' => $namespace,
-            'className' => $className
+            'rules'     => $details['rules'],
+            'namespace' => $details['namespace'] ?: null,
+            'className' => $details['className']
         ]);
 
         // Try and write the file

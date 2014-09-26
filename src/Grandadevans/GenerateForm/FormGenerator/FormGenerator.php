@@ -170,9 +170,11 @@ class FormGenerator {
     {
         $this->outputBuilder->build(
 	        new Mustache_Engine,
-            $processedRules,
-            $this->className,
-            $this->namespace,
+	        [
+                'rules' => $processedRules,
+                'className' => $this->className,
+                'namespace' => $this->namespace,
+	        ],
             $this->pathHandler->getFullPath($this->file, $this->details)
         );
 
