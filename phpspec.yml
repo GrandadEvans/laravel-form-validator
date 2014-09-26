@@ -4,5 +4,3 @@ suites:
     src_path:  src/Grandadevans/GenerateForm
 formatter.name: pretty
 
-extensions:
-    - PhpSpec\Extension\CodeCoverageExtension
