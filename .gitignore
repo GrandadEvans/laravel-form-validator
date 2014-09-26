@@ -23,6 +23,7 @@ app/lang
 app/routes.php
 app/filters.php
 app/models
+app/Forms
 readme.md
 public
 app/start/local.php
