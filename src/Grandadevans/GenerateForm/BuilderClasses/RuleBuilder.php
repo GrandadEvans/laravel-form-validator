@@ -131,7 +131,7 @@ class RuleBuilder
     {
 	    $count = $this->individualRules;
 
-	    if (count($count) > 0) {
+	    if (false !== $count) {
 
 	        foreach($this->individualRules as $rule) {
 		        $this->separateNextRuleIntoComponentRules($rule);
