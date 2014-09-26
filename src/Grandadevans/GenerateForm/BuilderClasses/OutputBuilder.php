@@ -43,9 +43,10 @@ class OutputBuilder {
 	 *
 	 * Accept the rules, className, namespaceName and path of the form and write the requested file
 	 *
-	 * @param Mustache_Engine   $mustache
-	 * @param array             $details
-	 * @param string            $formPath
+	 * @param Mustache_Engine $mustache
+	 * @param Filesystem      $filesystem
+	 * @param array           $details
+	 * @param string          $formPath
 	 */
     public function build(Mustache_Engine $mustache, Filesystem $filesystem, $details, $formPath)
     {
@@ -106,15 +107,12 @@ class OutputBuilder {
      */
     private function writeTemplate($renderedOutput, $formPath)
     {
-        try {
-            $this->filesystem->put($formPath, $renderedOutput);
-        }
 
-        catch(\Exception $e) {
+		if (false === $this->filesystem->put($formPath, $renderedOutput)) {
 
-            // return false instead of throwing a custom exception as I want to return a custom console error to user
-            return false;
-        }
+			// return false instead of throwing a custom exception as I want to return a custom console error to user
+			return false;
+		}
 
 	    return true;
     }
