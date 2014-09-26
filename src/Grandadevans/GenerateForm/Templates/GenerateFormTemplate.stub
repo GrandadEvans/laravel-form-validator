@@ -1,4 +1,4 @@
-<?php {{# namespace }}namespace {{ . }};{{/ namespace }}
+<?php{{# namespace }} namespace {{ . }};{{/ namespace }}
 
 use Laracasts\Validation;
 
