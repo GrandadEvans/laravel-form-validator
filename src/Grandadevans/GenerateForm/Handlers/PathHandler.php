@@ -44,12 +44,6 @@ class PathHandler {
     /**
      * Strip any extra directory separators from any paths such as home//john
      *
-     * I would consider using this for both namespace replacement and double
-     * directory separator replacement
-     * 	    while(preg_replace("/(\\\\)|(\.\.)+/", DS, $in) !== $in) {}
-     *
-	 * @todo Look at using the above preg_replace
-     *
      * @param $in   string
      *
      * @return      string
