@@ -170,6 +170,7 @@ class FormGenerator {
     {
         $this->outputBuilder->build(
 	        new Mustache_Engine,
+	        new Filesystem,
 	        [
                 'rules' => $processedRules,
                 'className' => $this->className,

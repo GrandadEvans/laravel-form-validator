@@ -1,5 +1,6 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
+use Illuminate\Filesystem\Filesystem;
 use Mustache_Engine;
 use \ClassPreloader\Command;
 
@@ -8,8 +9,6 @@ use \ClassPreloader\Command;
  * The Output Builder for Grandadevans\laravel-form-validator
  *
  * Class OutputBuilder
- *
- * @todo    Implement the Filesystem class instead of file_get and file_put_contents
  *
  * @author  john Evans<john@grandadevans.com>
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
@@ -48,9 +47,11 @@ class OutputBuilder {
 	 * @param array             $details
 	 * @param string            $formPath
 	 */
-    public function build(Mustache_Engine $mustache, $details, $formPath)
+    public function build(Mustache_Engine $mustache, Filesystem $filesystem, $details, $formPath)
     {
 	    $this->mustache = $mustache;
+
+	    $this->filesystem = $filesystem;
 
         $this->formPath = $formPath;
 
@@ -106,7 +107,7 @@ class OutputBuilder {
     private function writeTemplate($renderedOutput, $formPath)
     {
         try {
-            file_put_contents($formPath, $renderedOutput);
+            $this->filesystem->put($formPath, $renderedOutput);
         }
 
         catch(\Exception $e) {
@@ -137,6 +138,6 @@ class OutputBuilder {
      */
     private function getTemplateContents()
     {
-        return file_get_contents(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
+        return $this->filesystem->get(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
     }
 }
