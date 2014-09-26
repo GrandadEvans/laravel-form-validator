@@ -3,4 +3,3 @@ suites:
     spec_path: tests
     src_path:  src/Grandadevans/GenerateForm
 formatter.name: pretty
-
