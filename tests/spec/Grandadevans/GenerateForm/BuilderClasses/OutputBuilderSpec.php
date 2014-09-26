@@ -5,32 +5,29 @@ namespace spec\Grandadevans\GenerateForm\BuilderClasses;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Mustache_Engine;
+use Mockery as m;
 
 
 class OutputBuilderSpec extends ObjectBehavior
 {
    function let()
    {
+       $mustache = m::mock('Mustache_Engine');
+       $mustache->shouldReceive('render')->andReturn('templateContent');
+
+       $filesystem = m::mock('Illuminate\Filesystem\Filesystem');
+       $filesystem->shouldReceive('get')->andReturn('templateContent');
+       $filesystem->shouldReceive('put')->andReturn('templateContent');
+
+
        $this->build(
+           $mustache,
+           $filesystem,
            [
-               [
-                   'name' => 'bar',
-                   'conditions' => [
-                       'unique',
-                       'required',
-                       'min(5)',
-                   ]
-               ],
-               [
-                   'name' => 'qux',
-                   'conditions' => [
-                       'required',
-                       'email',
-                   ]
-               ]
+               'rules' => [],
+               'className' => 'FooBar',
+               'namespace' => 'grandadevans'
            ],
-           'FooBar',
-           'grandadevans',
            'tests/Forms/FooBarForm.php');
    }
 
