@@ -3,6 +3,7 @@
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Mustache_Engine;
@@ -96,12 +97,13 @@ class FormGenerator {
      *
      * @return array
      */
-    public function generate(RuleBuilder $ruleBuilder, PathHandler $pathHandler, OutputBuilder $outputBuilder, Filesystem $filesystem, array $details)
+    public function generate(RuleBuilder $ruleBuilder, PathHandler $pathHandler, OutputBuilder $outputBuilder,
+                             Filesystem $filesystem, Sanitizer $sanitizer, array $details)
     {
-        $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details);
+        $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $details);
 
 	    // Get the full form path
-	    $this->fullFormPath = $this->pathHandler->getFullPath($filesystem, $details);
+	    $this->fullFormPath = $this->pathHandler->getFullPath($filesystem, $sanitizer, $details);
 
         // If Force is false and the path exists then return with the error
         if (false === $details['force'] && false !== $this->pathHandler->doesPathExist($this->fullFormPath)) {
@@ -176,7 +178,7 @@ class FormGenerator {
                 'className' => $this->className,
                 'namespace' => $this->namespace,
 	        ],
-            $this->pathHandler->getFullPath($this->file, $this->details)
+            $this->pathHandler->getFullPath($this->file, $this->sanitizer, $this->details)
         );
 
         return $this->outputBuilder->getReturnDetails();
@@ -193,12 +195,13 @@ class FormGenerator {
      * @param Filesystem    $filesystem
      * @param array         $details
      */
-    private function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $details)
+    private function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $details)
     {
         $this->pathHandler   = $pathHandler;
         $this->ruleBuilder   = $ruleBuilder;
         $this->outputBuilder = $outputBuilder;
         $this->file          = $filesystem;
+	    $this->sanitizer     = $sanitizer;
         $this->details       = $details;
     }
 

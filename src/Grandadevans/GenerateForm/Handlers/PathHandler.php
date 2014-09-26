@@ -1,5 +1,6 @@
 <?php namespace Grandadevans\GenerateForm\Handlers;
 
+use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
@@ -41,35 +42,6 @@ class PathHandler {
     private $name;
 
 
-    /**
-     * Strip any extra directory separators from any paths such as home//john
-     *
-     * @param $in   string
-     *
-     * @return      string
-     */
-    private function stripDoubleDirectorySeparators($in)
-    {
-        while(strstr($in, DS.DS)) {
-            $in = str_replace(DS.DS, DS, $in);
-        }
-
-        return $in;
-    }
-
-
-	/**
-	 * Convert Namespaces to paths
-	 *
-	 * @param string    $path
-	 *
-	 * @return string
-	 */
-	private function convertNamespaceToPath($path)
-	{
-		return str_replace('\\', DS, $path);
-	}
-
 
 	/**
 	 * Set the forms full path to a property
@@ -79,9 +51,11 @@ class PathHandler {
      *
      * @return  string
 	 */
-	public function getFullPath(Filesystem $file, $details)
+	public function getFullPath(Filesystem $file, Sanitizer $sanitizer, $details)
 	{
 		$this->file = $file;
+
+		$this->sanitizer = $sanitizer;
 
 		$name = $this->getFileName($details);
 
@@ -89,7 +63,7 @@ class PathHandler {
 
 		$this->makeSureFinalDirectoryExist($dir);
 
-        $fullPath = $this->stripDoubleDirectorySeparators($dir . DS . $name);
+        $fullPath = $this->sanitizer->stripDoubleDirectorySeparators($dir . DS . $name);
 
 		$this->fullFormPath = $fullPath;
 
@@ -132,7 +106,7 @@ class PathHandler {
 
 		} elseif ( ! empty($details['namespace'])) {
 
-			$dir = $this->convertNamespaceToPath($details['namespace']);
+			$dir = $this->sanitizer->convertNamespaceToPath($details['namespace']);
 
 		} else {
 

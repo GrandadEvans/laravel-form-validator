@@ -4,6 +4,7 @@ use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
@@ -111,6 +112,7 @@ class FormGeneratorCommand extends Command {
             new PathHandler,
             new OutputBuilder,
             new Filesystem,
+            new Sanitizer,
             $details
         );
 
