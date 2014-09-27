@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Artisan;
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
  * @package Grandadevans\laravel-form-validator
  */
-class GenerateFormServiceProvider extends ServiceProvider {
+class GenerateFormServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -27,7 +28,9 @@ class GenerateFormServiceProvider extends ServiceProvider {
 	/**
 	 * Register the Service provider and the PathInterface binding
 	 */
-	public function register(){}
+	public function register()
+	{
+	}
 
     /**
      *
@@ -61,5 +64,4 @@ class GenerateFormServiceProvider extends ServiceProvider {
 			'Laracasts\Validation\ValidationServiceProvider'
 		];
 	}
-
 }

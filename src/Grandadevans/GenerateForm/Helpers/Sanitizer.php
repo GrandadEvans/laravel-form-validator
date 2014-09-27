@@ -2,8 +2,57 @@
 
 namespace Grandadevans\GenerateForm\Helpers;
 
+use \Exception;
 
-class Sanitizer {
+class Sanitizer
+{
+
+
+	/**
+	 * An array of conditions allowed by the Laravel framework
+	 *
+	 * @var array
+	 */
+	private $allowableConditions = [
+		'accepted',
+		'active_url',
+		'after',
+		'alpha',
+		'alpha_dash',
+		'alpha_num',
+		'array',
+		'before',
+		'between',
+		'confirmed',
+		'date',
+		'date_format',
+		'different',
+		'digits',
+		'digits_between',
+		'email',
+		'exists',
+		'image',
+		'in',
+		'integer',
+		'ip',
+		'max',
+		'mimes',
+		'min',
+		'not_in',
+		'numeric',
+		'regex',
+		'required',
+		'required_if',
+		'required_with',
+		'required_with_all',
+		'required_without',
+		'required_without_all',
+		'same',
+		'size',
+		'timezone',
+		'unique',
+		'url'
+	];
 
 
 	/**
@@ -33,5 +82,73 @@ class Sanitizer {
 		}
 
 		return $in;
+	}
+
+
+
+
+
+	/**
+	 * Here we make the valid conditions back into a string for the validation class
+	 *
+	 * @param   array   $laravelConditions
+	 *
+	 * @return  array
+	 */
+	public function extractLaravelConditionsFromRule($laravelConditions)
+	{
+		$validInputConditions = "";
+
+		$i = 1;
+		while (isset($laravelConditions[$i])) {
+
+			$this->checkConditionExists($laravelConditions[$i]);
+
+			// Separate each valid condition with a pipe
+			$validInputConditions .= $laravelConditions[$i] . '|';
+
+			$i++;
+		}
+
+		// trim the last pipe from the edges (specifically the right one)
+		$validInputConditions = trim($validInputConditions, '|');
+
+		return $validInputConditions;
+	}
+
+
+	/**
+	 * Accept a string with parameter and strip it down to the raw condition eg between(3,6) --> between
+	 *
+	 * @param   string  $unsanitizedCondition
+	 *
+	 * @return  string
+	 */
+	private function extractparameterLessCondition($unsanitizedCondition)
+	{
+		// I'm not interested in the stuff in brackets or after colons so separate them all out
+		$colonLess   = explode(':', $unsanitizedCondition);
+		$bracketLess = explode('(', $colonLess[0]);
+		$condition   = $bracketLess[0];
+
+		return $condition;
+	}
+
+	/**
+	 * Accept an unclean condition and make sure it is the array of Laravel allowed conditions
+	 *
+	 * @param   string  $unsanitizedCondition
+	 *
+	 * @throws  Exception
+	 */
+	public function checkConditionExists($unsanitizedCondition)
+	{
+		$condition = $this->extractparameterLessCondition($unsanitizedCondition);
+
+		if (in_array($condition, $this->allowableConditions)) {
+			return true;
+		}
+
+		throw new Exception("\"{$condition}\" is not a valid laravel condition");
 	}
 }

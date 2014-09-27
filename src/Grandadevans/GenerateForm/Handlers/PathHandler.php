@@ -5,7 +5,6 @@ use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 
-
 /**
  * The Console Command for Grandadevans\laravel-form-validator
  *
@@ -15,7 +14,8 @@ use Illuminate\Support\Facades\File;
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
  * @package Grandadevans\laravel-form-validator
  */
-class PathHandler {
+class PathHandler
+{
 
     /**
      * The reference to the full form path
@@ -145,4 +145,4 @@ class PathHandler {
 			$this->file->makeDirectory($dir, 0755, true);
 		}
 	}
-} 
+}

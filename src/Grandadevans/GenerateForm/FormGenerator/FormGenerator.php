@@ -10,7 +10,6 @@ use Mustache_Engine;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-
 /**
  * The Console Command for Grandadevans\laravel-form-validator
  *
@@ -20,7 +19,8 @@ use Symfony\Component\Console\Input\InputOption;
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
  * @package Grandadevans\laravel-form-validator
  */
-class FormGenerator {
+class FormGenerator
+{
 
     /**
      * The full path of the finished form
@@ -97,9 +97,14 @@ class FormGenerator {
      *
      * @return array
      */
-    public function generate(RuleBuilder $ruleBuilder, PathHandler $pathHandler, OutputBuilder $outputBuilder,
-                             Filesystem $filesystem, Sanitizer $sanitizer, array $details)
-    {
+    public function generate(
+	    RuleBuilder $ruleBuilder,
+	    PathHandler $pathHandler,
+	    OutputBuilder $outputBuilder,
+	    Filesystem $filesystem,
+	    Sanitizer $sanitizer,
+	    array $details
+    ) {
         $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $details);
 
 	    // Get the full form path
@@ -157,7 +162,7 @@ class FormGenerator {
      */
     private function getRulesArrayFromRulesString($rulesString)
     {
-        return $this->ruleBuilder->buildRules($rulesString);
+        return $this->ruleBuilder->buildRules($this->sanitizer, $rulesString);
     }
 
 
@@ -204,5 +209,4 @@ class FormGenerator {
 	    $this->sanitizer     = $sanitizer;
         $this->details       = $details;
     }
-
 }

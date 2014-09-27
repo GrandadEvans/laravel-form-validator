@@ -4,6 +4,7 @@ namespace spec\Grandadevans\GenerateForm\BuilderClasses;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Mockery as m;
 
 /**
  * Class RuleBuilderSpec
@@ -20,10 +21,15 @@ class RuleBuilderSpec extends ObjectBehavior
 
 	/**
 	 * Assign the rules to pass into the construct
+	 *
+	 * @todo not workin as sengi
 	 */
     public function let()
     {
-        $this->buildRules($this->rulesToPass);
+	    $sanitizer = m::mock('Grandadevans\GenerateForm\Helpers\Sanitizer');
+	    $sanitizer->shouldReceive('extractLaravelConditionsFromRule')->andReturn('test');
+
+        $this->buildRules($sanitizer, $this->rulesToPass);
     }
 
 

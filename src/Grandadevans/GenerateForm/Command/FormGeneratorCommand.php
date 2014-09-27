@@ -10,7 +10,6 @@ use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-
 /**
  * The Console Command for Grandadevans\laravel-form-validator
  *
@@ -20,7 +19,8 @@ use Symfony\Component\Console\Input\InputOption;
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
  * @package Grandadevans\laravel-form-validator
  */
-class FormGeneratorCommand extends Command {
+class FormGeneratorCommand extends Command
+{
 
     /**
      * The console command name.
@@ -188,7 +188,9 @@ class FormGeneratorCommand extends Command {
         return [
             ['dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
             ['namespace', 's', InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
-            ['rules', 'r', InputOption::VALUE_OPTIONAL, 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such as between(3,6)', null],
+            ['rules', 'r', InputOption::VALUE_OPTIONAL,
+                'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such'.
+	            ' as between(3,6)', null],
         ];
     }
 }

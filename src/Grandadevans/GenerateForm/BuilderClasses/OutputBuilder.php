@@ -4,7 +4,6 @@ use Illuminate\Filesystem\Filesystem;
 use Mustache_Engine;
 use \ClassPreloader\Command;
 
-
 /**
  * The Output Builder for Grandadevans\laravel-form-validator
  *
@@ -56,9 +55,11 @@ class OutputBuilder {
 
         $this->formPath = $formPath;
 
+	    $namespace = ($details['namespace']) ? : null;
+
 	    $renderedOutput = $this->renderTemplate([
             'rules'     => $details['rules'],
-            'namespace' => $details['namespace'] ?: null,
+            'namespace' => $namespace,
             'className' => $details['className']
         ]);
 
