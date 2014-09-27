@@ -3,6 +3,7 @@
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -178,6 +179,7 @@ class FormGenerator
         $this->outputBuilder->build(
 	        new Mustache_Engine,
 	        new Filesystem,
+	        $this->userFeedbackHandler,
 	        [
                 'rules' => $processedRules,
                 'className' => $this->className,
@@ -200,13 +202,21 @@ class FormGenerator
      * @param Filesystem    $filesystem
      * @param array         $details
      */
-    private function setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $details)
-    {
-        $this->pathHandler   = $pathHandler;
-        $this->ruleBuilder   = $ruleBuilder;
-        $this->outputBuilder = $outputBuilder;
-        $this->file          = $filesystem;
-	    $this->sanitizer     = $sanitizer;
-        $this->details       = $details;
+    private function setDependancies(
+	    $ruleBuilder,
+	    $pathHandler,
+	    $outputBuilder,
+	    $filesystem,
+	    $userFeedbackHandler,
+	    $sanitizer,
+	    $details
+    ) {
+	    $this->pathHandler         = $pathHandler;
+        $this->ruleBuilder         = $ruleBuilder;
+        $this->outputBuilder       = $outputBuilder;
+        $this->file                = $filesystem;
+	    $this->userFeedbackHandler = $userFeedbackHandler;
+	    $this->sanitizer           = $sanitizer;
+        $this->details             = $details;
     }
 }

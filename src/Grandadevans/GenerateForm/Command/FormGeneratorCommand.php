@@ -4,6 +4,7 @@ use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -42,6 +43,7 @@ class FormGeneratorCommand extends Command
      * @var FormGenerator
      */
     private $formGenerator;
+
 
 
     /**
@@ -112,6 +114,7 @@ class FormGeneratorCommand extends Command
             new PathHandler,
             new OutputBuilder,
             new Filesystem,
+            new UserFeedbackHandler($command),
             new Sanitizer,
             $details
         );
@@ -120,51 +123,6 @@ class FormGeneratorCommand extends Command
     }
 
 
-    /**
-     * Let the user know the result of the form generation
-     *
-     * @param array $resultDetails  The feedback array contains the status as well as the full form path
-     */
-    private function provideFeedback($resultDetails)
-    {
-        if ('fileExists' === $resultDetails['result']) {
-
-            $this->askTheUserIfTheyWishToOverwriteTheExistingFile();
-
-        } elseif ('fail' === $resultDetails['result']) {
-
-            $this->error('The form could not be saved to:');
-            $this->error($resultDetails['fullFormPath']);
-
-        } else {
-
-            $this->info('Form has been saved to');
-            $this->info($resultDetails['fullFormPath']);
-
-        }
-    }
-
-
-    /**
-     * Ask the user if wish to overwrite their path of choice which already exists
-     */
-    private function askTheUserIfTheyWishToOverwriteTheExistingFile()
-    {
-        if (false !== $this->confirm("This file already exists: Do you want to overwrite it? (y|N)", false)) {
-
-            // The user wants to overwrite the file so fire the process again with the force option set to true
-            $this->fire(true);
-            exit;
-
-        } else {
-
-            $this->error('You have chosen NOT to overwrite the file...Good choice!');
-            exit;
-
-        }
-    }
-
-    
     /**
      * Get a full list of the user provided arguments
      *

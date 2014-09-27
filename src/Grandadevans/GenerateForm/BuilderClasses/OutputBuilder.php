@@ -1,5 +1,6 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
+use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Illuminate\Filesystem\Filesystem;
 use Mustache_Engine;
 use \ClassPreloader\Command;
@@ -42,16 +43,24 @@ class OutputBuilder {
 	 *
 	 * Accept the rules, className, namespaceName and path of the form and write the requested file
 	 *
-	 * @param Mustache_Engine $mustache
-	 * @param Filesystem      $filesystem
-	 * @param array           $details
-	 * @param string          $formPath
+	 * @param Mustache_Engine     $mustache
+	 * @param Filesystem          $filesystem
+	 * @param UserFeedbackHandler $userFeedbackHandler
+	 * @param array               $details
+	 * @param string              $formPath
 	 */
-    public function build(Mustache_Engine $mustache, Filesystem $filesystem, $details, $formPath)
-    {
+    public function build(
+	    Mustache_Engine $mustache,
+	    Filesystem $filesystem,
+	    UserFeedbackHandler $userFeedbackHandler,
+	    $details,
+        $formPath
+    ) {
 	    $this->mustache = $mustache;
 
 	    $this->filesystem = $filesystem;
+
+	    $this->userFeedbackHandler = $userFeedbackHandler;
 
         $this->formPath = $formPath;
 
@@ -63,10 +72,7 @@ class OutputBuilder {
             'className' => $details['className']
         ]);
 
-        // Try and write the file
-        if ( ! $this->writeTemplate($renderedOutput, $formPath)) {
-	        $this->returnResult = 'fail';
-        }
+        $this->writeTemplate($renderedOutput, $formPath);
     }
 
 
@@ -112,10 +118,10 @@ class OutputBuilder {
 		if (false === $this->filesystem->put($formPath, $renderedOutput)) {
 
 			// return false instead of throwing a custom exception as I want to return a custom console error to user
-			return false;
+			$this->userFeedbackHandler->showUserCommandHasFailed();
 		}
 
-	    return true;
+	    $this->userFeedbackHandler->showUserCommandSuccessful();
     }
 
 

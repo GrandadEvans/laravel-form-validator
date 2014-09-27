@@ -41,7 +41,7 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
     /**
      * Test to make sure that if the FormGenerator class returns false the correct feedback is provided
      */
-    public function testTheConsoleCommandReturnswithError()
+    public function testTheConsoleCommandReturnsWithError()
     {
         // Arrange
         $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
