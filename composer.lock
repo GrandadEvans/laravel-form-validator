@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13ca849a556af9a6017c742de2617d24",
+    "hash": "6bb7f957dfd8c358ef833b4f6c7f0065",
     "packages": [
         {
             "name": "illuminate/config",
@@ -552,12 +552,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "c38ff16378ee34578af7692100037913f14b2751"
+                "reference": "66fd916e9f9130bc22c51450476823391cb2f67c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/c38ff16378ee34578af7692100037913f14b2751",
-                "reference": "c38ff16378ee34578af7692100037913f14b2751",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/66fd916e9f9130bc22c51450476823391cb2f67c",
+                "reference": "66fd916e9f9130bc22c51450476823391cb2f67c",
                 "shasum": ""
             },
             "require": {
@@ -609,7 +609,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-10-05 07:16:12"
+            "time": "2014-10-05 19:29:14"
         },
         {
             "name": "guzzlehttp/streams",
@@ -663,47 +663,6 @@
                 "stream"
             ],
             "time": "2014-09-15 01:45:40"
-        },
-        {
-            "name": "henrikbjorn/phpspec-code-coverage",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/henrikbjorn/PhpSpecCodeCoverageExtension.git",
-                "reference": "987be21438b4e2905563d74634ee36cf73290f40"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/henrikbjorn/PhpSpecCodeCoverageExtension/zipball/987be21438b4e2905563d74634ee36cf73290f40",
-                "reference": "987be21438b4e2905563d74634ee36cf73290f40",
-                "shasum": ""
-            },
-            "require": {
-                "ext-xdebug": ">=2.1.4",
-                "php": ">=5.3.3",
-                "phpspec/phpspec": "~2.0",
-                "phpunit/php-code-coverage": "~2.0"
-            },
-            "require-dev": {
-                "bossa/phpspec2-expect": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "PhpSpec\\Extension\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Integrates CodeCoverage with PhpSpec",
-            "time": "2014-07-04 11:53:55"
         },
         {
             "name": "mockery/mockery",
@@ -933,12 +892,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "96432da9e3312e9e3f8ed87a23b5f48867908dd9"
+                "reference": "2bbc78d0b4b1ce8049479395ba950d4b13f21d94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/96432da9e3312e9e3f8ed87a23b5f48867908dd9",
-                "reference": "96432da9e3312e9e3f8ed87a23b5f48867908dd9",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/2bbc78d0b4b1ce8049479395ba950d4b13f21d94",
+                "reference": "2bbc78d0b4b1ce8049479395ba950d4b13f21d94",
                 "shasum": ""
             },
             "require": {
@@ -984,7 +943,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2014-10-05 15:08:58"
+            "time": "2014-10-05 19:43:51"
         },
         {
             "name": "phpunit/php-code-coverage",
