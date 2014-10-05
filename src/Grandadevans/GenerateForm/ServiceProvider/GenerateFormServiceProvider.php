@@ -2,6 +2,7 @@
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Grandadevans\GenerateForm\FormGenerator\FormGenerator;
+use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
@@ -23,45 +24,90 @@ class GenerateFormServiceProvider extends ServiceProvider
 	 *
 	 * @var bool
 	 */
-	protected $defer = true;
+	protected $defer = false;
+
 
 	/**
 	 * Register the Service provider and the PathInterface binding
+	 *
+	 * Although the form generator could do with being loaded in boot
+	 * I need the validator service provider to be put through register so that I can bind it's
+	 * interface straight away
 	 */
 	public function register()
 	{
+        $this->defineDirectorySeparator();
+
+        $this->bindValidatorsInterface();
+
+        $this->bindTheFormGenerator();
+
+		$this->registerTheCommand();
 	}
 
+
     /**
-     *
+     * Required boot option but not used
      */
     public function boot()
     {
-        // Define the Directory separator as a constant
-        if (!defined('DS')) {
-            define('DS', DIRECTORY_SEPARATOR);
-        }
-
-	    // Bind the command
-        $this->app->bind('generate:form', function($app) {
-
-            // Inject the form generator into the command
-            $formGenerator = new FormGenerator;
-            return new FormGeneratorCommand($formGenerator);
-        });
-
-        $this->commands('generate:form');
     }
 
+
 	/**
-	 * Get the services provided by the provider.
+	 * The unused provides array
 	 *
 	 * @return array
 	 */
 	public function provides()
 	{
-		return [
-			'Laracasts\Validation\ValidationServiceProvider'
-		];
+	}
+
+
+    /**
+     * Define the DS constant to the directory separator of the user
+     */
+    private function defineDirectorySeparator()
+    {
+        // Define the Directory separator as a constant
+        if (!defined('DS')) {
+            define('DS', DIRECTORY_SEPARATOR);
+        }
+    }
+
+
+    /**
+     * We need to bind the Validator package's service provider's bindings for it, otherwise: we would need to
+     * instruct the user to add it's service provider to their app.php as well
+     */
+    private function bindValidatorsInterface()
+    {
+        $this->app->bind(
+            'Laracasts\Validation\FactoryInterface',
+            'Laracasts\Validation\LaravelValidator'
+        );
+    }
+
+
+    /**
+     * Bind the Grandadevans\GenerateForm and return the command
+     */
+    private function bindTheFormGenerator()
+    {
+        $this->app->bind('generate:form', function ($app) {
+
+            // Inject the form generator into the command
+            $formGenerator = new FormGenerator;
+
+            $userFeedbackHandler = new UserFeedbackHandler;
+
+            return new FormGeneratorCommand($formGenerator, $userFeedbackHandler);
+        });
+    }
+
+
+	private function registerTheCommand()
+	{
+		$this->commands('generate:form');
 	}
 }
