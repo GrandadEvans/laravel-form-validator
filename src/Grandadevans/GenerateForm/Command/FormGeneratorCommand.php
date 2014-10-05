@@ -14,10 +14,12 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * The Console Command for Grandadevans\laravel-form-validator
  *
- * Class FormGeneratorCommand
+ * Class    FormGeneratorCommand
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class FormGeneratorCommand extends Command
@@ -26,44 +28,52 @@ class FormGeneratorCommand extends Command
     /**
      * The console command name.
      *
-     * @var string
+     * @var string  $name   The name of the command as it will appear under "php artisan"
      */
     protected $name = 'generate:form';
 
     /**
      * The console command description.
      *
-     * @var string
+     * @var string  $description    The description of the command when "php artisan help generate:form" is used
      */
     protected $description = 'Generate a new validation form';
 
     /**
      * Reference for the injected FormGenerator object
      *
-     * @var FormGenerator
+     * @var FormGenerator   $formGenerator  The FormGenerator Class that is injected into the constructor
      */
     private $formGenerator;
 
+    /**
+     * References the injected UserFeedbackHandler
+     *
+     * @var UserFeedbackHandler $userFeedbackHandler    The UserFeedbackHandler class injected into the constructor
+     */
+    private $userFeedbackHandler;
 
 
     /**
      * Create a new command instance.
      *
-     * @param FormGenerator $formGenerator
+     * @param FormGenerator       $formGenerator
+     * @param UserFeedbackHandler $userFeedbackHandler
      */
-    public function __construct(FormGenerator $formGenerator)
+    public function __construct(FormGenerator $formGenerator, UserFeedbackHandler $userFeedbackHandler)
     {
 
         parent::__construct();
 
-        $this->formGenerator = $formGenerator;
+        $this->formGenerator       = $formGenerator;
+        $this->userFeedbackHandler = $userFeedbackHandler;
     }
 
 
     /**
      * Execute the console command.
      *
-     * @param   bool $force Whether any existing file should be overwritten or not
+     * @param   bool    $force  Whether any existing file should be overwritten or not
      *
      * @return  array           Return an array containing result status and form path
      */
@@ -76,9 +86,13 @@ class FormGeneratorCommand extends Command
             $details['force'] = true;
         }
 
-        $results = $this->createFormThroughDedicatedClass($details);
+        $result       = $this->createFormThroughDedicatedClass($details);
 
-        $this->provideFeedback($results);
+        $showFeedback = $this->userFeedbackHandler->provideFeedback($this, $result);
+
+        if (false === $showFeedback) {
+            $this->error("There was an unexpected error");
+        }
     }
 
 
@@ -100,12 +114,14 @@ class FormGeneratorCommand extends Command
 
 
     /**
+     * Create form through class whose sole responsibility is to manage the form
+     *
      * Create the form by passing the responsibility to it's own dedicated class
      * and inject the instances we need as well as passing through the details
      *
      * @param   array $details  An array of all the command's details
      *
-     * @return array
+     * @return  array
      */
     private function createFormThroughDedicatedClass($details)
     {
@@ -114,8 +130,8 @@ class FormGeneratorCommand extends Command
             new PathHandler,
             new OutputBuilder,
             new Filesystem,
-            new UserFeedbackHandler($command),
             new Sanitizer,
+            $this,
             $details
         );
 
@@ -139,14 +155,22 @@ class FormGeneratorCommand extends Command
     /**
      * Get a full list of the user provided options
      *
+     * An array of options specified by the user: format is [
+     *      name-of-option,
+     *      shortcut-key,
+     *      (whether required or optional),
+     *      description-of-the-option,
+     *      default-value
+     * ]
+     *
      * @return array
      */
     protected function getOptions()
     {
         return [
-            ['dir', 'd', InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
+            ['dir',       'd', InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
             ['namespace', 's', InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
-            ['rules', 'r', InputOption::VALUE_OPTIONAL,
+            ['rules',     'r', InputOption::VALUE_OPTIONAL,
                 'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such'.
 	            ' as between(3,6)', null],
         ];

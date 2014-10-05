@@ -1,0 +1,16 @@
+Command - phpunit         - pass
+          codeception     - fail
+
+PathHandler - phpspec     - pass
+
+Sanitizer - phpspec       - pass
+
+RuleBuilder - phpspec     - pass
+
+OutputBuilder - phpspec   - pass
+
+
+
+ServiceProvider - phpspec - fail
+
+FormGenerator   - phpspec - fail

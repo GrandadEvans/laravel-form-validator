@@ -6,6 +6,7 @@ use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
+//use Illuminate\Support\ServiceProvider;
 
 /**
  * Service Provider for Grandadevans\laravel-form-validator
@@ -51,6 +52,7 @@ class GenerateFormServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+	    $this->package('Grandadevans/GenerateForm');
     }
 
 
@@ -92,13 +94,12 @@ class GenerateFormServiceProvider extends ServiceProvider
     /**
      * Bind the Grandadevans\GenerateForm and return the command
      */
-    private function bindTheFormGenerator()
+    public  function bindTheFormGenerator()
     {
-        $this->app->bind('generate:form', function ($app) {
+        $this->app['generate:form'] = $this->app->share(function ($app) {
 
             // Inject the form generator into the command
-            $formGenerator = new FormGenerator;
-
+            $formGenerator       = new FormGenerator;
             $userFeedbackHandler = new UserFeedbackHandler;
 
             return new FormGeneratorCommand($formGenerator, $userFeedbackHandler);

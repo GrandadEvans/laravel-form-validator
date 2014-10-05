@@ -1,0 +1,137 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'gulp-phpunit',
+1 verbose cli   '--save-dev' ]
+2 info using npm@1.3.10
+3 info using node@v0.10.25
+4 verbose cache add [ 'gulp-phpunit', null ]
+5 verbose cache add name=undefined spec="gulp-phpunit" args=["gulp-phpunit",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'gulp-phpunit',
+6 verbose parsed url   path: 'gulp-phpunit',
+6 verbose parsed url   href: 'gulp-phpunit' }
+7 silly lockFile becdb9a9-gulp-phpunit gulp-phpunit
+8 verbose lock gulp-phpunit /home/john/.npm/becdb9a9-gulp-phpunit.lock
+9 silly lockFile becdb9a9-gulp-phpunit gulp-phpunit
+10 silly lockFile becdb9a9-gulp-phpunit gulp-phpunit
+11 verbose addNamed [ 'gulp-phpunit', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile a7ffbd7d-gulp-phpunit gulp-phpunit@
+14 verbose lock gulp-phpunit@ /home/john/.npm/a7ffbd7d-gulp-phpunit.lock
+15 silly addNameRange { name: 'gulp-phpunit', range: '*', hasData: false }
+16 verbose url raw gulp-phpunit
+17 verbose url resolving [ 'https://registry.npmjs.org/', './gulp-phpunit' ]
+18 verbose url resolved https://registry.npmjs.org/gulp-phpunit
+19 info trying registry request attempt 1 at 00:32:15
+20 verbose etag "DYDV5LKUVDC2YXLXBK1BNL3PS"
+21 http GET https://registry.npmjs.org/gulp-phpunit
+22 http 304 https://registry.npmjs.org/gulp-phpunit
+23 silly registry.get cb [ 304,
+23 silly registry.get   { date: 'Sat, 27 Sep 2014 23:32:16 GMT',
+23 silly registry.get     server: 'Apache',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     'last-modified': 'Sat, 27 Sep 2014 23:32:16 GMT',
+23 silly registry.get     'cache-control': 'max-age=60',
+23 silly registry.get     etag: '"DYDV5LKUVDC2YXLXBK1BNL3PS"',
+23 silly registry.get     'x-served-by': 'cache-ams4125-AMS',
+23 silly registry.get     'x-cache': 'HIT',
+23 silly registry.get     'x-cache-hits': '1',
+23 silly registry.get     'x-timer': 'S1411860736.818958,VS0,VE0',
+23 silly registry.get     vary: 'Accept',
+23 silly registry.get     'content-length': '0',
+23 silly registry.get     'keep-alive': 'timeout=10, max=50',
+23 silly registry.get     connection: 'Keep-Alive' } ]
+24 verbose etag gulp-phpunit from cache
+25 silly addNameRange number 2 { name: 'gulp-phpunit', range: '*', hasData: true }
+26 silly addNameRange versions [ 'gulp-phpunit',
+26 silly addNameRange   [ '0.0.1',
+26 silly addNameRange     '0.0.2',
+26 silly addNameRange     '0.0.3',
+26 silly addNameRange     '0.0.4',
+26 silly addNameRange     '0.1.0',
+26 silly addNameRange     '0.2.0',
+26 silly addNameRange     '0.2.1',
+26 silly addNameRange     '0.3.0',
+26 silly addNameRange     '0.4.0',
+26 silly addNameRange     '0.4.1',
+26 silly addNameRange     '0.4.2',
+26 silly addNameRange     '0.5.0',
+26 silly addNameRange     '0.5.1',
+26 silly addNameRange     '0.5.2',
+26 silly addNameRange     '0.5.3',
+26 silly addNameRange     '0.6.0',
+26 silly addNameRange     '0.6.1',
+26 silly addNameRange     '0.6.2',
+26 silly addNameRange     '0.6.3' ] ]
+27 verbose addNamed [ 'gulp-phpunit', '0.6.3' ]
+28 verbose addNamed [ '0.6.3', '0.6.3' ]
+29 silly lockFile ae0201ea-gulp-phpunit-0-6-3 gulp-phpunit@0.6.3
+30 verbose lock gulp-phpunit@0.6.3 /home/john/.npm/ae0201ea-gulp-phpunit-0-6-3.lock
+31 silly lockFile ae0201ea-gulp-phpunit-0-6-3 gulp-phpunit@0.6.3
+32 silly lockFile ae0201ea-gulp-phpunit-0-6-3 gulp-phpunit@0.6.3
+33 silly lockFile a7ffbd7d-gulp-phpunit gulp-phpunit@
+34 silly lockFile a7ffbd7d-gulp-phpunit gulp-phpunit@
+35 silly resolved [ { name: 'gulp-phpunit',
+35 silly resolved     version: '0.6.3',
+35 silly resolved     description: 'PHPUnit plugin for Gulp',
+35 silly resolved     main: 'index.js',
+35 silly resolved     dependencies:
+35 silly resolved      { 'map-stream': '~0.0.4',
+35 silly resolved        'gulp-util': '~2.2.14',
+35 silly resolved        gulp: '^3.8.0' },
+35 silly resolved     devDependencies:
+35 silly resolved      { jshint: '~2.5.*',
+35 silly resolved        mocha: '^1.19.0',
+35 silly resolved        should: '^3.3.1',
+35 silly resolved        'gulp-mocha': '^0.4.1',
+35 silly resolved        gulp: '^3.6.0',
+35 silly resolved        'gulp-shell': '^0.2.5',
+35 silly resolved        'gulp-notify': '^1.2.6' },
+35 silly resolved     scripts: { test: 'mocha --reporter spec && jshint ./*.js && jshint ./test/*.js' },
+35 silly resolved     repository:
+35 silly resolved      { type: 'git',
+35 silly resolved        url: 'git://github.com/mikeerickson/gulp-phpunit' },
+35 silly resolved     keywords: [ 'gulpplugin', 'phpunit' ],
+35 silly resolved     author: { name: 'Mike Erickson', email: 'codedungeon@gmail.com' },
+35 silly resolved     license: 'MIT',
+35 silly resolved     bugs: { url: 'https://github.com/mikeerickson/gulp-phpunit/issues' },
+35 silly resolved     engines: { node: '>=0.10.0' },
+35 silly resolved     readme: '# gulp-phpunit\n> PHPUnit plugin for gulp 3\n\n## Usage\n\nFirst, install `gulp-phpunit` as a development dependency:\n\n```shell\nnpm install --save-dev gulp-phpunit\n```\n\nThen, add it to your `gulpfile.js`:\n\n```javascript\nvar phpunit = require(\'gulp-phpunit\');\n\n// option 1: default format\ngulp.task(\'phpunit\', function() {\n\tgulp.src(\'./app/tests/*.php\').pipe(phpunit());\n});\n\n// option 2: with defined bin and options\ngulp.task(\'phpunit\', function() {\n\tvar options = {debug: false};\n\tgulp.src(\'./app/tests/*.php\').pipe(phpunit(\'./vendor/bin/phpunit\',options));\n});\n\n\n// Note: Windows OS may require double backslashes if using other than default location (option 1)\ngulp.task(\'phpunit\', function() {\n  gulp.src(\'./app/tests/*.php\').pipe(phpunit(\'.\\\\path\\\\to\\\\phpunit\'));\n});\n\n// option 3: supply callback to integrate something like notification (using gulp-notify)\n\nvar gulp = require(\'gulp\'),\n notify  = require(\'gulp-notify\'),\n phpunit = require(\'gulp-phpunit\');\n\ngulp.task(\'phpunit\', function() {\n\tvar options = {debug: false, notify: true};\n\tgulp.src(\'app/tests/*.php\')\n\t\t.pipe(phpunit(\'\', options))\n\t\t.on(\'error\', notify.onError({\n\t\t\ttitle: "Failed Tests!",\n\t\t\tmessage: "Error(s) occurred during testing..."\n\t\t}));\n});\n\n```\n\n## API\n\n### phpunit(phpunitpath,options)\n\n#### phpunitpath\n\nType: `String`\n\nThe path to the desired PHPUnit binary\n- If not supplied, the defeault path will be ./vendor/bin/phpunit\n\n#### options.debug\nType: `Boolean`\n\nDebug mode enabled (enables --debug switch as well)\n\n#### options.dryRun\nType: `Boolean`\n\nConfigures PHPUnit command but only echo call (doesnt actually execute command)\n\n#### options.clear\nType: `Boolean`\n\nClear console before executing command\n\n#### options.dryRun\nType: `Boolean`\n\nExecutes dry run (doesn\'t actually execute tests, just echo command that would be executed)\n\n#### options.testClass\nType: `String`\n\nDefine a specific class for testing (supply full path to test class)\n\n#### options.testSuite\nType: `String`\n\nDefine a specific test suite for testing (supply full path to test suite)\n\n#### options.configurationFile\nType: `String`\n\nDefine a path to an xml configuration file (supply full path and filename)\n\n#### options.notify\nType: `Boolean`\n\n## Code Coverage Options:\n\nCall user supplied callback to handle notification\n\n#### options.coverageClover\nType: `String`\n\nGenerate code coverage report in Clover XML format.\n\n#### options.coverageCrap4j\nType: `String`\n\nGenerate code coverage report in Crap4J XML format.\n\n#### options.coverageHtml\nType: `String`\n\nGenerate code coverage report in HTML format.\n\n#### options.coveragePhp\nType: `String`\n\nExport PHP_CodeCoverage object to file.\n\n#### options.coverageText\nType: `String`\n\nGenerate code coverage report in text format.\n-- Default: Standard output.\n\n#### options.coverageXml\nType: `String`\n\nGenerate code coverage report in PHPUnit XML format.\n\n\n## Logging Options:\n\n#### options.logJunit\nType: `String`\n\nLog test execution in JUnit XML format to file.\n\n#### options.logTap\nType: `String`\n\nLog test execution in TAP format to file.\n\n#### options.logJson\nType: `String`\n\nLog test execution in JSON format.\n\n#### options.testdoxHtml\nType: `String`\n\nWrite agile documentation in HTML format to file.\n\n#### options.testdoxText\nType: `String`\n\nWrite agile documentation in Text format to file.\n\n## Test Selection Options:\n\n#### options.filter (pattern)\nType: `String`\n\nFilter which tests to run.\n\n#### options.testSuite (pattern)\nType: `String`\n\nFilter which testsuite to run.\n\n#### options.group (pattern)\nType: `String`\n\nOnly runs tests from the specified group(s).\n\n#### options.excludeGroup\nType: `String`\n\nExclude tests from the specified group(s).\n\n#### options.listGroups\nType: `String`\n\nList available test groups.\n\n#### options.testSuffix\nType: `String`\n\nOnly search for test in files with specified suffix(es). Default: Test.php,.phpt\n\n## Test Execution Options:\n\n#### options.reportUselessTests\nType: `String`\n\nBe strict about tests that do not test anything.\n\n#### options.strictCoverage (default: false)\nType: `Boolean`\n\nBe strict about unintentionally covered code.\n\n#### options.disallowTestOutput (default: false)\nType: `Boolean`\n\nBe strict about output during tests.\n\n#### options.enforceTimeLimit (default: false)\nType: `Boolean`\n\nEnforce time limit based on test size.\n\n#### options.disallowTodoTests (default: false)\nType: `Boolean`\n\nDisallow @todo-annotated tests.\n\n#### options.strict (default: false)\nType: `Boolean`\n\nRun tests in strict mode (enables all of the above).\n\n#### options.processIsolation (default: false)\nType: `Boolean`\n\nRun each test in a separate PHP process.\n\n#### options.noGlobalsBackup (default: false)\nType: `Boolean`\n\nDo not backup and restore $GLOBALS for each test.\n\n#### options.staticBackup (default: false)\nType: `Boolean`\n\nBackup and restore static attributes for each test.\n\n#### options.colors (default: true)\nType: `Boolean`\n\nUse colors in output.\n\n#### options.stderr (default: false)\nType: `Boolean`\n\nWrite to STDERR instead of STDOUT.\n\n#### options.stopOnError (default: false)\nType: `Boolean`\n\nStop execution upon first error.\n\n#### options.stopOnFailure (default: false)\nType: `Boolean`\n\nStop execution upon first error or failure.\n\n#### options.stopOnRisky (default: false)\nType: `Boolean`\n\nStop execution upon first risky test.\n\n#### options.stopOnIncomplete (default: false)\nType: `Boolean`\n\nStop execution upon first incomplete test.\n\n#### options.stopOnSkipped (default: false)\nType: `Boolean`\n\nStop execution upon first skipped test.\n\n#### options.loader\nType: `String`\n\nTestSuiteLoader implementation to use.\n\n#### options.repeat\nType: `Integer | String`\n\nRuns the test(s) repeatedly.\n\n#### options.tap\nType: `Boolean`\n\nReport test execution progress in TAP format.\n\n#### options.testdox\nType: `Boolean`\n\nReport test execution progress in TestDox format.\n\n#### options.printer\nType: `String`\n\nTestSuiteListener implementation to use.\n\n## Configuration Options\n\n#### options.bootstrap\nType: `String`\n\nA "bootstrap" PHP file that is run before the tests.\n\n#### options.configurationFile\nType: `String`\n\nRead configuration from XML file.\n\n#### options.noConfiguration\nType: `Boolean`\n\nIgnore default configuration file (phpunit.xml).\n\n#### options.includePath\nType: `Boolean`\n\nPrepend PHP\'s include_path with given path(s).\n\n\n\n\n\n## Changelog\n\n- 0.6.3 Updated general options\n    - Changed dry run output text color\n\n- 0.6.2 Updated general options\n    - Added dryRun option (echo constructed PHPUnit command) sets opt.debug true\n\n- 0.6.1 Updated README to include all udpated options\n\n- 0.6.0 Updated to support PHPUnit 4.x and new options\n\n    - Added Code Coverage Options\n      - coverageClover\n      - coverageCrap4j\n      - coverageHtml\n      - coveragePHP\n      - coverageText\n      - coverageXML\n      \n    - Added Logging Options\n      - logJunit\n      - logTap\n      - logJson\n      - testdoxHtml \n      - testdoxText\n      \n    - Added Test Selection Options\n      - filter\n      - testsuite\n      - group \n      - excludeGroup \n      - testSuffix \n      \n    - Added Test Execution Options\n      - reportUseless\n      - strictCoverage\n      - disallowTestOutput\n      - enforceTimeLimit\n      - strict\n      - isolation \n      - noGlobals \n      - staticBackup \n      - stopOnError \n      - stopOnFailure \n      - stopOnRisky \n      - stopOnSkipped \n      - displayDebug \n      - testdox\n      - tap\n      \n    - Added Configuration Options\n      - includePath\n      - noColor\n      - noConfig\n\n- 0.5.3 Updated dev dependencies to use latest builds\n\n- 0.5.2: Small adjustments and Configuration File Support (thanks @wayneashleyberry)\n   - Added Configuration File Support\n   - Removed Node 0.9 from Travis support\n   \n- 0.5.1: Added CI Support\n    - Added .travis support\n    - Added .circle support\n\n- 0.5.0: Complete refactoring and cleanup (thanks @taai)\n    - Simplified code and callback handling\n    - Addressed additional issues related to dependecies\n\n- 0.4.2: Added additional tests\n\n- 0.4.1: Code Cleanup\n    - Removed calls to console.log -> gutil.log (playing nice in the playground)\n    - Fixed issue with calling as dependency task (thanks @taai)\n\n- 0.4.0: Added check for invalid PHPUnit binary path as first parameter\n    - Safeguard to assure options is not passed as first parameter\n\n- 0.3.0: Refactoring\n    - Refactored color console message to use gulp-util instance instead of color plugi\n\n- 0.2.1: Update Default Command - Windows Fix\n    - Fixed default command when using windows (thx @imissions)\n\n- 0.1.0:\n    - Enhanced debug output (supporting color)\n\n- 0.0.4:\n    - Updated version number, error publishing full archive to npm in 0.0.3 update\n\n- 0.0.3:\n    - Added support return calling user supplied callback to handle notification\n\n- 0.0.2:\n    - Fixed issue which caused tests to be run multiple times\n    - Added \'clear\' flag to clear console before running tests\n    - Added \'testClass\' option to define a specific class to test\n    - Added \'./vendor/bin/phpunit\' as default bin if no path supplied\n\n- 0.0.1: Initial Release\n\n## Credits\n\ngulp-phpunit written by Mike Erickson\n\nE-Mail: [codedungeon@gmail.com](mailto:codedungeon@gmail.com)\n\nTwitter: [@codedungeon](http://twitter.com/codedungeon)\n\nWebsite: [codedungeon.org](http://codedungeon.org)\n',
+35 silly resolved     readmeFilename: 'README.md',
+35 silly resolved     _id: 'gulp-phpunit@0.6.3',
+35 silly resolved     _from: 'gulp-phpunit@' } ]
+36 info install gulp-phpunit@0.6.3 into /home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form
+37 info installOne gulp-phpunit@0.6.3
+38 info /home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit unbuild
+39 info /home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit unbuild
+40 error error rolling back Error: EACCES, unlink '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi'
+40 error error rolling back  gulp-phpunit@0.6.3 { [Error: EACCES, unlink '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi']
+40 error error rolling back   errno: 3,
+40 error error rolling back   code: 'EACCES',
+40 error error rolling back   path: '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi' }
+41 error Error: EACCES, unlink '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi'
+41 error  { [Error: EACCES, unlink '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi']
+41 error   errno: 3,
+41 error   code: 'EACCES',
+41 error   path: '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi' }
+42 error Please try running this command again as root/Administrator.
+43 error System Linux 3.13.0-36-generic
+44 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "gulp-phpunit" "--save-dev"
+45 error cwd /home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form
+46 error node -v v0.10.25
+47 error npm -v 1.3.10
+48 error path /home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi
+49 error code EACCES
+50 error errno 3
+51 error stack Error: EACCES, unlink '/home/john/www/projects/generate-form-laptop/workbench/grandadevans/generate-form/node_modules/gulp-phpunit/node_modules/gulp-util/node_modules/chalk/node_modules/.bin/has-ansi'
+52 verbose exit [ 3, true ]

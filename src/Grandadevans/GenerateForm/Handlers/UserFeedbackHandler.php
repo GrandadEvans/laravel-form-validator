@@ -9,22 +9,28 @@ namespace Grandadevans\GenerateForm\Handlers;
  */
 class UserFeedbackHandler
 {
-	/**
-	 * @var
-	 */
-	private $command;
+    
+    public $command;
+    
+    public function provideFeedback($command, $details)
+    {
+        $this->command = $command;
 
+        switch ($details['status']) {
+            case 'success':
+                $this->showUserCommandSuccessful($details['path']);
+                break;
 
+            case 'exists':
+//                return 'too bad';
+                $this->doesTheUserWantToOverwriteExistingFile($details['path']);
+                break;
 
-	/**
-	 * @param $command
-	 */
-	public function __construct($command)
-	{
-		$this->command = $command;
-	}
-
-
+            case 'fail':
+                $this->showUserCommandHasFailed($details['path']);
+                break;
+        }
+    }
 	/**
 	 * @param $path
 	 */
@@ -50,12 +56,9 @@ class UserFeedbackHandler
 	 */
 	public function doesTheUserWantToOverwriteExistingFile($path)
 	{
-		if (false !== $this->confirm(
+		if (false !== $this->command->confirm(
 			"This form validator at:\n" . $path . "\nalready exists: Do you want to overwrite it? (y|N)",
-			false
-		)
-		)
-		{
+			false)) {
 
 			// The user wants to overwrite the file so fire the process again with the force option set to true
 			$this->command->fire(true);

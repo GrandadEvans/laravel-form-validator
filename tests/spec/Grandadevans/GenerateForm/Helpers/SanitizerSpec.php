@@ -1,17 +1,12 @@
 <?php
 
-namespace spec\Helpers;
+namespace spec\Grandadevans\GenerateForm\Helpers;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class SanitizerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Helpers\Sanitizer');
-    }
-
 
     /**
      * Test checkConditionExists

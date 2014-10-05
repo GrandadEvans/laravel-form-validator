@@ -1,6 +1,6 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
-
+use Grandadevans\GenerateForm\Helpers\Sanitizer;
 
 
 /**
@@ -71,7 +71,7 @@ class RuleBuilder
 	 *
 	 * @return mixed
 	 */
-	public function getReformattedRules()
+	public function getCompletedRulesAsArray()
     {
         return $this->completedRules;
     }

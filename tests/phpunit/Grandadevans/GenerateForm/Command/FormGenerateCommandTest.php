@@ -4,9 +4,12 @@ namespace Grandadevans\GenerateForm\Command;
 
 use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
+use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Mockery as m;
+use Symfony\Component\Console\Application;
+
 
 /**
  * Class FormGeneratorCommandTest
@@ -28,14 +31,20 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
-	    $formGenerator->shouldReceive('generate')->andReturn(true);
+	    $formGenerator->shouldReceive('generate')->andReturn([
+            'path' => 'app/Forms/FooForm.php',
+            'status' => 'success'
+                                                             ]);
 
 	    // Act
-	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator));
-        $tester->execute(['name' => 'Foo']);
+	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator, new UserFeedbackHandler));
+        $tester->execute(['name' => 'Foo'], [
+            'verbosity',
+            'interactive'
+        ]);
 
         // Assert
-        $this->assertContains('Form has been saved to', trim($tester->getDisplay()));
+        $this->assertContains('Form has been saved to', $tester->getDisplay());
     }
 
     /**
@@ -45,13 +54,20 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $formGenerator = m::mock('Grandadevans\GenerateForm\FormGenerator\FormGenerator');
-        $formGenerator->shouldReceive('generate')->andReturn(true);
-
-        // Act
-        $tester = new CommandTester(new FormGeneratorCommand($formGenerator));
+	    $formGenerator->shouldReceive('generate')->andReturn([
+            'path' => 'app/Forms/FooForm.php',
+            'status' => 'fail'
+                                                             ]);
+	    // Act
+	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator, new UserFeedbackHandler));
         $tester->execute(['name' => 'Foo']);
 
         // Assert
-        $this->assertContains('Form has been saved to', trim($tester->getDisplay()));
+        $this->assertContains('The form could not be saved to', $tester->getDisplay());
     }
+
+    /**
+     * @todo figure out how to mock the getHelper class as it isn't in my system
+     *       Then I can mock the user input for the confirm method
+     */
 }

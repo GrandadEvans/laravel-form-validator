@@ -55,6 +55,12 @@ Don't forget that composer.json will need to know where to autoload the form fro
 }
 ```
 
+Also: as you have changed the classMap you will have to run
+
+```bash
+composer dump-autoload
+```
+
 ## Usage
 From the command line you can call the package with
 

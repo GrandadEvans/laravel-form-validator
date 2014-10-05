@@ -1,6 +1,6 @@
 <?php
 
-use Laracasts\Validation;
+use Laracasts\Validation\FormValidator;
 
 /**
  *

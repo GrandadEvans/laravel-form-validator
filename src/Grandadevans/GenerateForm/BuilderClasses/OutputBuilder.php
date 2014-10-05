@@ -1,6 +1,5 @@
 <?php namespace Grandadevans\GenerateForm\BuilderClasses;
 
-use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Illuminate\Filesystem\Filesystem;
 use Mustache_Engine;
 use \ClassPreloader\Command;
@@ -8,10 +7,12 @@ use \ClassPreloader\Command;
 /**
  * The Output Builder for Grandadevans\laravel-form-validator
  *
- * Class OutputBuilder
+ * Class    OutputBuilder
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class OutputBuilder {
@@ -19,16 +20,9 @@ class OutputBuilder {
     /**
      * The result string to return
      *
-     * @var string
+     * @var string  $ret
      */
     private $returnResult = 'pass';
-
-	/**
-     * The instance of Mustache
-     *
-     * @var Mustache
-     */
-    private $mustache;
 
     /**
      * The Final path of the form
@@ -38,101 +32,79 @@ class OutputBuilder {
     private $formPath;
 
 
-	/**
-	 * Accept the params and kick out the output
-	 *
-	 * Accept the rules, className, namespaceName and path of the form and write the requested file
-	 *
-	 * @param Mustache_Engine     $mustache
-	 * @param Filesystem          $filesystem
-	 * @param UserFeedbackHandler $userFeedbackHandler
-	 * @param array               $details
-	 * @param string              $formPath
-	 */
-    public function build(
-	    Mustache_Engine $mustache,
-	    Filesystem $filesystem,
-	    UserFeedbackHandler $userFeedbackHandler,
-	    $details,
-        $formPath
-    ) {
-	    $this->mustache = $mustache;
-
-	    $this->filesystem = $filesystem;
-
-	    $this->userFeedbackHandler = $userFeedbackHandler;
-
+    /**
+     * Accept the params and kick out the output
+     *
+     * Accept the rules, className, namespaceName and path of the form and write the requested file
+     *
+     * @param Mustache_Engine      $mustache
+     * @param Filesystem           $filesystem
+     * @param array                $details
+     * @param string               $formPath
+     *
+     * @return  array               Returns an array of results including status and path
+     */
+    public function build(Mustache_Engine $mustache, Filesystem $filesystem, $details, $formPath)
+    {
         $this->formPath = $formPath;
 
 	    $namespace = ($details['namespace']) ? : null;
 
-	    $renderedOutput = $this->renderTemplate([
-            'rules'     => $details['rules'],
-            'namespace' => $namespace,
-            'className' => $details['className']
-        ]);
+	    $renderedOutput = $this->renderTemplate(
+            $mustache,
+            [
+                'rules'     => $details['rules'],
+                'namespace' => $namespace,
+                'className' => $details['className']
+            ],
+            $filesystem
+        );
 
-        $this->writeTemplate($renderedOutput, $formPath);
-    }
-
-
-    /**
-     * Called externally this gets the results after the write had been attempted
-     *
-     * @return array
-     */
-    public function getReturnDetails()
-    {
-        return [
-            'result' => $this->returnResult,
-            'fullFormPath' => $this->formPath
-            ];
+        return $this->writeTemplate($filesystem, $renderedOutput, $formPath);
     }
 
 
     /**
      * Render the Template using the instance of Mustache and return the results
      *
-     * @var     array   $args
+     * @param       $mustache
+     * @param array $args
+     * @param       $filesystem
+     *
+     * @internal param array $args
      *
      * @return  string
      */
-    private function renderTemplate($args)
+    public function renderTemplate($mustache, $args, $filesystem)
     {
-        $contents = $this->getTemplateContents();
-
-        return $this->mustache->render($contents, $args);
+        $contents = $this->getTemplateContents($filesystem);
+        return $mustache->render($contents, $args);
     }
 
 
     /**
      * Try to write the rendered output and thrown an error to the terminal if it fails (covered by acceptance test)
      *
+     * @param $filesystem
      * @param $renderedOutput string
+     * @param $formPath
      *
+     * @internal param $command
      * @return bool
      */
-    private function writeTemplate($renderedOutput, $formPath)
+    public function writeTemplate($filesystem, $renderedOutput, $formPath)
     {
-
-		if (false === $this->filesystem->put($formPath, $renderedOutput)) {
-
+		if (false === $filesystem->put($formPath, $renderedOutput)) {
 			// return false instead of throwing a custom exception as I want to return a custom console error to user
-			$this->userFeedbackHandler->showUserCommandHasFailed();
+			return [
+				'status' => 'fail',
+			    'path' => $formPath
+			];
 		}
-
-	    $this->userFeedbackHandler->showUserCommandSuccessful();
-    }
-
-
-    /**
-     * Get and return the instance of Mustache
-     *
-     * @return object
-     */
-    public function getMustache()
-    {
-        return $this->mustache;
+	    return [
+		    'status' => 'success',
+	        'path' => $formPath
+	    ];
     }
 
 
@@ -141,8 +113,11 @@ class OutputBuilder {
      *
      * @return string
      */
-    private function getTemplateContents()
+    public function getTemplateContents($filesystem)
     {
-        return $this->filesystem->get(__DIR__ . '/../Templates/GenerateFormTemplate.stub');
+        $path = __DIR__ . '/../Templates/GenerateFormTemplate.stub';
+
+        return $filesystem->get($path);
     }
 }
+;;

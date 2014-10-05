@@ -5,6 +5,7 @@ namespace spec\Grandadevans\GenerateForm\BuilderClasses;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Mockery as m;
+use Grandadevans\GenerateForm\Helpers\Sanitizer;
 
 /**
  * Class RuleBuilderSpec
@@ -27,7 +28,7 @@ class RuleBuilderSpec extends ObjectBehavior
     public function let()
     {
 	    $sanitizer = m::mock('Grandadevans\GenerateForm\Helpers\Sanitizer');
-	    $sanitizer->shouldReceive('extractLaravelConditionsFromRule')->andReturn('test');
+	    $sanitizer->shouldReceive('extractLaravelConditionsFromRule')->andReturn('condition1|condition2');
 
         $this->buildRules($sanitizer, $this->rulesToPass);
     }
@@ -56,26 +57,9 @@ class RuleBuilderSpec extends ObjectBehavior
 	 */
     public function it_returns_an_array_of_reformatted_rules()
     {
-        $this->getReformattedRules()->shouldBeArray();
+        $this->getCompletedRulesAsArray()->shouldBeArray();
     }
 
-
-	/**
-	 * Test checkConditionExists
-	 */
-	public function it_should_pass_if_a_correct_condition_is_set()
-	{
-		$this->checkConditionExists('digits')->shouldBeBool(true);
-	}
-
-
-	/**
-	 * Test checkConditionExists
-	 */
-	public function it_should_fail_if_an_incorrect_condition_is_set()
-	{
-		$this->shouldThrow('\Exception')->during('checkConditionExists', ['foobar']);
-	}
 
 
 	/**
@@ -86,18 +70,4 @@ class RuleBuilderSpec extends ObjectBehavior
         $this->getCompletedRules()->shouldHaveCount(2);
     }
 
-
-	/**
-	 * Test extractLaravelConditionsFromRule
-	 */
-	public function it_converts_an_array_of_conditions_back_into_a_string()
-	{
-		$this->extractLaravelConditionsFromRule([
-			'password',
-			'required',
-		    'alpha',
-		    'confirmed'
-		                                        ])->shouldBeEqualTo('required|alpha|confirmed');
-
-	}
 }

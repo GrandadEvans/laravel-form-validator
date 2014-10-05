@@ -42,28 +42,24 @@ class PathHandler
     private $name;
 
 
-
-	/**
-	 * Set the forms full path to a property
+    /**
+     * Set the forms full path to a property
      *
-     * @param   Filesystem  $file   An instance of the Filesystem
-     * @param   array       $details
+     * @param Sanitizer $sanitizer
+     * @param   array   $details
      *
+     * @internal param Filesystem $file An instance of the Filesystem
      * @return  string
-	 */
-	public function getFullPath(Filesystem $file, Sanitizer $sanitizer, $details)
+     */
+	public function getFullPath(Sanitizer $sanitizer, $details)
 	{
-		$this->file = $file;
-
-		$this->sanitizer = $sanitizer;
-
 		$name = $this->getFileName($details);
 
-		$dir = $this->getDirectory($details);
+		$dir = $this->getDirectory($details, $sanitizer);
 
 		$this->makeSureFinalDirectoryExist($dir);
 
-        $fullPath = $this->sanitizer->stripDoubleDirectorySeparators($dir . DS . $name);
+        $fullPath = $sanitizer->stripDoubleDirectorySeparators($dir . DS . $name);
 
 		$this->fullFormPath = $fullPath;
 
@@ -78,7 +74,7 @@ class PathHandler
      *
      * @return  string
 	 */
-	private function getFileName($details)
+	public function getFileName($details)
 	{
         // Strip "Form" and/or ".php" from the name provided
         $className = preg_replace("/(Form)?(\.php)?/", '', $details['className']);
@@ -98,19 +94,18 @@ class PathHandler
      *
      * @return string
      */
-    private function getDirectory($details)
+    public function getDirectory($details, $sanitizer)
 	{
 		if ( ! empty($details['dir'])) {
 
 			$dir = $details['dir'];
 
 		} elseif ( ! empty($details['namespace'])) {
-
-			$dir = $this->sanitizer->convertNamespaceToPath($details['namespace']);
+			$dir = $sanitizer->convertNamespaceToPath($details['namespace']);
 
 		} else {
 
-			$dir = app_path() . '/Forms';
+			$dir = 'app/Forms';
 		}
 
 		return $dir;
@@ -124,9 +119,9 @@ class PathHandler
      *
      * @return  bool
      */
-    public function doesPathExist($path)
+    public function doesPathExist($path, $filesystem)
 	{
-		if (false !== $this->file->exists($path)) {
+		if (false !== $filesystem->exists($path)) {
 			return true;
 		}
 
@@ -139,10 +134,29 @@ class PathHandler
      *
      * @param string    $dir
      */
-    private function makeSureFinalDirectoryExist($dir)
+    public function makeSureFinalDirectoryExist($dir, $filesystem = null)
 	{
-		if ( ! $this->file->isDirectory($dir)) {
-			$this->file->makeDirectory($dir, 0755, true);
+        if (is_null($filesystem)) {
+            $filesystem = new Filesystem;
+        }
+
+        $isDirectory = $filesystem->isDirectory($dir);
+
+        if ( !$isDirectory) {
+            $this->createMissingDirectory($dir, $filesystem);
 		}
+
+        return $isDirectory;
 	}
+
+    /**
+     * @param $dir
+     * @param $filesystem
+     *
+     * @return mixed
+     */
+    public function createMissingDirectory($dir, $filesystem)
+    {
+        return $filesystem->makeDirectory($dir, 0755, true);
+    }
 }

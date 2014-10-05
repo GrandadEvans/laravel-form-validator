@@ -2,8 +2,8 @@
 
 use Grandadevans\GenerateForm\BuilderClasses\OutputBuilder;
 use Grandadevans\GenerateForm\BuilderClasses\RuleBuilder;
+use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
 use Grandadevans\GenerateForm\Handlers\PathHandler;
-use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Grandadevans\GenerateForm\Helpers\Sanitizer;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -104,18 +104,20 @@ class FormGenerator
 	    OutputBuilder $outputBuilder,
 	    Filesystem $filesystem,
 	    Sanitizer $sanitizer,
+        FormGeneratorCommand $command,
 	    array $details
+
     ) {
-        $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $details);
+        $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $command, $details);
 
 	    // Get the full form path
-	    $this->fullFormPath = $this->pathHandler->getFullPath($filesystem, $sanitizer, $details);
+	    $this->fullFormPath = $this->pathHandler->getFullPath($sanitizer, $details);
 
         // If Force is false and the path exists then return with the error
-        if (false === $details['force'] && false !== $this->pathHandler->doesPathExist($this->fullFormPath)) {
+        if (false === $details['force'] && false !== $this->pathHandler->doesPathExist($this->fullFormPath, $filesystem)) {
             return [
-                'fullFormPath' => $this->fullFormPath,
-                'result'       => 'fileExists'
+                'path' => $this->fullFormPath,
+                'status'       => 'exists'
             ];
         }
 
@@ -176,19 +178,17 @@ class FormGenerator
      */
     private function buildOutput($processedRules)
     {
-        $this->outputBuilder->build(
+        return $this->outputBuilder->build(
 	        new Mustache_Engine,
 	        new Filesystem,
-	        $this->userFeedbackHandler,
 	        [
                 'rules' => $processedRules,
                 'className' => $this->className,
                 'namespace' => $this->namespace,
 	        ],
-            $this->pathHandler->getFullPath($this->file, $this->sanitizer, $this->details)
+            $this->pathHandler->getFullPath($this->sanitizer, $this->details)
         );
 
-        return $this->outputBuilder->getReturnDetails();
 
     }
 
@@ -207,16 +207,16 @@ class FormGenerator
 	    $pathHandler,
 	    $outputBuilder,
 	    $filesystem,
-	    $userFeedbackHandler,
 	    $sanitizer,
+        $command,
 	    $details
     ) {
 	    $this->pathHandler         = $pathHandler;
         $this->ruleBuilder         = $ruleBuilder;
         $this->outputBuilder       = $outputBuilder;
         $this->file                = $filesystem;
-	    $this->userFeedbackHandler = $userFeedbackHandler;
 	    $this->sanitizer           = $sanitizer;
+        $this->command             = $command;
         $this->details             = $details;
     }
 }
