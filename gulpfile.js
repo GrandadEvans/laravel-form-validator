@@ -4,13 +4,29 @@ var notify = require('gulp-notify');
 var phpspec = require('gulp-phpspec');
 var phpunit = require('gulp-phpunit');
 
-gulp.task('phpunit', function() {
-	gulp.src('./tests/phpunit/Grandadevans/GenerateForm/Command/FormGenerateCommandTest.php')
-		.pipe(phpunit('./vendor/bin/phpunit', {
-				"clear": true,
-				"configurationFile": "./phpunit.xml"
 
-			}))
+gulp.task('phpunit', function() {
+	var options = {
+		notify: true,
+		clear: true,
+		noInteraction: true,
+		formatter: "pretty",
+		"configurationFile": "./phpunit.xml"
+	};
+	gulp.src([
+		'src/Grandadevans/GenerateForm/Command/FormGeneratorCommand.php',
+		'tests/phpunit/Grandadevans/GenerateForm/Command/FormGenerateCommandTest.php'
+		])
+		.pipe(phpunit('phpunit', options))
+		.on('error', notify.onError({
+			title: "Testing Failed",
+			message: "Error(s) occurred during test..."
+		}))
+		.pipe(notify({
+			title: "Testing Passed",
+			message: "All tests have passed..."
+		})
+	);
 });
 
 gulp.task('phpspec', function() {
@@ -33,9 +49,30 @@ gulp.task('phpspec', function() {
 });
 
 // set watch task to look for changes in test files
+gulp.task('watch-phpunit', function () {
+	gulp.watch([
+		'src/Grandadevans/GenerateForm/Command/FormGeneratorCommand.php',
+		'tests/phpunit/Grandadevans/GenerateForm/Command/FormGenerateCommandTest.php'
+	], ['phpunit']);
+});
+
+
+// set watch task to look for changes in test files
 gulp.task('watch-phpspec', function () {
-	gulp.watch(['tests/spec/**/*Spec.php','src/**/*'], ['phpspec']);
+	gulp.watch([
+		'src/**/*',
+		'tests/spec/**/*'
+	], ['phpspec']);
 });
 
 // The default task (called when you run `gulp` from cli)
-gulp.task('default', ['phpspec', 'watch-phpspec']);
+gulp.task('default', ['notify-watching', 'watch-phpspec', 'watch-phpspec']);
+
+
+gulp.task('notify-watching', function() {
+	gulp.src('./')
+		.pipe(notify({
+			title: 'Automatic testing ACTIVE',
+			message: 'Automatic testing for PHPUnit/PHPSpec files is ACTIVE.'
+		}));
+});
