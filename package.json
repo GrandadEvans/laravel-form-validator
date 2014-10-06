@@ -1,7 +1,21 @@
 { "name": "laravel-form-validator",
 	"description": "The automatic testing portion of the laravel-form-validator php package",
-	"version": "0.0.0",
-	"dependancies" : {
+	"homepage": "https://github.com/GrandadEvans/laravel-form-validator",
+	"keywords": ["laravel", "form", "validator"],
+	"author": "John Evans <john@grandadevans.com>",
+	"contributors": [],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GrandadEvans/laravel-form-validator"
+	},
+	"main": "",
+	"version": "0.1.4",
+	"license": "MIT",
+	"private": true,
+	"bugs": {
+		"url": "https://github.com/GrandadEvans/laravel-form-validator/issues"
+	},
+	"dependencies" : {
 		"gulp": "~3.8.0",
 		"gulp-notify": "~1.7.0",
 		"gulp-phpspec": "~0.3.0",
