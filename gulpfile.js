@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var notify = require('gulp-notify');
-//var codecept = require('gulp-codeception');
 var phpspec = require('gulp-phpspec');
 var phpunit = require('gulp-phpunit');
 
@@ -48,7 +47,6 @@ gulp.task('phpspec', function() {
 		}));
 });
 
-// set watch task to look for changes in test files
 gulp.task('watch-phpunit', function () {
 	gulp.watch([
 		'src/Grandadevans/GenerateForm/Command/FormGeneratorCommand.php',
@@ -56,18 +54,12 @@ gulp.task('watch-phpunit', function () {
 	], ['phpunit']);
 });
 
-
-// set watch task to look for changes in test files
 gulp.task('watch-phpspec', function () {
 	gulp.watch([
 		'src/**/*',
 		'tests/spec/**/*'
 	], ['phpspec']);
 });
-
-// The default task (called when you run `gulp` from cli)
-gulp.task('default', ['notify-watching', 'watch-phpspec', 'watch-phpspec']);
-
 
 gulp.task('notify-watching', function() {
 	gulp.src('./')
@@ -76,3 +68,7 @@ gulp.task('notify-watching', function() {
 			message: 'Automatic testing for PHPUnit/PHPSpec files is ACTIVE.'
 		}));
 });
+
+
+gulp.task('default', ['notify-watching', 'watch-phpspec', 'watch-phpspec']);
+
