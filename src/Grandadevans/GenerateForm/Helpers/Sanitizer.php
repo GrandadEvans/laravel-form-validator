@@ -4,14 +4,24 @@ namespace Grandadevans\GenerateForm\Helpers;
 
 use \Exception;
 
+/**
+ * The Output Builder for Grandadevans\laravel-form-validator
+ *
+ * Class    Sanitizer
+ *
+ * @author  john Evans<john@grandadevans.com>
+ *
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
+ * @package Grandadevans\laravel-form-validator
+ */
 class Sanitizer
 {
-
 
 	/**
 	 * An array of conditions allowed by the Laravel framework
 	 *
-	 * @var array
+	 * @var array $allowableConditions      An array of laravel allowed conditions
 	 */
 	private $allowableConditions = [
 		'accepted',
@@ -58,9 +68,9 @@ class Sanitizer
 	/**
 	 * Convert Namespaces to paths
 	 *
-	 * @param string    $path
+	 * @param string    $path   The namespace to sanitize
 	 *
-	 * @return string
+	 * @return string           The sanitized namespace converted to path
 	 */
 	public function convertNamespaceToPath($path)
 	{
@@ -71,9 +81,9 @@ class Sanitizer
 	/**
 	 * Strip any extra directory separators from any paths such as home//john
 	 *
-	 * @param $in   string
+     * @param  string   $in     The path to be sanitized
 	 *
-	 * @return      string
+	 * @return string           The returned path free of double directory separators
 	 */
 	public function stripDoubleDirectorySeparators($in)
 	{
@@ -85,27 +95,24 @@ class Sanitizer
 	}
 
 
-
-
-
 	/**
 	 * Here we make the valid conditions back into a string for the validation class
 	 *
-	 * @param   array   $laravelConditions
+	 * @param   array   $laravelConditions      An array of conditions to extract and validate
 	 *
-	 * @return  array
+	 * @return  string                          A string of conditions for this specific rule
 	 */
 	public function extractLaravelConditionsFromRule($laravelConditions)
 	{
 		$validInputConditions = "";
 
-		$i = 1;
+        /*
+         * Use while and not a foreach as we need to skip over the first index as that is the name of the field
+         */
+        $i = 1;
 		while (isset($laravelConditions[$i])) {
 
-			$this->checkConditionExists($laravelConditions[$i]);
-
-			// Separate each valid condition with a pipe
-			$validInputConditions .= $laravelConditions[$i] . '|';
+            $validInputConditions = $this->extractConditionIfValid($laravelConditions, $i, $validInputConditions);
 
 			$i++;
 		}
@@ -134,6 +141,7 @@ class Sanitizer
 		return $condition;
 	}
 
+
 	/**
 	 * Accept an unclean condition and make sure it is the array of Laravel allowed conditions
 	 *
@@ -151,4 +159,23 @@ class Sanitizer
 
 		throw new Exception("\"{$condition}\" is not a valid laravel condition");
 	}
+
+
+    /**
+     * @param $laravelConditions
+     * @param $i
+     * @param $validInputConditions
+     *
+     * @return string
+     * @throws Exception
+     */
+    private function extractConditionIfValid($laravelConditions, $i, $validInputConditions)
+    {
+        $this->checkConditionExists($laravelConditions[$i]);
+
+        // Separate each valid condition with a pipe
+        $validInputConditions .= $laravelConditions[$i] . '|';
+
+        return $validInputConditions;
+    }
 }

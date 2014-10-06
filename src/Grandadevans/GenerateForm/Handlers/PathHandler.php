@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\File;
  * Class PathHandler
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class PathHandler
@@ -24,40 +26,24 @@ class PathHandler
      */
     private $fullFormPath;
 
-    /**
-     * Array of details holding the directory and name etc
-     *
-     * @var array
-     */
-    private $details;
-
-    /**
-     * @var string
-     */
-    private $dir;
-
-    /**
-     * @var string
-     */
-    private $name;
-
 
     /**
      * Set the forms full path to a property
      *
-     * @param Sanitizer $sanitizer
-     * @param   array   $details
+     * @param   Sanitizer $sanitizer
+     * @param   array     $details
      *
-     * @internal param Filesystem $file An instance of the Filesystem
+     * @param Filesystem  $filesystem
+     *
      * @return  string
      */
-	public function getFullPath(Sanitizer $sanitizer, $details)
+	public function getFullPath(Sanitizer $sanitizer, $details, Filesystem $filesystem = null)
 	{
 		$name = $this->getFileName($details);
 
 		$dir = $this->getDirectory($details, $sanitizer);
 
-		$this->makeSureFinalDirectoryExist($dir);
+		$this->makeSureFinalDirectoryExist($dir, $filesystem);
 
         $fullPath = $sanitizer->stripDoubleDirectorySeparators($dir . DS . $name);
 
@@ -90,7 +76,8 @@ class PathHandler
      * then we convert the --namespace into a PSR-0 directory;
      * finally we use the default directory
      *
-     * @param $details
+     * @param array     $details
+     * @param Sanitizer $sanitizer  Instance of Sanitizer
      *
      * @return string
      */
@@ -115,7 +102,8 @@ class PathHandler
     /**
      * Check to see if the path already exists
      *
-     * @param   string    $path
+     * @param   string      $path
+     * @param   Filesystem  $filesystem     Instance of the Illuminate Filesystem
      *
      * @return  bool
      */
@@ -132,7 +120,10 @@ class PathHandler
     /**
      * Make sure thar the final directory exists, if not then create it
      *
-     * @param string    $dir
+     * @param string $dir
+     * @param mixed     $filesystem     An instance of filesystem may or may not be passed depending on whether testing
+     *
+     * @return bool
      */
     public function makeSureFinalDirectoryExist($dir, $filesystem = null)
 	{

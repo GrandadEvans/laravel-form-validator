@@ -9,7 +9,9 @@ use Grandadevans\GenerateForm\Helpers\Sanitizer;
  * Class RuleBuilder
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class RuleBuilder
@@ -28,12 +30,14 @@ class RuleBuilder
      */
     private $individualRules;
 
+
     /**
      * Main method in charge of building up the rules
      *
-     * @param   string  $rules
+     * @param   Sanitizer   $sanitizer  Instance of the sanitizer class
+     * @param   string      $rules      The original rule string
      *
-     * @return  array
+     * @return  array   Return an array of all the completed rules
      */
     public function buildRules(Sanitizer $sanitizer, $rules)
 	{
@@ -69,7 +73,7 @@ class RuleBuilder
 	/**
 	 * Called from the Command class to get a list of the properly formatted rules array
 	 *
-	 * @return mixed
+	 * @return array    Return an array of completed rules
 	 */
 	public function getCompletedRulesAsArray()
     {
@@ -85,6 +89,7 @@ class RuleBuilder
     {
 	    $count = $this->individualRules;
 
+        // Only process if there are actually rules to process otherwise an empty array will throw Mustache off
 	    if (false !== $count) {
 
 	        foreach($this->individualRules as $rule) {
@@ -93,12 +98,11 @@ class RuleBuilder
         }
     }
 
+
     /**
      * Split an individual rule down to it's component conditions
      *
-     * @param string $rule
-     *
-     * @throws Exception
+     * @param   string      $rule   Separate the rule into valid conditions
      */
     public function separateNextRuleIntoComponentRules($rule)
     {
@@ -139,7 +143,7 @@ class RuleBuilder
 	/**
 	 * Return a list of completed rules
 	 *
-	 * @return array
+	 * @return array    Return the array of completed rules
 	 */
 	public function getCompletedRules()
 	{

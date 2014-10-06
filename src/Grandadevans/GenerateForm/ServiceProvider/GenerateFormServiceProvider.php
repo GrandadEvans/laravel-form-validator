@@ -6,7 +6,6 @@ use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
-//use Illuminate\Support\ServiceProvider;
 
 /**
  * Service Provider for Grandadevans\laravel-form-validator
@@ -14,7 +13,9 @@ use Illuminate\Support\Facades\Artisan;
  * Class GenerateFormServiceProvider
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class GenerateFormServiceProvider extends ServiceProvider
@@ -71,7 +72,6 @@ class GenerateFormServiceProvider extends ServiceProvider
      */
     private function defineDirectorySeparator()
     {
-        // Define the Directory separator as a constant
         if (!defined('DS')) {
             define('DS', DIRECTORY_SEPARATOR);
         }

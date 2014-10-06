@@ -8,7 +8,20 @@ use Prophecy\Argument;
 use Mustache_Engine;
 use Mockery as m;
 
-
+/**
+ * For some reason which I am not tooo bothered about at this moment in time DocBlocks aren't working
+ *
+ * As soon as I add Docblocks to the let method all the tests fail. They basically don't use the "use" statement
+ * above and try to locate the Filesystem class under Grandadevans\...
+ * This is the case even if I set the explicit namespace in the method ie
+ *      public function it_tests_the_whole_output_system(\Illuminate\Filesystem\Filesystem $filesystem)
+ *
+ * Class OutputBuilderSpec
+ *
+ * @package spec\Grandadevans\GenerateForm\BuilderClasses
+ *
+ * @todo    Figure out why the tests fail when I add Dockblocks
+ */
 class OutputBuilderSpec extends ObjectBehavior
 {
 

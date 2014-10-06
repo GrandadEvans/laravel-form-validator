@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Filesystem\Filesystem;
 
 
+/**
+ * Class PathHandlerSpec
+ *
+ * @package spec\Grandadevans\GenerateForm\Handlers
+ */
 class PathHandlerSpec extends ObjectBehavior
 {
     public function it_creates_the_correct_directory_when_namespace_given_but_no_dir(Sanitizer $sanitizer)
@@ -109,8 +114,11 @@ class PathHandlerSpec extends ObjectBehavior
         $this->makeSureFinalDirectoryExist($dir, $filesystem)->shouldReturn(true);
     }
 
-    public function it_gets_the_full_form_path(Sanitizer $sanitizer)
+    public function it_gets_the_full_form_path(Sanitizer $sanitizer, Filesystem $filesystem)
     {
+        /*
+         * This test duplicates some code as it also tests the makeSureFinalDirectoryExists
+         */
         define('DS', DIRECTORY_SEPARATOR);
 
         $details = [
@@ -122,6 +130,11 @@ class PathHandlerSpec extends ObjectBehavior
         $sanitizer->stripDoubleDirectorySeparators('This/Is/Yet/Another/Test/Directory/FooBarForm.php')
             ->willReturn('This/Is/Yet/Another/Test/Directory/FooBarForm.php');
 
-        $this->getFullPath($sanitizer, $details)->shouldReturn('This/Is/Yet/Another/Test/Directory/FooBarForm.php');
+        /*
+         * Mock the filesystem and tell the method that the directory already exists otherwise it will go & create it
+         */
+        $filesystem->isDirectory('This/Is/Yet/Another/Test/Directory')->willReturn(true);
+
+        $this->getFullPath($sanitizer, $details, $filesystem)->shouldReturn('This/Is/Yet/Another/Test/Directory/FooBarForm.php');
     }
 }

@@ -5,13 +5,29 @@ namespace Grandadevans\GenerateForm\Handlers;
 /**
  * Class UserFeedbackHandler
  *
- * @package Grandadevans\GenerateForm\Handlers
+ * @author  john Evans<john@grandadevans.com>
+ *
+ * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
+ * @package Grandadevans\laravel-form-validator
  */
 class UserFeedbackHandler
 {
-    
+
+    /**
+     * The instance of the command is needed to pass information back to the user
+     *
+     * @var Command $command    Instance of the Command
+     */
     public $command;
-    
+
+
+    /**
+     * The main handler for the class which iterates through the feedback status and farms the logic out
+     *
+     * @param Command   $command    The passed instance of the Command
+     * @param array     $details    The feedback details
+     */
     public function provideFeedback($command, $details)
     {
         $this->command = $command;
@@ -22,7 +38,6 @@ class UserFeedbackHandler
                 break;
 
             case 'exists':
-//                return 'too bad';
                 $this->doesTheUserWantToOverwriteExistingFile($details['path']);
                 break;
 
@@ -31,8 +46,12 @@ class UserFeedbackHandler
                 break;
         }
     }
+
+
 	/**
-	 * @param $path
+     * Tell the user that there has been an error and display it in bright red letters!
+     *
+	 * @param string    $path   The path that has failed
 	 */
 	public function showUserCommandHasFailed($path)
 	{
@@ -42,7 +61,9 @@ class UserFeedbackHandler
 
 
 	/**
-	 * @param $path
+     * Tell the user that they should thank their lucky stars that another developer has tested their open source code ;-)
+     *
+	 * @param string    $path   The path that has been created
 	 */
 	public function showUserCommandSuccessful($path)
 	{
@@ -52,7 +73,9 @@ class UserFeedbackHandler
 
 
 	/**
-	 * @param $path
+     * Ask the user is they wish to overwrite an existing file
+     *
+	 * @param string    $path   The path that already exists
 	 */
 	public function doesTheUserWantToOverwriteExistingFile($path)
 	{

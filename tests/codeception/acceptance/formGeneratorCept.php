@@ -1,5 +1,8 @@
 <?php 
 
+/*
+ * If the test results exist from a previous test then get rid of them!
+ */
 if (false !== file_exists('tests/codeception/actualTestResults/FooForm.php')) {
 	unlink('tests/codeception/actualTestResults/FooForm.php');
 }
@@ -7,6 +10,8 @@ if (false !== file_exists('tests/codeception/actualTestResults/FooForm.php')) {
 if (false !== file_exists('app/Forms/FooForm.php')) {
 	unlink('app/Forms/FooForm.php');
 }
+
+
 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('create a form taking into account all valid parameters');

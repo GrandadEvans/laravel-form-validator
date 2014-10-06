@@ -17,7 +17,9 @@ use Symfony\Component\Console\Input\InputOption;
  * Class FormGenerator
  *
  * @author  john Evans<john@grandadevans.com>
+ *
  * @licence https://github.com/GrandadEvans/laravel-form-validator/blob/master/LICENSE LICENSE MIT
+ *
  * @package Grandadevans\laravel-form-validator
  */
 class FormGenerator
@@ -38,7 +40,7 @@ class FormGenerator
     private $namespace;
 
     /**
-     * The classname as specified by the user (or defaults to Form)
+     * The className as specified by the user (or defaults to Form)
      *
      * @var string
      */
@@ -56,13 +58,13 @@ class FormGenerator
      *
      * @var string
      */
+
     private $dir;
 
     /**
      * Form Details
      */
     private $details;
-
 
     /**
      * @var PathHandler
@@ -99,13 +101,13 @@ class FormGenerator
      * @return array
      */
     public function generate(
-	    RuleBuilder $ruleBuilder,
-	    PathHandler $pathHandler,
-	    OutputBuilder $outputBuilder,
-	    Filesystem $filesystem,
-	    Sanitizer $sanitizer,
+	    RuleBuilder          $ruleBuilder,
+	    PathHandler          $pathHandler,
+	    OutputBuilder        $outputBuilder,
+	    Filesystem           $filesystem,
+	    Sanitizer            $sanitizer,
         FormGeneratorCommand $command,
-	    array $details
+	    array                $details
 
     ) {
         $this->setDependancies($ruleBuilder, $pathHandler, $outputBuilder, $filesystem, $sanitizer, $command, $details);
@@ -115,17 +117,12 @@ class FormGenerator
 
         // If Force is false and the path exists then return with the error
         if (false === $details['force'] && false !== $this->pathHandler->doesPathExist($this->fullFormPath, $filesystem)) {
-            return [
-                'path' => $this->fullFormPath,
-                'status'       => 'exists'
-            ];
+            return ['path' => $this->fullFormPath, 'status' => 'exists'];
         }
 
         $this->setFormAttributes($details);
 
-        $buildResult = $this->attemptToBuildForm();
-
-        return $buildResult;
+        return $this->attemptToBuildForm();
     }
 
 
@@ -200,6 +197,8 @@ class FormGenerator
      * @param PathHandler   $pathHandler
      * @param OutputBuilder $outputBuilder
      * @param Filesystem    $filesystem
+     * @param               $sanitizer
+     * @param               $command
      * @param array         $details
      */
     private function setDependancies(

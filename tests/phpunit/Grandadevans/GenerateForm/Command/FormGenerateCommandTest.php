@@ -2,8 +2,6 @@
 
 namespace Grandadevans\GenerateForm\Command;
 
-use Grandadevans\GenerateForm\Command\FormGeneratorCommand;
-use Grandadevans\GenerateForm\Handlers\PathHandler;
 use Grandadevans\GenerateForm\Handlers\UserFeedbackHandler;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -34,7 +32,7 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
 	    $formGenerator->shouldReceive('generate')->andReturn([
             'path' => 'app/Forms/FooForm.php',
             'status' => 'success'
-                                                             ]);
+        ]);
 
 	    // Act
 	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator, new UserFeedbackHandler));
@@ -44,7 +42,7 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
         ]);
 
         // Assert
-        $this->assertContains('Form has been saved to', $tester->getDisplay());
+        assertContains('Form has been saved to', $tester->getDisplay());
     }
 
     /**
@@ -57,13 +55,14 @@ class FormGeneratorCommandTest extends PHPUnit_Framework_TestCase
 	    $formGenerator->shouldReceive('generate')->andReturn([
             'path' => 'app/Forms/FooForm.php',
             'status' => 'fail'
-                                                             ]);
-	    // Act
+        ]);
+
+        // Act
 	    $tester = new CommandTester(new FormGeneratorCommand($formGenerator, new UserFeedbackHandler));
         $tester->execute(['name' => 'Foo']);
 
         // Assert
-        $this->assertContains('The form could not be saved to', $tester->getDisplay());
+        assertContains('The form could not be saved to', $tester->getDisplay());
     }
 
     /**
