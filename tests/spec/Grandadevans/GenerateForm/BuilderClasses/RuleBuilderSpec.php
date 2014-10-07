@@ -44,6 +44,15 @@ class RuleBuilderSpec extends ObjectBehavior
 
 
 	/**
+	 * Test separateIndividualRules with space around the ampersand
+	 */
+    public function it_splits_individual_rules_with_space_around_ampersand()
+    {
+        $this->separateIndividualRules(str_replace('&', ' & ', $this->rulesToPass))->shouldHaveCount(2);
+    }
+
+
+	/**
 	 * Test separateIndividualRules
 	 */
 	public function it_doesnt_try_to_splits_individual_rules_if_nothing_is_passed()
