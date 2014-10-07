@@ -63,7 +63,7 @@ class RuleBuilder
 	public function separateIndividualRules($rules = null)
 	{
 		if ( ! is_null($rules)) {
-			return preg_split("/ & ?/", $rules);
+			return preg_split("/ ?& ?/", $rules);
 		}
 
 		return false;

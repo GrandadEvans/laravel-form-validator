@@ -17,7 +17,7 @@ class RuleBuilderSpec extends ObjectBehavior
 	/**
 	 * @var string
 	 */
-	private $rulesToPass = "baz|required|between:3,6|digits & qux|between:3,6";
+	private $rulesToPass = "baz|required|between:3,6|digits&qux|between:3,6";
 
 
 	/**
