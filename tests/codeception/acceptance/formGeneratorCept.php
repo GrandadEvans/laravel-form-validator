@@ -16,20 +16,20 @@ if (false !== file_exists('app/Forms/FooForm.php')) {
 $I = new AcceptanceTester($scenario);
 $I->wantTo('create a form taking into account all valid parameters');
 
-$base_dir = '../../../';
+$baseDir = '../../../';
+$vendorDir = './vendor/bin/';
 
 
 /*
  * Test all options
  */
-$command = 'php ' . $base_dir . 'artisan generate:form Foo --dir="' . $base_dir . '/tests/codeception/actualTestResults" --namespace="Bar" --rules="baz|required|email & qux|between:3,6"';
+$command = 'php ' . $baseDir . 'artisan generate:form Foo --dir="tests/codeception/actualTestResults" --namespace="Bar" --rules="baz|required|email & qux|between:3,6"';
 $I->runShellCommand($command);
 
 $I->seeInShellOutput('Form has been saved to');
 
-$I->openFile($base_dir . '/tests/codeception/actualTestResults/FooForm.php');
-$I->canSeeFileContentsEqual(file_get_contents($base_dir .
-    '/tests/codeception/expectedTestResults/FooForm-with-all-options.php'));
+$I->openFile('tests/codeception/actualTestResults/FooForm.php');
+$I->canSeeFileContentsEqual(file_get_contents('tests/codeception/expectedTestResults/FooForm-with-all-options.php'));
 
 unlink('tests/codeception/actualTestResults/FooForm.php');
 
@@ -38,14 +38,13 @@ unlink('tests/codeception/actualTestResults/FooForm.php');
 /*
  * Test no namespace and no rules
  */
-$command = 'php ' . $base_dir . 'artisan generate:form Foo --dir="' . $base_dir . '/tests/codeception/actualTestResults"';
+$command = 'php ' . $baseDir . 'artisan generate:form Foo --dir="tests/codeception/actualTestResults"';
 $I->runShellCommand($command);
 
 $I->seeInShellOutput('Form has been saved to');
 
-$I->openFile($base_dir . '/tests/codeception/actualTestResults/FooForm.php');
-$I->canSeeFileContentsEqual(file_get_contents($base_dir .
-      '/tests/codeception/expectedTestResults/FooForm-with-no-namespace-and-no-rules.php'));
+$I->openFile('tests/codeception/actualTestResults/FooForm.php');
+$I->canSeeFileContentsEqual(file_get_contents('tests/codeception/expectedTestResults/FooForm-with-no-namespace-and-no-rules.php'));
 
 unlink('tests/codeception/actualTestResults/FooForm.php');
 
@@ -54,15 +53,12 @@ unlink('tests/codeception/actualTestResults/FooForm.php');
 /*
  * Test no namespace and no rules or a directory
  */
-$command = 'php ' . $base_dir . 'artisan generate:form Foo';
+$command = 'php ' . $baseDir . 'artisan generate:form Foo';
 $I->runShellCommand($command);
 
 $I->seeInShellOutput('Form has been saved to');
 
-$I->openFile($base_dir . '/app/Forms/FooForm.php');
-$I->canSeeFileContentsEqual(file_get_contents($base_dir .
-      '/tests/codeception/expectedTestResults/FooForm-with-no-namespace-and-no-rules-or-dir.php'));
+$I->openFile('app/Forms/FooForm.php');
+$I->canSeeFileContentsEqual(file_get_contents('tests/codeception/expectedTestResults/FooForm-with-no-namespace-and-no-rules-or-dir.php'));
 
 unlink('app/Forms/FooForm.php');
-
-
