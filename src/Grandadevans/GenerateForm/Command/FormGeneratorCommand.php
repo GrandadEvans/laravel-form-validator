@@ -171,8 +171,8 @@ class FormGeneratorCommand extends Command
             ['dir',       'd', InputOption::VALUE_OPTIONAL, 'The directory to place the generated form.', 'app/Forms'],
             ['namespace', 's', InputOption::VALUE_OPTIONAL, 'The namespace to assign to the generated form.', null],
             ['rules',     'r', InputOption::VALUE_OPTIONAL,
-                'The rules of the generated form. Separate the rules with a pipe | as commas are used in rules such'.
-	            ' as between(3,6)', null],
+                'The rules of the generated form eg --rules="username:required:min(6):alpha|password:required:alpha"',
+                null],
         ];
     }
 }
