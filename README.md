@@ -34,7 +34,7 @@ Then include the service provider in your app/config/app.php by adding it to you
  */
 'providers' => array(
     #########
-    'Grandadevans\GenerateForm\GenerateFormServiceProvider'
+    'Grandadevans\GenerateForm\ServiceProvider\GenerateFormServiceProvider'
 );
 ```
 Don't forget that composer.json will need to know where to autoload the form from. So if the forms are kept in the default `app/Forms` directory you could just add it to the classMap
@@ -179,7 +179,7 @@ public function LoginController extends BaseController
      */
     public function validateForm()
     {
-        $input = Input([
+        $input = Input::only([
             'username',
             'password'
         ]);
