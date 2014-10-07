@@ -133,10 +133,9 @@ class Sanitizer
 	 */
 	private function extractparameterLessCondition($unsanitizedCondition)
 	{
-		// I'm not interested in the stuff in brackets or after colons so separate them all out
+		// I'm not interested in the stuff after colons so separate them all out
 		$colonLess   = explode(':', $unsanitizedCondition);
-		$bracketLess = explode('(', $colonLess[0]);
-		$condition   = $bracketLess[0];
+		$condition   = $colonLess[0];
 
 		return $condition;
 	}

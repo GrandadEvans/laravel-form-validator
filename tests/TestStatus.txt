@@ -9,8 +9,4 @@ RuleBuilder - phpspec     - pass
 
 OutputBuilder - phpspec   - pass
 
-
-
-ServiceProvider - phpspec - fail
-
-FormGenerator   - phpspec - fail
+FormGenerator   - phpspec - pass

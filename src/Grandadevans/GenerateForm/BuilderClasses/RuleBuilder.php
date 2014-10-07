@@ -63,7 +63,7 @@ class RuleBuilder
 	public function separateIndividualRules($rules = null)
 	{
 		if ( ! is_null($rules)) {
-			return preg_split("/ ?\| ?/", $rules);
+			return preg_split("/ & ?/", $rules);
 		}
 
 		return false;
@@ -107,7 +107,7 @@ class RuleBuilder
     public function separateNextRuleIntoComponentRules($rule)
     {
 	    // Separate the conditions
-        $laravelConditions = preg_split("/ ?: ?/", $rule); // ['required', 'min']
+        $laravelConditions = preg_split("/ ?\| ?/", $rule); // ['required', 'min']
 
         $inputName = $laravelConditions[0];
 

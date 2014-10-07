@@ -16,6 +16,6 @@ class FooForm extends FormValidator {
      */
     protected $rules=[
         'baz' => 'required|email',
-        'qux' => 'between(3,6)',
+        'qux' => 'between:3,6',
     ];
 }

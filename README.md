@@ -82,14 +82,14 @@ There is only one required argument and that is the **name** of the form
 This is where the command really comes into it's own.
 The rules string should be made up of the following
 
-1.  The name of the input field to validate followed by a colon ( **:** )
-2.  A list of the conditions that the input is to validate against. Each condition being separated by another colon ( **:** )
-3.  If you wish to validate another field then separate them with a pipe ( **|** ) and carry on.
+1.  The name of the input field to validate followed by a pipe ( **|** )
+2.  A list of the conditions that the input is to validate against. Each condition being separated by another colon ( *pipe** )
+3.  If you wish to validate another field then separate them with a ampersand  ( **&amp;** ) and carry on.
 
 **Example**: If I wanted to validate a typical login form containing a username and password field I would set the rules option as follows
 
 ```bash
-php artisan generate:form Login --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan generate:form Login --rules="username|required|between:6,50|alpha & password|required|min:8"
 ```
 
 Each condition that is entered (*required*, *confirmed* etc) will be validated against the [available conditions in Laravel docs](http://laravel.com/docs/validation#available-validation-rules).
@@ -118,7 +118,7 @@ Let's say I want to create the above mentioned login form
 
 ### Step 1: Create the form
 ```bash
-php artisan generate:form Login --rules="username:required:between(6,50):alpha | password:required:min(8)"
+php artisan generate|form Login --rules="username|required|between:6,50|alpha & password|required|min:8"
 ```
 
 I can then view the form at `app/Forms/FooForm.php`.
