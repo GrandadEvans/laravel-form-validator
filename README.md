@@ -84,7 +84,7 @@ The rules string should be made up of the following
 
 1.  The name of the input field to validate followed by a pipe ( **|** )
 2.  A list of the conditions that the input is to validate against. Each condition being separated by another colon ( *pipe** )
-3.  If you wish to validate another field then separate them with a ampersand  ( **&amp;** ) and carry on.
+3.  If you wish to validate another field then separate them with an ampersand  ( **&amp;** ) and carry on.
 
 **Example**: If I wanted to validate a typical login form containing a username and password field I would set the rules option as follows
 
@@ -127,7 +127,7 @@ I can then view the form at `app/Forms/FooForm.php`.
 
 <?php
 
-use laracasts\validation;
+use Laracasts\Validation;
 
 /**
  *
@@ -142,8 +142,8 @@ class LoginForm extends FormValidator {
      * @var array
      */
     protected $rules=[
-        'username' => 'required|between(6,50)|alpha',
-        'password' => 'required||min(8)',
+        'username' => 'required|between:6,50|alpha',
+        'password' => 'required|min:8',
     ];
 }
 ```
@@ -202,11 +202,31 @@ public function LoginController extends BaseController
 
 During the construction of this package I have carried out testing with
 
- * PHPSpec     - General unit tests
+ * PHPSpec     - General low level tests
  * Codeception - End to end test used to test from the command
- * PHPUnit     - Unit test used to unit test the command itself using Symfony's CommandTester
+ * PHPUnit     - Unit test used to test the command itself using Symfony's CommandTester
  
 I also have travis monitoring the condition of the build for failures and you can check on it's progress by [visiting it's Travis CI page](https://travis-ci.org/GrandadEvans/laravel-form-validator)
+
+if you want to see the test results navigate to `vendor/grandadevans/laravel-form-validator` and run
+
+```bash
+composer install --dev
+```
+
+You can then run the tests individually
+
+```bash
+./vendor/bin/codecept run acceptance
+./vendor/bin phpspec run
+./vendor/bin phpunit
+```
+
+or you can run the test script to show all results
+
+```bash
+./runTests.sh
+```
 
 ## GitHub and Packagist
 
